@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liugh.mapper.MenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.liugh.entity.Menu">
+        <id column="menu_id" property="menuId" />
+        <result column="parent_id" property="parentId" />
+        <result column="menu_code" property="menuCode" />
+        <result column="name" property="name" />
+        <result column="menu_type" property="menuType" />
+        <result column="num" property="num" />
+        <result column="url" property="url" />
+        <result column="code" property="code" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        menu_id AS menuId, parent_id AS parentId, menu_code AS menuCode, name, menu_type AS menuType, num, url, code
+    </sql>
+
+    <!-- 根据角色查询菜单 -->
+    <select id="findMenuByRoleCode" resultMap="BaseResultMap">
+        select m.* from tb_menu m LEFT JOIN tb_role_to_menu r on r.menu_code= m.menu_code
+        WHERE
+        1 = 1
+        <if test=" roleCode !=null and roleCode !=''">
+            AND r.role_code = #{roleCode}
+        </if>
+    </select>
+
+</mapper>

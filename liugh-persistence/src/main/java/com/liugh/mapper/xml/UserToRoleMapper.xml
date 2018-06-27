@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liugh.mapper.UserToRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.liugh.entity.UserToRole">
+        <id column="user_to_role_id" property="userToRoleId" />
+        <result column="user_no" property="userNo" />
+        <result column="role_code" property="roleCode" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_to_role_id AS userToRoleId, user_no AS userNo, role_code AS roleCode
+    </sql>
+
+</mapper>

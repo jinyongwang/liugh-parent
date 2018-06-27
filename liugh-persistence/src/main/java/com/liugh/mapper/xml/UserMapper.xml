@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liugh.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.liugh.entity.User">
+        <id column="user_no" property="userNo" />
+        <result column="mobile" property="mobile" />
+        <result column="user_name" property="userName" />
+        <result column="pass_word" property="passWord" />
+        <result column="unit" property="unit" />
+        <result column="create_time" property="createTime" />
+        <result column="avatar" property="avatar" />
+        <result column="status" property="status" />
+        <result column="job" property="job" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_no AS userNo, mobile, user_name AS userName, pass_word AS passWord, unit, create_time AS createTime, avatar, status, job
+    </sql>
+
+</mapper>

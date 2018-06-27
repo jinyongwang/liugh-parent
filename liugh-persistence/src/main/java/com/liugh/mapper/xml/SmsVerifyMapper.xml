@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liugh.mapper.SmsVerifyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.liugh.entity.SmsVerify">
+        <id column="sms_verify_id" property="smsVerifyId" />
+        <result column="sms_id" property="smsId" />
+        <result column="mobile" property="mobile" />
+        <result column="sms_verify" property="smsVerify" />
+        <result column="sms_type" property="smsType" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        sms_verify_id AS smsVerifyId, sms_id AS smsId, mobile, sms_verify AS smsVerify, sms_type AS smsType, create_time AS createTime
+    </sql>
+
+</mapper>

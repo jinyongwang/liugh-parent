@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liugh.mapper.RoleToMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.liugh.entity.RoleToMenu">
+        <id column="role_to_menu_id" property="roleToMenuId" />
+        <result column="role_code" property="roleCode" />
+        <result column="menu_code" property="menuCode" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        role_to_menu_id AS roleToMenuId, role_code AS roleCode, menu_code AS menuCode
+    </sql>
+
+</mapper>
