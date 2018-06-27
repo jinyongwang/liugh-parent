@@ -218,12 +218,6 @@
             </snapshots>
         </repository>
 
-
-        <repository>
-            <id>GeoSolutions</id>
-            <url>http://maven.geo-solutions.it/</url>
-        </repository>
-
         <repository>
             <id>spring-snapshots</id>
             <url>http://repo.spring.io/libs-snapshot</url>
