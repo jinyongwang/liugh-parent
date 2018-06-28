@@ -13,6 +13,7 @@ import com.liugh.util.ComUtil;
 import com.liugh.util.GenerationSequenceUtil;
 import com.liugh.util.SmsSendUtil;
 import com.liugh.util.StringUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/smsVerify")
+@Api(description="短信模块")
 public class SmsVerifyController {
 
     @Autowired
