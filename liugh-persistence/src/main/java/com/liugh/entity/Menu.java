@@ -20,22 +20,19 @@ import com.baomidou.mybatisplus.annotations.TableName;
 public class Menu extends Model<Menu> {
 
     private static final long serialVersionUID = 1L;
-
     /**
-     * 主键
+     * 菜单代号,规范权限标识
      */
-    @TableId(value = "menu_id", type = IdType.AUTO)
-    private Integer menuId;
+    @TableId("menu_code")
+    private String menuCode;
     /**
      * 父菜单主键
      */
     @TableField("parent_id")
     private Integer parentId;
-    /**
-     * 菜单代号,规范权限标识
-     */
-    @TableField("menu_code")
-    private String menuCode;
+
+    @TableField("menu_id")
+    private Integer menuId;
     /**
      * 菜单名称
      */

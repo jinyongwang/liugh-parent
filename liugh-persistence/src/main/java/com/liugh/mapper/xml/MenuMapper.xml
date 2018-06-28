@@ -4,9 +4,9 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.liugh.entity.Menu">
-        <id column="menu_id" property="menuId" />
+        <id column="menu_code" property="menuCode" />
         <result column="parent_id" property="parentId" />
-        <result column="menu_code" property="menuCode" />
+        <result column="menu_id" property="menuId" />
         <result column="name" property="name" />
         <result column="menu_type" property="menuType" />
         <result column="num" property="num" />
