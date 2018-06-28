@@ -49,6 +49,7 @@
         <rest-assured.version>2.9.0</rest-assured.version>
         <ant.version>1.9.7</ant.version>
         <velocity.version>1.7</velocity.version>
+        <springfox-swagger2.version>2.2.2</springfox-swagger2.version>
     </properties>
 
     <dependencyManagement>
@@ -63,6 +64,18 @@
                 <artifactId>reflections</artifactId>
                 <version>${reflections.version}</version>
             </dependency>
+            <!-- swagger start -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-swagger2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox-swagger2.version}</version>
+            </dependency>
+            <!-- swagger end -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-redis</artifactId>

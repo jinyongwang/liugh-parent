@@ -13,6 +13,9 @@ import com.liugh.util.ComUtil;
 import com.liugh.util.GenerationSequenceUtil;
 import com.liugh.util.SmsSendUtil;
 import com.liugh.util.StringUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +36,7 @@ public class SmsVerifyController {
     @Autowired
     private ISmsVerifyService smsVerifyService;
 
+    @ApiOperation(value="获取验证码接口", notes="路径参数,不需要Authorization")
     @GetMapping("/{smsType}/{mobile}")
     @Pass
     @Log(description = "获取短信验证码接口:/smsVerify/{smsType}/{mobile}")
@@ -50,6 +54,16 @@ public class SmsVerifyController {
    }
 
 
+
+    @ApiOperation(value="验证码验证接口", notes="请求参数,不需要Authorization")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "smsType", value = "验证码类型"
+                    , required = true, dataType = "String",paramType="query"),
+            @ApiImplicitParam(name = "mobile", value = "手机号"
+                    , required = true, dataType = "String",paramType="query"),
+            @ApiImplicitParam(name = "captcha", value = "验证码"
+                    , required = true, dataType = "String",paramType="query")
+    })
     @GetMapping("/captcha/check")
     @Pass
     public PublicResult<Boolean> captchaCheck (@RequestParam String smsType,

@@ -15,12 +15,16 @@ import com.liugh.util.ComUtil;
 import com.liugh.util.GenerationSequenceUtil;
 import com.liugh.util.SmsSendUtil;
 import com.liugh.util.StringUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 import java.util.Map;
@@ -38,6 +42,11 @@ public class LoginController {
     @Autowired
     private ISmsVerifyService smsVerifyService;
 
+    @ApiOperation(value="手机密码登录", notes="body体参数,不需要Authorization",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "requestJson", value = "{\"mobile\":\"17765071662\",\"passWord\":\"123456\"}"
+                    , required = true, dataType = "String",paramType="body")
+    })
     @PostMapping("/login")
     @Log(description="前台密码登录接口:/login")
     @Pass
@@ -58,6 +67,11 @@ public class LoginController {
         return new PublicResult<>(PublicResultConstant.SUCCESS, result);
     }
 
+    @ApiOperation(value="短信验证码登录", notes="body体参数,不需要Authorization",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "requestJson", value = "{\"mobile\":\"17765071662\",\"captcha\":\"5780\"}"
+                    , required = true, dataType = "String",paramType="body")
+    })
     @PostMapping("/login/captcha")
     @Log(description="前台短信验证码登录接口:/login/captcha")
     @Pass
@@ -88,6 +102,15 @@ public class LoginController {
         return new PublicResult<>(PublicResultConstant.SUCCESS, result);
     }
 
+
+
+    @ApiOperation(value="手机验证码注册", notes="body体参数,不需要Authorization",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "requestJson", value = "{\"userName\":\"liugh\",\"mobile\":\"17765071662\",</br>" +
+                    "\"captcha\":\"5780\",\"passWord\":\"123456\",</br>\"rePassWord\":\"123456\",\"job\":\"java开发\"," +
+                    "</br>\"unit(可不传)\":\"天创金农\"}"
+                    , required = true, dataType = "String",paramType="body")
+    })
     @PostMapping("/register")
     @Log(description="注册接口:/register")
     @Pass
@@ -128,6 +151,12 @@ public class LoginController {
     }
 
 
+    @ApiOperation(value="忘记密码", notes="body体参数,不需要Authorization",produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "requestJson", value = "{\"mobile\":\"17765071662\",\"captcha\":\"5780\",</br>" +
+                    "\"passWord\":\"123456\",\"rePassWord\":\"123456\"}"
+                    , required = true, dataType = "String",paramType="body")
+    })
     @PostMapping("/forget/password")
     @Pass
     public PublicResult<String> resetPassWord (@ValidationParam("mobile,captcha,passWord,rePassWord")
@@ -162,6 +191,7 @@ public class LoginController {
     }
 
 
+    @ApiIgnore
     @RequestMapping(path = "/401",produces = "application/json;charset=utf-8")
     public PublicResult<String> unauthorized() {
         return new PublicResult<>(PublicResultConstant.UNAUTHORIZED, null);

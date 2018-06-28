@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * <p>
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/userToRole")
+//不加入swagger ui里
+@ApiIgnore
 public class UserToRoleController {
 
 }

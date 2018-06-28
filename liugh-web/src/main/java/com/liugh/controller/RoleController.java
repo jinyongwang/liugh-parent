@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/role")
+//不加入swagger ui里
+@ApiIgnore
 public class RoleController {
 
     @Autowired

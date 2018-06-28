@@ -22,6 +22,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -35,6 +36,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/user")
+//不加入swagger ui里
+@ApiIgnore
 public class UserController {
 
     @Autowired

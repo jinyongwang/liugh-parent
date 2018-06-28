@@ -6,6 +6,7 @@ import com.liugh.util.ComUtil;
 import com.liugh.util.FileUtil;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/resource")
+//不加入swagger ui里
+@ApiIgnore
 public class ResourceController {
 
     @PostMapping
