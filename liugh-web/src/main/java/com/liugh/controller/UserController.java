@@ -64,11 +64,8 @@ public class UserController {
         if(!StringUtil.checkMobileNumber(newMobile)){
             return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, null);
         }
-        EntityWrapper<SmsVerify> captchaQuery = new EntityWrapper<>();
-        captchaQuery.where("mobile={0} and sms_verify={1} and  sms_type = 4",
-                newMobile,requestJson.getString("captcha"));
-        captchaQuery.orderBy("create_time",false);
-        List<SmsVerify> smsVerifies = smsVerifyService.selectList(captchaQuery);
+        List<SmsVerify> smsVerifies = smsVerifyService.getByMobileAndCaptchaAndType(newMobile,
+                requestJson.getString("captcha"), SmsSendUtil.SMSType.getType(SmsSendUtil.SMSType.MODIFYINFO.name()));
         if(ComUtil.isEmpty(smsVerifies)){
             return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_ERROR, null);
         }

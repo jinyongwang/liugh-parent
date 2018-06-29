@@ -38,6 +38,13 @@ public class SmsVerifyController {
     @Autowired
     private ISmsVerifyService smsVerifyService;
 
+    /**
+     * smsType 有四种类型：REG/注册账号 FINDPASSWORD/修改密码 AUTH/登陆验证 MODIFYINFO/修改账号
+     * @param smsType
+     * @param mobile
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value="获取验证码接口", notes="路径参数,不需要Authorization")
     @GetMapping("/{smsType}/{mobile}")
     @Pass
@@ -73,11 +80,8 @@ public class SmsVerifyController {
         if(!StringUtil.checkMobileNumber(mobile)){
             return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, false);
         }
-        EntityWrapper<SmsVerify> captchaQuery = new EntityWrapper<>();
-        captchaQuery.where("mobile={0} and sms_verify={1} and sms_type = {2} ",
-                mobile,captcha,SmsSendUtil.SMSType.getType(smsType));
-        captchaQuery.orderBy("create_time",false);
-        List<SmsVerify> smsVerifies = smsVerifyService.selectList(captchaQuery);
+        List<SmsVerify> smsVerifies = smsVerifyService.getByMobileAndCaptchaAndType(mobile,
+                captcha,SmsSendUtil.SMSType.getType(smsType));
         if(ComUtil.isEmpty(smsVerifies)){
             return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_ERROR, false);
         }

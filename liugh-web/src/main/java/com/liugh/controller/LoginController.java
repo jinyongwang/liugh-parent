@@ -1,7 +1,6 @@
 package com.liugh.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.liugh.annotation.Log;
 import com.liugh.annotation.Pass;
 import com.liugh.annotation.ValidationParam;
@@ -54,14 +53,13 @@ public class LoginController {
     @Pass
     public PublicResult<Map<String, Object>> login(
             @ValidationParam("mobile,passWord")@RequestBody JSONObject requestJson) throws Exception{
+        //由于 @ValidationParam注解已经验证过mobile和passWord参数，所以可以直接get
         String mobile = requestJson.getString("mobile");
         String passWord = requestJson.getString("passWord");
         if(!StringUtil.checkMobileNumber(mobile)){
             return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, null);
         }
-        EntityWrapper<User> ew = new EntityWrapper<>();
-        ew.where("mobile={0}", mobile);
-        User user = userService.selectOne(ew);
+        User user = userService.getUserByMobile(mobile);
         if (ComUtil.isEmpty(user) || !BCrypt.checkpw(passWord, user.getPassWord())) {
             return new PublicResult<>(PublicResultConstant.INVALID_USERNAME_PASSWORD, null);
         }
@@ -84,16 +82,12 @@ public class LoginController {
         if(!StringUtil.checkMobileNumber(mobile)){
             return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, null);
         }
-        EntityWrapper<User> ew = new EntityWrapper<>();
-        ew.where("mobile={0}", mobile);
-        User user = userService.selectOne(ew);
+        User user = userService.getUserByMobile(mobile);
         if (ComUtil.isEmpty(user)) {
             return new PublicResult<>(PublicResultConstant.INVALID_USER, null);
         }
-        EntityWrapper<SmsVerify> captchaQuery = new EntityWrapper<>();
-        captchaQuery.where("mobile={0} and sms_verify={1} and sms_type = 1 ",mobile,captcha);
-        captchaQuery.orderBy("create_time",false);
-        List<SmsVerify> smsVerifies = smsVerifyService.selectList(captchaQuery);
+        List<SmsVerify> smsVerifies = smsVerifyService.getByMobileAndCaptchaAndType(mobile,
+                captcha, SmsSendUtil.SMSType.getType(SmsSendUtil.SMSType.AUTH.name()));
         if(ComUtil.isEmpty(smsVerifies)){
             return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_ERROR, null);
         }
@@ -110,7 +104,7 @@ public class LoginController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "requestJson", value = "{\"userName\":\"liugh\",\"mobile\":\"17765071662\",</br>" +
                     "\"captcha\":\"5780\",\"passWord\":\"123456\",</br>\"rePassWord\":\"123456\",\"job\":\"java开发\"," +
-                    "</br>\"unit(可不传)\":\"天创金农\"}"
+                    "</br>\"unit(可不传)\":\"xxx公司\"}"
                     , required = true, dataType = "String",paramType="body")
     })
     @PostMapping("/register")
@@ -118,38 +112,27 @@ public class LoginController {
     @Pass
     public PublicResult<User> register(@ValidationParam("userName,passWord,rePassWord,mobile,captcha,job")
                                        @RequestBody JSONObject requestJson) {
-        String mobile = requestJson.getString("mobile");
-        if(!StringUtil.checkMobileNumber(mobile)){
+        //可直接转为java对象,简化操作
+        User userRegister = requestJson.toJavaObject(User.class);
+        if(!StringUtil.checkMobileNumber(userRegister.getMobile())){
             return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, null);
         }
-        if (!requestJson.getString("passWord").equals(requestJson.getString("rePassWord"))) {
+        if (!userRegister.getPassWord().equals(requestJson.getString("rePassWord"))) {
             return new PublicResult<>(PublicResultConstant.INVALID_RE_PASSWORD, null);
         }
-        EntityWrapper<User> ew = new EntityWrapper<>();
-        ew.where("mobile={0}",mobile);
-        User user = userService.selectOne(ew);
-        if (!ComUtil.isEmpty(user)) {
-            return new PublicResult<>(PublicResultConstant.USERNAME_ALREADY_IN, null);
-        }
-        EntityWrapper<SmsVerify> captcha = new EntityWrapper<>();
-        captcha.where("mobile={0} and sms_verify={1} and sms_type = 2",mobile, requestJson.getString("captcha"));
-        captcha.orderBy("create_time",false);
-        List<SmsVerify> smsVerifies = smsVerifyService.selectList(captcha);
+        List<SmsVerify> smsVerifies = smsVerifyService.getByMobileAndCaptchaAndType(userRegister.getMobile(),
+                requestJson.getString("captcha"), SmsSendUtil.SMSType.getType(SmsSendUtil.SMSType.REG.name()));
         if(ComUtil.isEmpty(smsVerifies)){
             return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_ERROR, null);
         }
+        //验证码是否过期
         if(SmsSendUtil.isCaptchaPassTime(smsVerifies.get(0).getCreateTime())){
             return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_PASS, null);
         }
-        User userRegister = new User(GenerationSequenceUtil.generateUUID("user"), mobile, requestJson.getString("userName"),
-                BCrypt.hashpw(requestJson.getString("passWord"),BCrypt.gensalt()),
-                requestJson.getString("job"),System.currentTimeMillis());
-        if(!ComUtil.isEmpty(requestJson.getString("unit"))){
-            userRegister.setUnit(requestJson.getString("unit"));
-        }
+        userRegister.setPassWord(BCrypt.hashpw(requestJson.getString("passWord"), BCrypt.gensalt()));
         boolean result = userService.register(userRegister, GenerationSequenceUtil.generateUUID("role"));
         return result? new PublicResult<>(PublicResultConstant.SUCCESS, null):
-                new PublicResult<>(PublicResultConstant.FAILED, null);
+                new PublicResult<>("注册失败，请联系管理员！",null);
     }
 
 
@@ -170,17 +153,12 @@ public class LoginController {
         if (!requestJson.getString("passWord").equals(requestJson.getString("rePassWord"))) {
             return new PublicResult<>(PublicResultConstant.INVALID_RE_PASSWORD, null);
         }
-        EntityWrapper<User> ew = new EntityWrapper<>();
-        ew.where("mobile={0}",mobile);
-        User user = userService.selectOne(ew);
+        User user = userService.getUserByMobile(mobile);
         if(ComUtil.isEmpty(user)){
             return new PublicResult<>(PublicResultConstant.INVALID_USER, null);
         }
-        EntityWrapper<SmsVerify> captchaQuery = new EntityWrapper<>();
-        captchaQuery.where("mobile={0} and sms_verify={1} and  sms_type = 3",
-                mobile,requestJson.getString("captcha"));
-        captchaQuery.orderBy("create_time",false);
-        List<SmsVerify> smsVerifies = smsVerifyService.selectList(captchaQuery);
+        List<SmsVerify> smsVerifies = smsVerifyService.getByMobileAndCaptchaAndType(mobile,
+                requestJson.getString("captcha"), SmsSendUtil.SMSType.getType(SmsSendUtil.SMSType.FINDPASSWORD.name()));
         if(ComUtil.isEmpty(smsVerifies)){
             return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_ERROR, null);
         }

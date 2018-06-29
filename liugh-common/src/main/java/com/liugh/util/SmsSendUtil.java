@@ -111,11 +111,12 @@ public class SmsSendUtil {
     }
 
     public enum SMSType{
+        AUTH,
+
         REG,
 
         FINDPASSWORD,
 
-        AUTH,
 
         MODIFYINFO;
 
@@ -128,14 +129,14 @@ public class SmsSendUtil {
         public String toString(){
             String sMSType = "";
             switch (this){
+                case AUTH:
+                    sMSType = "登陆验证";
+                    break;
                 case REG:
                     sMSType = "注册账号";
                     break;
                 case FINDPASSWORD:
                     sMSType = "修改密码";
-                    break;
-                case AUTH:
-                    sMSType = "登陆验证";
                     break;
                 case MODIFYINFO:
                     sMSType = "修改账号";
@@ -188,6 +189,7 @@ public class SmsSendUtil {
     }
 
     public static void main(String[] args) throws BusinessException{
-         sendMessage("17765071662", "我试试请求，看一看结果");
+//         sendMessage("17765071662", "我试试请求，看一看结果");
+        System.out.println(SmsSendUtil.SMSType.FINDPASSWORD.name());
     }
 }

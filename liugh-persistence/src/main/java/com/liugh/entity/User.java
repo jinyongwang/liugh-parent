@@ -20,15 +20,6 @@ public class User extends Model<User> {
 
     private static final long serialVersionUID = 1L;
 
-    public User(String userNo, String mobile, String userName, String passWord, String job,Long createTime) {
-        this.userNo = userNo;
-        this.mobile = mobile;
-        this.userName = userName;
-        this.passWord = passWord;
-        this.job = job;
-        this.createTime = createTime;
-    }
-
     public User(){}
 
     /**

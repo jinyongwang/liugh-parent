@@ -94,28 +94,17 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
-        httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
         httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
         // 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
         if (httpServletRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
             httpServletResponse.setStatus(HttpStatus.OK.value());
             return false;
         }
-        for (String urlMethod:Constant.METHOD_URL_SET) {
-            String[] split = urlMethod.split(":--:");
-            if(split[0].equals(httpServletRequest.getRequestURI())
-                    && (split[1].equals(httpServletRequest.getMethod()) ||  split[1].equals("RequestMapping"))){
-                return true;
-            }
-            if(StringUtils.countMatches(urlMethod, "{")>0 &&
-                    StringUtils.countMatches(urlMethod, "/") == StringUtils.countMatches(split[0], "/")
-                    && (split[1].equals(httpServletRequest.getMethod()) ||  split[1].equals("RequestMapping"))){
-                if(isSameUrl(split[0],httpServletRequest.getRequestURI())){
-                    return true;
-                }
-            }
-        }
         String authorization = httpServletRequest.getHeader("Authorization");
+        if (verificationPassAnnotation(request, response, httpServletRequest, authorization)){
+            return true;
+        }
         if(ComUtil.isEmpty(authorization)){
             response401(request, response);
             return false;
@@ -123,6 +112,50 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         return super.preHandle(request, response);
     }
 
+    /**
+     * 验证请求方法是否有@Pass注解,有则直接放行
+     * @param request
+     * @param response
+     * @param httpServletRequest
+     * @param authorization
+     * @return
+     * @throws Exception
+     */
+    private boolean verificationPassAnnotation(ServletRequest request, ServletResponse response, HttpServletRequest httpServletRequest, String authorization) throws Exception {
+        for (String urlMethod: Constant.METHOD_URL_SET) {
+            String[] split = urlMethod.split(":--:");
+            if(split[0].equals(httpServletRequest.getRequestURI())
+                    && (split[1].equals(httpServletRequest.getMethod()) ||  split[1].equals("RequestMapping"))){
+                if(ComUtil.isEmpty(authorization)){
+                    //如果当前url不需要认证，则注入当前登录用户时，给一个空的
+                    httpServletRequest.setAttribute("currentUser",new User());
+                    return true;
+                }else {
+                    super.preHandle(request, response);
+                }
+            }
+            if(StringUtils.countMatches(urlMethod, "{")>0 &&
+                    StringUtils.countMatches(urlMethod, "/") == StringUtils.countMatches(split[0], "/")
+                    && (split[1].equals(httpServletRequest.getMethod()) ||  split[1].equals("RequestMapping"))){
+                if(isSameUrl(split[0],httpServletRequest.getRequestURI())){
+                    if(ComUtil.isEmpty(authorization)){
+                        httpServletRequest.setAttribute("currentUser",new User());
+                        return true;
+                    }else {
+                        super.preHandle(request, response);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断路径参数的url是否和controller方法url一致
+     * @param localUrl
+     * @param requestUrl
+     * @return
+     */
     private boolean isSameUrl(String localUrl,String requestUrl){
         String[] tempLocalUrls = localUrl.split("/");
         String[] tempRequestUrls = requestUrl.split("/");

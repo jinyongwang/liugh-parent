@@ -10,6 +10,7 @@ import com.liugh.entity.User;
 import com.liugh.entity.UserToRole;
 import com.liugh.mapper.UserMapper;
 import com.liugh.util.ComUtil;
+import com.liugh.util.GenerationSequenceUtil;
 import com.liugh.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -46,7 +47,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
+    public User getUserByMobile(String mobile) {
+        EntityWrapper<User> ew = new EntityWrapper<>();
+        ew.eq("mobile", mobile);
+        return this.selectOne(ew);
+    }
+
+    @Override
     public boolean register(User user, String  roleCode) {
+        user.setUserNo(GenerationSequenceUtil.generateUUID("user"));
+        user.setCreateTime(System.currentTimeMillis());
         boolean result = this.insert(user);
         if (result) {
             UserToRole userToRole  = new UserToRole();

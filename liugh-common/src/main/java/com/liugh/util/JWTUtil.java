@@ -30,7 +30,7 @@ public class JWTUtil {
             JWTVerifier verifier = JWT.require(algorithm)
                     .withClaim("userNo", userNo)
                     .build();
-            DecodedJWT jwt = verifier.verify(token);
+            verifier.verify(token);
             return true;
         } catch (Exception exception) {
             return false;
@@ -51,7 +51,7 @@ public class JWTUtil {
     }
 
     /**
-     * 生成签名,5min后过期
+     * 生成签名,指定时间后过期,一经生成不可修改，令牌在指定时间内一直有效
      * @param userNo 用户编号
      * @param secret 用户的密码
      * @return 加密的token
