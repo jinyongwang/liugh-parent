@@ -3,6 +3,9 @@ package com.liugh.aspect;
 import com.alibaba.fastjson.JSONObject;
 import com.liugh.annotation.Log;
 import com.liugh.annotation.ParamXssPass;
+import com.liugh.base.BaseResult;
+import com.liugh.base.PageResult;
+import com.liugh.entity.User;
 import com.liugh.util.ComUtil;
 import com.liugh.util.StringUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,9 +13,13 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * 切面:防止xss攻击 记录log  参数验证
@@ -68,7 +75,66 @@ public class ParameterCheckAspect {
         return  pjp.proceed(args);
     }
 
+    /**
+     * 设置返回参数中password隐藏
+     * @param joinPoint
+     * @return
+     * @throws Throwable
+     */
+    @Around( "execution(* com.liugh.controller..*(..) )" )
+    public Object returnValueHandle ( ProceedingJoinPoint joinPoint ) throws Throwable {
+        Object returnValue = joinPoint.proceed();
+        BaseResult caseResult = (BaseResult) returnValue;
+        Object data = caseResult.getData();
+        if(data instanceof PageResult){
+            PageResult pageResult = (PageResult) data;
+            List list = pageResult.getList();
+            doPasswd2NullByList(list);
+            pageResult.setList(list);
+        }
+        if(data instanceof User){
+            User user = (User) data;
+            user.setPassWord(null);
+            caseResult.setData(user);
+        }
+        if(data instanceof Map){
+            Map<String,Object> map = (Map) data;
+            doPasswd2NullByMap(map);
+            caseResult.setData(map);
+        }
+        if(data instanceof List){
+            List list = (List) data;
+            doPasswd2NullByList(list);
+            caseResult.setData(list);
+        }
+        return  returnValue;
+    }
 
+    private void doPasswd2NullByList(List list) {
+        for (int i = 0; i <list.size() ; i++) {
+            if(list.get(i) instanceof User){
+                User user = (User) list.get(i);
+                user.setPassWord(null);
+                list.set(i,user);
+            }
+            if(list.get(i) instanceof Map){
+                Map<String,Object> map = (Map) list.get(i);
+                doPasswd2NullByMap(map);
+                list.set(i,map);
+            }
+        }
+    }
+
+    private void doPasswd2NullByMap(Map<String, Object> map) {
+        for (String key: map.keySet()) {
+            Object obj = map.get(key);
+            if(obj instanceof User){
+                User user = (User) obj;
+                user.setPassWord(null);
+                map.put(key,user);
+            }
+        }
+    }
 
 
     /**

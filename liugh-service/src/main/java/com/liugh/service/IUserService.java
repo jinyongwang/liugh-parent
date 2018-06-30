@@ -33,4 +33,6 @@ public interface IUserService extends IService<User> {
      boolean register(User user, String roleCode);
 
     Map<String, Object> getLoginUserAndMenuInfo(User user);
+
+    boolean deleteByUserNo(String userNo);
 }

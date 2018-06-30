@@ -1,8 +1,6 @@
 package com.liugh.util;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * @author liugh

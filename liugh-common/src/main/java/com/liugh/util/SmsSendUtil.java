@@ -189,7 +189,6 @@ public class SmsSendUtil {
     }
 
     public static void main(String[] args) throws BusinessException{
-//         sendMessage("17765071662", "我试试请求，看一看结果");
-        System.out.println(SmsSendUtil.SMSType.FINDPASSWORD.name());
+         sendMessage("17765071662", "我试试请求，看一看结果");
     }
 }

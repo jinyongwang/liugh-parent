@@ -12,7 +12,6 @@ import com.liugh.entity.User;
 import com.liugh.service.ISmsVerifyService;
 import com.liugh.service.IUserService;
 import com.liugh.util.ComUtil;
-import com.liugh.util.GenerationSequenceUtil;
 import com.liugh.util.SmsSendUtil;
 import com.liugh.util.StringUtil;
 import io.swagger.annotations.Api;
@@ -56,12 +55,11 @@ public class LoginController {
             @ValidationParam("mobile,passWord")@RequestBody JSONObject requestJson) throws Exception{
         //由于 @ValidationParam注解已经验证过mobile和passWord参数，所以可以直接get使用没毛病。
         String mobile = requestJson.getString("mobile");
-        String passWord = requestJson.getString("passWord");
         if(!StringUtil.checkMobileNumber(mobile)){
             return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, null);
         }
         User user = userService.getUserByMobile(mobile);
-        if (ComUtil.isEmpty(user) || !BCrypt.checkpw(passWord, user.getPassWord())) {
+        if (ComUtil.isEmpty(user) || !BCrypt.checkpw(requestJson.getString("passWord"), user.getPassWord())) {
             return new PublicResult<>(PublicResultConstant.INVALID_USERNAME_PASSWORD, null);
         }
         Map<String, Object> result = userService.getLoginUserAndMenuInfo(user);
@@ -79,7 +77,6 @@ public class LoginController {
     public PublicResult<Map<String, Object>> loginBycaptcha(
             @ValidationParam("mobile,captcha")@RequestBody JSONObject requestJson) throws Exception{
         String mobile = requestJson.getString("mobile");
-        String captcha = requestJson.getString("captcha");
         if(!StringUtil.checkMobileNumber(mobile)){
             return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, null);
         }
@@ -88,7 +85,7 @@ public class LoginController {
             return new PublicResult<>(PublicResultConstant.INVALID_USER, null);
         }
         List<SmsVerify> smsVerifies = smsVerifyService.getByMobileAndCaptchaAndType(mobile,
-                captcha, SmsSendUtil.SMSType.getType(SmsSendUtil.SMSType.AUTH.name()));
+                requestJson.getString("captcha"), SmsSendUtil.SMSType.getType(SmsSendUtil.SMSType.AUTH.name()));
         if(ComUtil.isEmpty(smsVerifies)){
             return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_ERROR, null);
         }

@@ -93,4 +93,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return result;
     }
 
+    @Override
+    public boolean deleteByUserNo(String userNo) {
+        EntityWrapper<UserToRole> ew = new EntityWrapper<>();
+        ew.eq("user_no", userNo);
+        boolean resultRole = userToRoleService.delete(ew);
+        boolean  resultUser = this.deleteById(userNo);
+        return resultRole && resultUser;
+    }
+
+
 }
