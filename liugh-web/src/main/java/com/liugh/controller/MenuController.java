@@ -20,5 +20,6 @@ import springfox.documentation.annotations.ApiIgnore;
 @ApiIgnore
 public class MenuController {
 
+
 }
 

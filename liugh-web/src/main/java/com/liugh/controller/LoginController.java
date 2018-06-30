@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.liugh.annotation.Log;
 import com.liugh.annotation.Pass;
 import com.liugh.annotation.ValidationParam;
+import com.liugh.base.Constant;
 import com.liugh.base.PublicResult;
 import com.liugh.base.PublicResultConstant;
 import com.liugh.entity.SmsVerify;
@@ -53,7 +54,7 @@ public class LoginController {
     @Pass
     public PublicResult<Map<String, Object>> login(
             @ValidationParam("mobile,passWord")@RequestBody JSONObject requestJson) throws Exception{
-        //由于 @ValidationParam注解已经验证过mobile和passWord参数，所以可以直接get
+        //由于 @ValidationParam注解已经验证过mobile和passWord参数，所以可以直接get使用没毛病。
         String mobile = requestJson.getString("mobile");
         String passWord = requestJson.getString("passWord");
         if(!StringUtil.checkMobileNumber(mobile)){
@@ -112,7 +113,7 @@ public class LoginController {
     @Pass
     public PublicResult<User> register(@ValidationParam("userName,passWord,rePassWord,mobile,captcha,job")
                                        @RequestBody JSONObject requestJson) {
-        //可直接转为java对象,简化操作
+        //可直接转为java对象,简化操作,不用再set一个个属性
         User userRegister = requestJson.toJavaObject(User.class);
         if(!StringUtil.checkMobileNumber(userRegister.getMobile())){
             return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, null);
@@ -130,7 +131,8 @@ public class LoginController {
             return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_PASS, null);
         }
         userRegister.setPassWord(BCrypt.hashpw(requestJson.getString("passWord"), BCrypt.gensalt()));
-        boolean result = userService.register(userRegister, GenerationSequenceUtil.generateUUID("role"));
+        //默认注册普通用户
+        boolean result = userService.register(userRegister, Constant.ORDINARY_ROLE);
         return result? new PublicResult<>(PublicResultConstant.SUCCESS, null):
                 new PublicResult<>("注册失败，请联系管理员！",null);
     }

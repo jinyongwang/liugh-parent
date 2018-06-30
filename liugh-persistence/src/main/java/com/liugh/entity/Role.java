@@ -31,6 +31,13 @@ public class Role extends Model<Role> {
     @TableField("role_name")
     private String roleName;
 
+    public Role() {
+    }
+
+    public Role(String roleName, String roleCode) {
+        this.roleName = roleName;
+        this.roleCode = roleCode;
+    }
 
     public String getRoleCode() {
         return roleCode;

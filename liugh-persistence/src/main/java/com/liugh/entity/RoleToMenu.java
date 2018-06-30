@@ -37,6 +37,12 @@ public class RoleToMenu extends Model<RoleToMenu> {
     @TableField("menu_code")
     private String menuCode;
 
+    public RoleToMenu(String roleCode, String menuCode) {
+        this.roleCode=roleCode;
+        this.menuCode=menuCode;
+    }
+    public RoleToMenu() {
+    }
 
     public Integer getRoleToMenuId() {
         return roleToMenuId;
