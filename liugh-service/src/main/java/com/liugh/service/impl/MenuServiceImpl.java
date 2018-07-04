@@ -26,7 +26,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     private MenuMapper menuMapper;
 
     @Override
-    @Cacheable(value = "UserToRole",keyGenerator="wiselyKeyGenerator")
+    //redis方法级别的缓存，需要做缓存打开改注解即可
+//    @Cacheable(value = "UserToRole",keyGenerator="wiselyKeyGenerator")
     public List<Menu> selectByIds(List<Integer> permissionIds) {
         EntityWrapper<Menu> ew = new EntityWrapper<>();
         ew.in("menu_id", permissionIds);
@@ -34,7 +35,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     }
 
     @Override
-    @Cacheable(value = "UserToRole",keyGenerator="wiselyKeyGenerator")
+//    @Cacheable(value = "UserToRole",keyGenerator="wiselyKeyGenerator")
     public List<Menu> findMenuByRoleCode(String roleId) {
         return menuMapper.findMenuByRoleCode(roleId);
     }

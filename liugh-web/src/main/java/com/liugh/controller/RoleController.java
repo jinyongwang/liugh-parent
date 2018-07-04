@@ -31,8 +31,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/role")
-//不加入swagger ui里
-@ApiIgnore
 public class RoleController {
 
     @Autowired
