@@ -38,7 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private IMenuService menuService;
 
     @Override
-    @Cacheable(value = "UserToRole",keyGenerator="wiselyKeyGenerator")
+//    @Cacheable(value = "UserToRole",keyGenerator="wiselyKeyGenerator")
     public User getUserByUserName(String username) {
         System.out.println("执行getUserByUserName方法了.....");
         EntityWrapper<User> ew = new EntityWrapper<>();

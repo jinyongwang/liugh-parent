@@ -23,7 +23,7 @@ import java.util.List;
 public class UserToRoleServiceImpl extends ServiceImpl<UserToRoleMapper, UserToRole> implements IUserToRoleService {
 
     @Override
-    @Cacheable(value = "UserToRole",keyGenerator="wiselyKeyGenerator")
+//    @Cacheable(value = "UserToRole",keyGenerator="wiselyKeyGenerator")
     public UserToRole selectByUserNo(String userNo) {
         EntityWrapper<UserToRole> ew = new EntityWrapper<>();
         ew.where("user_no={0}", userNo);
