@@ -6,7 +6,7 @@ package com.liugh.aspect;
  */
 public class ValidationParamOperate extends AspectHandler{
     @Override
-    protected ValidationParam factoryMethod() {
-        return  new ValidationParam();
+    protected ValidationParamAspect factoryMethod() {
+        return  new ValidationParamAspect();
     }
 }

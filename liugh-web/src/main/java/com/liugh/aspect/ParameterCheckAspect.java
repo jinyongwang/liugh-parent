@@ -3,6 +3,7 @@ package com.liugh.aspect;
 import com.alibaba.fastjson.JSONObject;
 import com.liugh.annotation.Log;
 import com.liugh.annotation.ParamXssPass;
+import com.liugh.annotation.ValidationParam;
 import com.liugh.base.BaseResult;
 import com.liugh.base.PageResult;
 import com.liugh.entity.User;

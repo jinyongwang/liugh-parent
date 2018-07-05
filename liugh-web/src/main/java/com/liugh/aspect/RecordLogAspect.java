@@ -23,9 +23,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author liugh
  * @since on 2018/5/10.
  */
-public class RecordLog implements AspectApi {
+public class RecordLogAspect implements AspectApi {
 
-    private Logger logger = LoggerFactory.getLogger(RecordLog.class);
+    private Logger logger = LoggerFactory.getLogger(RecordLogAspect.class);
 
     @Override
     public Object doHandlerAspect(Object [] obj ,ProceedingJoinPoint pjp, Method method,boolean isAll) throws Throwable{

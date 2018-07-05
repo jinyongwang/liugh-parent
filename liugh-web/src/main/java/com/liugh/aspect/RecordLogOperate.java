@@ -6,7 +6,7 @@ package com.liugh.aspect;
  */
 public class RecordLogOperate extends AspectHandler{
     @Override
-    protected RecordLog factoryMethod() {
-        return new RecordLog();
+    protected RecordLogAspect factoryMethod() {
+        return new RecordLogAspect();
     }
 }

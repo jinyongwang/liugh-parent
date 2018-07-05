@@ -1,6 +1,7 @@
 package com.liugh.aspect;
 
 import com.alibaba.fastjson.JSONObject;
+import com.liugh.annotation.ValidationParam;
 import com.liugh.exception.ParamJsonException;
 import com.liugh.util.ComUtil;
 import com.liugh.util.StringUtil;
@@ -12,7 +13,7 @@ import java.lang.reflect.Method;
  * @author liugh
  * @since on 2018/5/10.
  */
-public class ValidationParam implements AspectApi{
+public class ValidationParamAspect implements AspectApi{
     @Override
     public Object doHandlerAspect(Object [] obj ,ProceedingJoinPoint pjp, Method method,boolean isAll) throws Throwable{
        //获取注解的value值返回
