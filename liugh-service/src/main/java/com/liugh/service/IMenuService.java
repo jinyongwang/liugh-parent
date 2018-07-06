@@ -29,5 +29,13 @@ public interface IMenuService extends IService<Menu> {
      */
     List<Menu> findMenuByRoleCode(String roleCode);
 
+    /**
+     * 获取菜单树形结构
+     * @param pId
+     * @param list
+     * @return
+     */
+    List<Menu> treeMenuList(String pId, List<Menu> list);
+
 
 }

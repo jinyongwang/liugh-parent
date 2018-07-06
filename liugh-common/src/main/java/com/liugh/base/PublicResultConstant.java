@@ -86,7 +86,11 @@ public enum PublicResultConstant {
     /**
      * 用户没有添加、删除评论或回复的权限
      */
-    MOBILE_ERROR("10000014","手机号格式错误")
+    MOBILE_ERROR("10000014","手机号格式错误") ,
+    /**
+     * 数据更新或增加失败
+     */
+    DATA_ERROR("10000015","数据操作错误")
     ;
 
 

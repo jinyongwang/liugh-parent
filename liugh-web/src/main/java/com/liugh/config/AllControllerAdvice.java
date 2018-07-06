@@ -1,6 +1,7 @@
 package com.liugh.config;
 
 import com.liugh.base.BaseResult;
+import com.liugh.base.BusinessException;
 import com.liugh.base.PublicResult;
 import com.liugh.base.PublicResultConstant;
 import com.liugh.exception.ParamJsonException;
@@ -69,6 +70,21 @@ public class AllControllerAdvice {
     @ResponseBody
     public PublicResult<String> handleShiroException(ShiroException e) {
         return new PublicResult<>(PublicResultConstant.USER_NO_PERMITION, null);
+    }
+
+    /**
+     * 捕捉BusinessException自定义抛出的异常
+     * @return
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(BusinessException.class)
+    @ResponseBody
+    public BaseResult handleBusinessException(BusinessException e) {
+        if(e instanceof BusinessException) {
+            logger.info("数据操作失败："+e.getMessage());
+            return new BaseResult(PublicResultConstant.DATA_ERROR.getResult(), e.getMessage(),null);
+        }
+        return new PublicResult(PublicResultConstant.ERROR, null);
     }
 
     @ResponseStatus(HttpStatus.OK)

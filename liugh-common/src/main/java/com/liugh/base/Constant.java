@@ -22,12 +22,24 @@ public class Constant {
 
     //验证码过期时间
     public static final Long PASS_TIME =  50000 * 60 *1000L;
+    /**
+     * 普通用户
+     */
+    public static final String ORDINARY_ROLE= "user";
 
-    //数据库普通用户role_code 角色代号主键
-    public static final String ORDINARY_ROLE= "role-0f0b4e1ab76d4ee6b49d94b59d5b9a86";
+    /**
+     * 系统管理员
+     */
+    public static final String SYS_ASMIN_ROLE= "admin";
 
-    //数据库系统管理员role_code 角色代号主键
-    public static final String SYS_ASMIN_ROLE= "role-4bc6e2b994b24a3284cab4172d10ac81";
+    //根菜单节点
+    public static final String ROOT_MENU = "0";
+
+    //菜单类型，1：菜单  2：按钮操作
+    public static final int TYPE_MENU = 1;
+
+    //菜单类型，1：菜单  2：按钮操作
+    public static final int TYPE_BUTTON = 2;
 
     //启用
     public static final int ENABLE = 1;

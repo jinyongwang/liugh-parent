@@ -1,6 +1,5 @@
 package com.liugh.service;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.liugh.entity.RoleToMenu;
 

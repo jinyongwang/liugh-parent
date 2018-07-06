@@ -2,6 +2,7 @@ package com.liugh.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.liugh.base.Constant;
 import com.liugh.entity.Menu;
 import com.liugh.service.IMenuService;
 import com.liugh.service.IUserService;
@@ -69,26 +70,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public Map<String, Object> getLoginUserAndMenuInfo(User user) {
-
         Map<String, Object> result = new HashMap<>();
         UserToRole userToRole = userToRoleService.selectByUserNo(user.getUserNo());
         user.setToken(JWTUtil.sign(user.getUserNo(), user.getPassWord()));
         result.put("user",user);
-        //根据角色查询权限
-        List<Menu> menuList = new ArrayList<Menu>();
         List<Menu> buttonList = new ArrayList<Menu>();
         //根据角色主键查询启用的菜单权限
-        List<Menu> sysMenuList = menuService.findMenuByRoleCode(userToRole.getRoleCode());
-        if (!ComUtil.isEmpty(sysMenuList)){
-            for (Menu sysMenu : sysMenuList) {
-                if (sysMenu.getMenuType() == 1) {
-                    buttonList.add(sysMenu);
-                }else {
-                    menuList.add(sysMenu);
-                }
+        List<Menu> menuList = menuService.findMenuByRoleCode(userToRole.getRoleCode());
+        List<Menu> retMenuList = menuService.treeMenuList(Constant.ROOT_MENU, menuList);
+        for (Menu buttonMenu : menuList) {
+            if(buttonMenu.getMenuType() == Constant.TYPE_BUTTON){
+                buttonList.add(buttonMenu);
             }
         }
-        result.put("menuList",menuList);
+        result.put("menuList",retMenuList);
         result.put("buttonList",buttonList);
         return result;
     }

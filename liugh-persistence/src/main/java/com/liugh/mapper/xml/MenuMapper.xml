@@ -12,11 +12,12 @@
         <result column="num" property="num" />
         <result column="url" property="url" />
         <result column="code" property="code" />
+        <result column="icon" property="icon" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        menu_id AS menuId, parent_id AS parentId, menu_code AS menuCode, name, menu_type AS menuType, num, url, code
+        menu_id AS menuId, parent_id AS parentId, menu_code AS menuCode, name, menu_type AS menuType, num, url, code,icon
     </sql>
 
     <!-- 根据角色查询菜单 -->

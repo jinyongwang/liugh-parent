@@ -1,12 +1,15 @@
 package com.liugh.shiro;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.liugh.base.Constant;
 import com.liugh.config.SpringContextBean;
+import com.liugh.entity.Role;
 import com.liugh.exception.UnauthorizedException;
 import com.liugh.entity.Menu;
 import com.liugh.entity.User;
 import com.liugh.entity.UserToRole;
 import com.liugh.service.IMenuService;
+import com.liugh.service.IRoleService;
 import com.liugh.service.IUserService;
 import com.liugh.service.IUserToRoleService;
 import com.liugh.util.ComUtil;
@@ -35,6 +38,7 @@ public class MyRealm extends AuthorizingRealm {
     private IUserService userService;
     private IUserToRoleService userToRoleService;
     private IMenuService menuService;
+    private IRoleService roleService;
     /**
      * 大坑！，必须重写此方法，不然Shiro会报错
      */
@@ -54,6 +58,9 @@ public class MyRealm extends AuthorizingRealm {
         if (menuService == null) {
             this.menuService = SpringContextBean.getBean(IMenuService.class);
         }
+        if (roleService == null) {
+            this.roleService = SpringContextBean.getBean(IRoleService.class);
+        }
 
         String userNo = JWTUtil.getUserNo(principals.toString());
         User user = userService.selectById(userNo);
@@ -61,15 +68,10 @@ public class MyRealm extends AuthorizingRealm {
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         ArrayList<String> pers = new ArrayList<>();
-
-        List<Menu> menuList = menuService.findMenuByRoleCode(userToRole.getRoleCode());
-        for (Menu per : menuList) {
-            if (!ComUtil.isEmpty(per.getCode())) {
-                pers.add(String.valueOf(per.getCode()));
-            }
-        }
-        Set<String> permission = new HashSet<>(pers);
-        simpleAuthorizationInfo.addStringPermissions(permission);
+        Set<String> roleNameSet = new HashSet<>();
+        Role role = roleService.selectOne(new EntityWrapper<Role>().eq("role_code", userToRole.getRoleCode()));
+        roleNameSet.add(role.getRoleName());
+        simpleAuthorizationInfo.addRoles(roleNameSet);
         return simpleAuthorizationInfo;
     }
 

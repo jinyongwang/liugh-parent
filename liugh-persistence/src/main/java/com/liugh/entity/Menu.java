@@ -1,6 +1,7 @@
 package com.liugh.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -52,6 +53,28 @@ public class Menu extends Model<Menu> {
     private String url;
 
     private String code;
+
+    private String icon;
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+
+    @TableField(exist = false)
+    private List<Menu> childMenu;
+
+    public List<Menu> getChildMenu() {
+        return childMenu;
+    }
+
+    public void setChildMenu(List<Menu> childMenu) {
+        this.childMenu = childMenu;
+    }
 
     public String getCode() {
         return code;

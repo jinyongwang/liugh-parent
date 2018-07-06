@@ -8,6 +8,7 @@ import com.liugh.annotation.CurrentUser;
 import com.liugh.annotation.ParamXssPass;
 import com.liugh.annotation.Pass;
 import com.liugh.annotation.ValidationParam;
+import com.liugh.base.Constant;
 import com.liugh.base.PageResult;
 import com.liugh.base.PublicResult;
 import com.liugh.base.PublicResultConstant;
@@ -21,6 +22,7 @@ import com.liugh.util.StringUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -90,6 +92,28 @@ public class UserController {
         userService.updateById(currentUser);
         return  new PublicResult<String>(PublicResultConstant.SUCCESS, null);
     }
+
+    /**
+     * 管理端修改密码
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/admin/password")
+    @RequiresRoles({Constant.SYS_ASMIN_ROLE})
+    public PublicResult<String> resetPassWord (@ValidationParam("userNo,passWord,rePassWord")
+                                               @RequestBody JSONObject requestJson ) throws Exception{
+        User user = userService.selectById(requestJson.getString("userNo"));
+        if(ComUtil.isEmpty(user)){
+            return new PublicResult<>(PublicResultConstant.INVALID_USER, null);
+        }
+        if (!requestJson.getString("passWord").equals(requestJson.getString("rePassWord"))) {
+            return new PublicResult<>(PublicResultConstant.INVALID_RE_PASSWORD, null);
+        }
+        user.setPassWord(BCrypt.hashpw(requestJson.getString("passWord"),BCrypt.gensalt()));
+        userService.updateById(user);
+        return  new PublicResult<String>(PublicResultConstant.SUCCESS, null);
+    }
+
 
     @PostMapping("/info")
     public PublicResult<String> resetUserInfo (@CurrentUser User currentUser,@RequestBody JSONObject requestJson) throws Exception{

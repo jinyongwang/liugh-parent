@@ -4,6 +4,8 @@ import com.liugh.entity.Role;
 import com.baomidou.mybatisplus.service.IService;
 import com.liugh.model.RoleModel;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -15,31 +17,25 @@ import com.liugh.model.RoleModel;
 public interface IRoleService extends IService<Role> {
 
     /**
-     * 根据Id查询角色以及角色权限信息
-     * @param roleCode 角色ID
-     * @return 角色以及角色权限信息
-     */
-    RoleModel findById(String roleCode);
-
-    /**
      * 新增角色以及角色权限信息
      * @param roleModel 角色以及角色权限信息
      * @return 新增结果 true/false
      */
-    boolean add(RoleModel roleModel);
+    boolean addRoleAndPermission(RoleModel roleModel)throws Exception;
 
     /**
-     * 修改角色以及角色权限信息
-     * @param roleModel 角色以及角色权限信息
-     * @return 新增结果 true/false
+     * 更新色以及角色权限信息
+     * @param roleModel
+     * @return
+     * @throws Exception
      */
-    boolean update(RoleModel roleModel);
+    boolean updateRoleInfo(RoleModel roleModel)throws Exception;
 
     /**
-     * 根据角色Id删除角色以及角色权限
-     * @param iroleCoded
+     * 通过角色编号获取菜单列表
+     * @param roleCode
      * @return
      */
-    boolean delete(String roleCode);
+    Map<String,Object> getMenuByRoleCode(String roleCode);
 
 }

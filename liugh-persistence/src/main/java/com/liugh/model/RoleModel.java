@@ -13,15 +13,15 @@ import java.util.List;
 public class RoleModel {
     private String roleName;
     private String roleCode;
-    private List<String> menuCode;
+    private List<String> menuCodes;
 
     public RoleModel() {
     }
 
-    public RoleModel(String roleName, String roleCode, List<String> menuCode) {
+    public RoleModel(String roleName, String roleCode, List<String> menuCodes) {
         this.roleName = roleName;
         this.roleCode = roleCode;
-        this.menuCode = menuCode;
+        this.menuCodes = menuCodes;
     }
 
     public String getRoleName() {
@@ -32,12 +32,12 @@ public class RoleModel {
         this.roleName = roleName;
     }
 
-    public List<String> getMenuCode() {
-        return menuCode;
+    public List<String> getMenuCodes() {
+        return menuCodes;
     }
 
-    public void setMenuCode(List<String> menuCode) {
-        this.menuCode = menuCode;
+    public void setMenuCodes(List<String> menuCodes) {
+        this.menuCodes = menuCodes;
     }
 
     public String getRoleCode() {
@@ -53,7 +53,7 @@ public class RoleModel {
         return "RoleModel{" +
                 ", roleName='" + roleName + '\'' +
                 ", roleCode='" + roleCode + '\'' +
-                ", menuCode=" + menuCode +
+                ", menuCodes=" + menuCodes +
                 '}';
     }
 

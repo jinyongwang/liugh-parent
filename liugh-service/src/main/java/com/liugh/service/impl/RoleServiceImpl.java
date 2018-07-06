@@ -1,19 +1,26 @@
 package com.liugh.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.liugh.base.BusinessException;
+import com.liugh.base.Constant;
+import com.liugh.entity.Menu;
 import com.liugh.entity.RoleToMenu;
 import com.liugh.model.RoleModel;
+import com.liugh.service.IMenuService;
 import com.liugh.service.IRoleService;
 import com.liugh.entity.Role;
 import com.liugh.mapper.RoleMapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.liugh.service.IRoleToMenuService;
 import com.liugh.util.ComUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -26,61 +33,60 @@ import java.util.List;
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
+
     @Autowired
     private IRoleToMenuService roleToMenuService;
 
+    @Autowired
+    private IMenuService menuService;
     @Override
-    public RoleModel findById(String roleCode) {
-        Role role = this.selectById(roleCode);
-        List<String> menuCodes = new ArrayList<>();
-        EntityWrapper<RoleToMenu> ew = new EntityWrapper<>();
-        ew.where("role_code={0}", roleCode);
-        List<RoleToMenu> roleMenuList = roleToMenuService.selectList(ew);
-        if (!ComUtil.isEmpty(roleMenuList)) {
-            for (RoleToMenu roleToMenu : roleMenuList) {
-                menuCodes.add(roleToMenu.getMenuCode());
-            }
-        }
-        return new RoleModel(role.getRoleName(), role.getRoleCode(), menuCodes);
-    }
-
-    @Override
-    public boolean add(RoleModel roleModel) {
-        Role role = new Role(roleModel.getRoleName(), roleModel.getRoleCode());
+    public boolean addRoleAndPermission(RoleModel roleModel) throws Exception{
+        Role role = new Role();
+        BeanUtils.copyProperties(roleModel,role);
         boolean result = this.insert(role);
         if (! result) {
-            return false;
+            throw  new BusinessException("更新角色信息失败");
         }
-        result = roleToMenuService.saveAll(role.getRoleCode(), roleModel.getMenuCode());
+        result = roleToMenuService.saveAll(role.getRoleCode(), roleModel.getMenuCodes());
         return result;
     }
 
     @Override
-    public boolean update(RoleModel roleModel) {
+    public boolean updateRoleInfo(RoleModel roleModel) throws Exception{
         Role role = this.selectById(roleModel.getRoleCode());
         if (ComUtil.isEmpty(role)) {
             return false;
         }
-        role.setRoleCode(roleModel.getRoleCode());
-        role.setRoleName(roleModel.getRoleName());
+        BeanUtils.copyProperties(roleModel,role);
         boolean result = this.updateById(role);
         if (! result) {
-            return result;
+            throw  new BusinessException("更新角色信息失败");
         }
-        result = roleToMenuService.deleteAllByRoleCode(roleModel.getRoleCode());
+        result = roleToMenuService.delete(new EntityWrapper<RoleToMenu>().eq("role_code",roleModel.getRoleCode()));
         if (! result) {
-            return result;
+            throw  new BusinessException("删除权限信息失败");
         }
-        result = roleToMenuService.saveAll(role.getRoleCode(), roleModel.getMenuCode());
+        result = roleToMenuService.saveAll(role.getRoleCode(), roleModel.getMenuCodes());
+        if (! result) {
+            throw  new BusinessException("更新权限信息失败");
+        }
         return result;
+
     }
 
     @Override
-    public boolean delete(String roleCode) {
-        boolean result = roleToMenuService.deleteAllByRoleCode(roleCode);
-        if(! result){
-            return  result;
+    public Map<String, Object> getMenuByRoleCode(String roleCode) {
+        Map<String,Object> retMap   =new HashMap<>();
+        List<Menu> menuList = menuService.findMenuByRoleCode(roleCode);
+        List<Menu> buttonList = new ArrayList<Menu>();
+        List<Menu> retMenuList = menuService.treeMenuList(Constant.ROOT_MENU, menuList);
+        for (Menu buttonMenu : menuList) {
+            if(buttonMenu.getMenuType() == Constant.TYPE_BUTTON){
+                buttonList.add(buttonMenu);
+            }
         }
-        return this.deleteById(roleCode);
+        retMap.put("menuList",retMenuList);
+        retMap.put("buttonList",buttonList);
+        return retMap;
     }
 }

@@ -43,15 +43,9 @@ public class ParameterCheckAspect {
     @Pointcut("@annotation(com.liugh.annotation.Log)")
     public void recordLog(){
     }
-    /**
-     * 验证参数
-     */
-    @Pointcut("@annotation(com.liugh.annotation.ValidationParam)")
-    public void validationParam(){
-    }
 
 
-    @Around(value = "preventXSS() || recordLog() || validationParam()")
+    @Around(value = "preventXSS() || recordLog()")
     public Object validationPoint(ProceedingJoinPoint pjp)throws Throwable{
         Method method = currentMethod(pjp,pjp.getSignature().getName());
         boolean  isLogEmpty  = Objects.isNull(method.getAnnotation( Log.class ));
