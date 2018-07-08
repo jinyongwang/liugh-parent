@@ -79,28 +79,30 @@ public class ParameterCheckAspect {
     @Around( "execution(* com.liugh.controller..*(..) )" )
     public Object returnValueHandle ( ProceedingJoinPoint joinPoint ) throws Throwable {
         Object returnValue = joinPoint.proceed();
-        BaseResult caseResult = (BaseResult) returnValue;
-        Object data = caseResult.getData();
-        if(data instanceof PageResult){
-            PageResult pageResult = (PageResult) data;
-            List list = pageResult.getList();
-            doPasswd2NullByList(list);
-            pageResult.setList(list);
-        }
-        if(data instanceof User){
-            User user = (User) data;
-            user.setPassWord(null);
-            caseResult.setData(user);
-        }
-        if(data instanceof Map){
-            Map<String,Object> map = (Map) data;
-            doPasswd2NullByMap(map);
-            caseResult.setData(map);
-        }
-        if(data instanceof List){
-            List list = (List) data;
-            doPasswd2NullByList(list);
-            caseResult.setData(list);
+        if(returnValue instanceof BaseResult){
+            BaseResult caseResult = (BaseResult) returnValue;
+            Object data = caseResult.getData();
+            if(data instanceof PageResult){
+                PageResult pageResult = (PageResult) data;
+                List list = pageResult.getList();
+                doPasswd2NullByList(list);
+                pageResult.setList(list);
+            }
+            if(data instanceof User){
+                User user = (User) data;
+                user.setPassWord(null);
+                caseResult.setData(user);
+            }
+            if(data instanceof Map){
+                Map<String,Object> map = (Map) data;
+                doPasswd2NullByMap(map);
+                caseResult.setData(map);
+            }
+            if(data instanceof List){
+                List list = (List) data;
+                doPasswd2NullByList(list);
+                caseResult.setData(list);
+            }
         }
         return  returnValue;
     }
