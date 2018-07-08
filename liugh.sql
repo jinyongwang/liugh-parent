@@ -23,6 +23,7 @@ CREATE TABLE `tb_menu` (
   `menu_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `parent_id` int(11) NOT NULL COMMENT '父菜单主键',
   `menu_code` varchar(50) NOT NULL COMMENT '菜单代号,规范权限标识',
+  `code` varchar(50) DEFAULT NULL COMMENT '代码控制权限标识符',
   `name` varchar(50) NOT NULL COMMENT '菜单名称',
   `menu_type` int(2) NOT NULL COMMENT '菜单类型，1：菜单  2：业务操作',
   `num` int(11) DEFAULT NULL COMMENT '菜单的序号',
@@ -34,28 +35,28 @@ CREATE TABLE `tb_menu` (
 -- ----------------------------
 -- Records of tb_menu
 -- ----------------------------
-INSERT INTO `tb_menu` VALUES ('1', '0', 'menu-a8617c317b204969a054fdag233das2l', '用户管理列表', '1', '1', '', '1.jpg');
-INSERT INTO `tb_menu` VALUES ('2', '0', 'menu-afd83fc912eb44d29012049aae184fd4', '数据管理列表', '1', '1', '/api/data/manager', null);
-INSERT INTO `tb_menu` VALUES ('3', '0', 'menu-a8617c31654653a054b68a343254565fss', '系统管理', '1', '1', null, 'anticon-laptop');
-INSERT INTO `tb_menu` VALUES ('101', '1', 'menu-974abc42a78040e7ac74ceecb70c02b5', '用户管理列表', '1', '1', '/api/user/manager', null);
-INSERT INTO `tb_menu` VALUES ('102', '1', 'menu-ad61fb43be7d46e7a81e37593042f543', '角色列表', '1', '2', '', null);
-INSERT INTO `tb_menu` VALUES ('201', '2', 'menu-b16897c1c79b45b099939f5333530eaf', '数据列表1', '1', '1', '', null);
-INSERT INTO `tb_menu` VALUES ('202', '2', 'menu-ca569a407de7459f94e8b096180bc5e9', '数据列表2', '1', '2', '', null);
-INSERT INTO `tb_menu` VALUES ('301', '3', 'menu-a8617c31654653a054fdsg23asdg5423', '网站信息', '1', '1', '/home/system-management/website-information', null);
-INSERT INTO `tb_menu` VALUES ('302', '3', 'menu-a8617c317b204969a054b653df212zg712', '密码修改', '1', '1', '/home/system-management/password-modification', null);
-INSERT INTO `tb_menu` VALUES ('303', '3', 'menu-a8617c31t34ytrfsdfg3j5e36u121rfdg465u', '屏蔽词', '1', '1', '/home/system-management/banned-word', null);
-INSERT INTO `tb_menu` VALUES ('1011', '101', 'menu-2fcaf1983232442e9484b48114fe59f6', '新增用户', '2', '1', '', null);
-INSERT INTO `tb_menu` VALUES ('1012', '101', 'menu-b3556e9a47204c8abe1bcdd50047f6b4', '编辑用户', '2', '2', '', null);
-INSERT INTO `tb_menu` VALUES ('1013', '101', 'menu-08a093222ab04020886049b726a89a4c', '删除用户', '2', '3', '', null);
-INSERT INTO `tb_menu` VALUES ('1021', '102', 'menu-3da7d8a0b35e42c7b4d0b3c9cb710a7a', '新增角色', '2', '1', '', null);
-INSERT INTO `tb_menu` VALUES ('1022', '102', 'menu-c9623470db144ca68e961e053a6cc8c9', '权限设置', '2', '2', '', null);
-INSERT INTO `tb_menu` VALUES ('1023', '102', 'menu-71f1c4edd8f24bf09db20867f7fdad2b', '角色删除', '2', '3', '', null);
-INSERT INTO `tb_menu` VALUES ('2010', '201', 'menu-ac1a7dfa51474de7b205eee5ad4d4dd2', '数据导入列表', '1', '1', '', null);
-INSERT INTO `tb_menu` VALUES ('2011', '201', 'menu-d3b091cadf644e66b49364e51641b10b', '属性设置列表', '1', '2', '', null);
-INSERT INTO `tb_menu` VALUES ('2012', '201', 'menu-1492623fee854b43b3e49b80e877e4a2', '上传按钮', '2', '1', '', null);
-INSERT INTO `tb_menu` VALUES ('2021', '202', 'menu-964ed4bc416840b48cdc2ab51510cfcf', '属性删除', '2', '1', '', null);
-INSERT INTO `tb_menu` VALUES ('2022', '202', 'menu-d68955aa58e0428ea824680484a074e6', '添加属性', '2', '2', '', null);
-INSERT INTO `tb_menu` VALUES ('2023', '202', 'menu-a8617c317b204969a054b68a3473d3b4', '属性编辑', '2', '3', '', null);
+INSERT INTO `tb_menu` VALUES ('1', '0', 'menu-a8617c317b204969a054fdag233das2l', 'user', '用户管理列表', '1', '1', '', '1.jpg');
+INSERT INTO `tb_menu` VALUES ('2', '0', 'menu-afd83fc912eb44d29012049aae184fd4', 'data', '数据管理列表', '1', '1', '/api/data/manager', null);
+INSERT INTO `tb_menu` VALUES ('3', '0', 'menu-a8617c31654653a054b68a343254565fss', 'system', '系统管理', '1', '1', null, 'anticon-laptop');
+INSERT INTO `tb_menu` VALUES ('101', '1', 'menu-974abc42a78040e7ac74ceecb70c02b5', 'user:list', '用户管理列表', '1', '1', '/api/user/manager', null);
+INSERT INTO `tb_menu` VALUES ('102', '1', 'menu-ad61fb43be7d46e7a81e37593042f543', 'role:list', '角色列表', '1', '2', '', null);
+INSERT INTO `tb_menu` VALUES ('201', '2', 'menu-b16897c1c79b45b099939f5333530eaf', 'data:list1', '数据列表1', '1', '1', '', null);
+INSERT INTO `tb_menu` VALUES ('202', '2', 'menu-ca569a407de7459f94e8b096180bc5e9', 'data:list2', '数据列表2', '1', '2', '', null);
+INSERT INTO `tb_menu` VALUES ('301', '3', 'menu-a8617c31654653a054fdsg23asdg5423', 'system:info', '网站信息', '1', '1', '/home/system-management/website-information', null);
+INSERT INTO `tb_menu` VALUES ('302', '3', 'menu-a8617c317b204969a054b653df212zg712', 'system:passwd', '密码修改', '1', '1', '/home/system-management/password-modification', null);
+INSERT INTO `tb_menu` VALUES ('303', '3', 'menu-a8617c31t34ytrfsdfg3j5e36u121rfdg465u', 'system:word', '屏蔽词', '1', '1', '/home/system-management/banned-word', null);
+INSERT INTO `tb_menu` VALUES ('1011', '101', 'menu-2fcaf1983232442e9484b48114fe59f6', 'user:add', '新增用户', '2', '1', '', null);
+INSERT INTO `tb_menu` VALUES ('1012', '101', 'menu-b3556e9a47204c8abe1bcdd50047f6b4', 'user:edit', '编辑用户', '2', '2', '', null);
+INSERT INTO `tb_menu` VALUES ('1013', '101', 'menu-08a093222ab04020886049b726a89a4c', 'user:delete', '删除用户', '2', '3', '', null);
+INSERT INTO `tb_menu` VALUES ('1021', '102', 'menu-3da7d8a0b35e42c7b4d0b3c9cb710a7a', 'role:add', '新增角色', '2', '1', '', null);
+INSERT INTO `tb_menu` VALUES ('1022', '102', 'menu-c9623470db144ca68e961e053a6cc8c9', 'role:edit', '权限设置', '2', '2', '', null);
+INSERT INTO `tb_menu` VALUES ('1023', '102', 'menu-71f1c4edd8f24bf09db20867f7fdad2b', 'role:delete', '角色删除', '2', '3', '', null);
+INSERT INTO `tb_menu` VALUES ('2010', '201', 'menu-ac1a7dfa51474de7b205eee5ad4d4dd2', 'data:importlist', '数据导入列表', '1', '1', '', null);
+INSERT INTO `tb_menu` VALUES ('2011', '201', 'menu-d3b091cadf644e66b49364e51641b10b', 'data:atrlist', '属性设置列表', '1', '2', '', null);
+INSERT INTO `tb_menu` VALUES ('2012', '201', 'menu-1492623fee854b43b3e49b80e877e4a2', 'data:upload', '上传按钮', '2', '1', '', null);
+INSERT INTO `tb_menu` VALUES ('2021', '202', 'menu-964ed4bc416840b48cdc2ab51510cfcf', 'data:delete', '属性删除', '2', '1', '', null);
+INSERT INTO `tb_menu` VALUES ('2022', '202', 'menu-d68955aa58e0428ea824680484a074e6', 'data:add', '添加属性', '2', '2', '', null);
+INSERT INTO `tb_menu` VALUES ('2023', '202', 'menu-a8617c317b204969a054b68a3473d3b4', 'data:edit', '属性编辑', '2', '3', '', null);
 
 -- ----------------------------
 -- Table structure for tb_operation_log

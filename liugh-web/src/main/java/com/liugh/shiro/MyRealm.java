@@ -71,7 +71,21 @@ public class MyRealm extends AuthorizingRealm {
         Set<String> roleNameSet = new HashSet<>();
         Role role = roleService.selectOne(new EntityWrapper<Role>().eq("role_code", userToRole.getRoleCode()));
         roleNameSet.add(role.getRoleName());
+        //添加控制角色级别的权限
         simpleAuthorizationInfo.addRoles(roleNameSet);
+        /*
+        //控制菜单级别按钮  类中用@RequiresPermissions("user:list") 对应数据库中code字段来控制controller
+        ArrayList<String> pers = new ArrayList<>();
+        List<Menu> menuList = menuService.findMenuByRoleCode(userToRole.getRoleCode());
+        for (Menu per : menuList) {
+             if (!ComUtil.isEmpty(per.getCode())) {
+                  pers.add(String.valueOf(per.getCode()));
+              }
+        }
+        Set<String> permission = new HashSet<>(pers);
+        simpleAuthorizationInfo.addStringPermissions(permission);
+        */
+
         return simpleAuthorizationInfo;
     }
 
