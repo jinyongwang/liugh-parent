@@ -129,7 +129,7 @@ public class LoginController {
         }
         userRegister.setPassWord(BCrypt.hashpw(requestJson.getString("passWord"), BCrypt.gensalt()));
         //默认注册普通用户
-        boolean result = userService.register(userRegister, Constant.ORDINARY_ROLE);
+        boolean result = userService.register(userRegister, Constant.RoleType.USER);
         return result? new PublicResult<>(PublicResultConstant.SUCCESS, null):
                 new PublicResult<>("注册失败，请联系管理员！",null);
     }

@@ -51,7 +51,7 @@ public class RoleController {
      *  角色列表
      */
     @GetMapping("/pageList")
-    @RequiresRoles({Constant.SYS_ASMIN_ROLE})
+    @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
     public  PublicResult getPageList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
                                      @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize){
         Page<Role> rolePage = roleService.selectPage(new Page<>(pageIndex, pageSize));
@@ -65,7 +65,7 @@ public class RoleController {
      *  获取所有角色
      */
     @GetMapping("/all")
-    @RequiresRoles({Constant.SYS_ASMIN_ROLE})
+    @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
 
     public  PublicResult getAllRole(){
         List<Role> roleList = roleService.selectList(new EntityWrapper<Role>());
@@ -76,7 +76,7 @@ public class RoleController {
      * 获取角色详细信息
      */
     @GetMapping(value = "/{roleCode}")
-    @RequiresRoles({Constant.SYS_ASMIN_ROLE})
+    @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
     public PublicResult getById(@PathVariable("roleCode") String roleCode){
         Role role = roleService.selectById(roleCode);
         if(ComUtil.isEmpty(role)){
@@ -93,7 +93,7 @@ public class RoleController {
      * 删除角色
      */
     @DeleteMapping(value = "/{roleCode}")
-    @RequiresRoles({Constant.SYS_ASMIN_ROLE})
+    @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
     public PublicResult deleteRole(@PathVariable("roleCode") String roleCode){
         if (ComUtil.isEmpty(roleService.selectById(roleCode))) {
             return new PublicResult<>(PublicResultConstant.INVALID_ROLE, null);
@@ -111,7 +111,7 @@ public class RoleController {
      * @return
      */
     @PostMapping
-    @RequiresRoles({Constant.SYS_ASMIN_ROLE})
+    @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
     public PublicResult<String> addRole(RoleModel roleModel) throws Exception{
         boolean result = roleService.addRoleAndPermission(roleModel);
         return result?new PublicResult<>(PublicResultConstant.SUCCESS, null):new PublicResult<>(PublicResultConstant.INVALID_USER, null);
@@ -121,10 +121,10 @@ public class RoleController {
      * 修改角色信息
      */
     @PutMapping
-    @RequiresRoles({Constant.SYS_ASMIN_ROLE})
+    @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
     public PublicResult<String> updateRole(RoleModel roleModel) throws Exception{
         if (roleModel.getRoleCode().equals(
-                roleService.selectOne(new EntityWrapper<Role>().eq("role_name",Constant.SYS_ASMIN_ROLE)).getRoleCode())){
+                roleService.selectOne(new EntityWrapper<Role>().eq("role_name",Constant.RoleType.SYS_ASMIN_ROLE)).getRoleCode())){
             return new PublicResult<>("超级管理员权限不可修改", null);
         }
         boolean result = roleService.updateRoleInfo(roleModel);

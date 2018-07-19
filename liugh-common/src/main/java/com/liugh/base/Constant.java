@@ -22,15 +22,6 @@ public class Constant {
 
     //验证码过期时间
     public static final Long PASS_TIME =  50000 * 60 *1000L;
-    /**
-     * 普通用户
-     */
-    public static final String ORDINARY_ROLE= "user";
-
-    /**
-     * 系统管理员
-     */
-    public static final String SYS_ASMIN_ROLE= "admin";
 
     //根菜单节点
     public static final String ROOT_MENU = "0";
