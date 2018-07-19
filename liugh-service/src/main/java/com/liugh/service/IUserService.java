@@ -1,5 +1,6 @@
 package com.liugh.service;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.liugh.entity.User;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -35,4 +36,6 @@ public interface IUserService extends IService<User> {
     Map<String, Object> getLoginUserAndMenuInfo(User user);
 
     boolean deleteByUserNo(String userNo);
+
+    Page<User> selectPageByConditionUser(Page<User> userPage, String info, Integer[] status, String startTime, String endTime);
 }

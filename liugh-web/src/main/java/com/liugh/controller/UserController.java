@@ -20,7 +20,9 @@ import com.liugh.util.ComUtil;
 import com.liugh.util.SmsSendUtil;
 import com.liugh.util.StringUtil;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.mindrot.jbcrypt.BCrypt;
@@ -99,7 +101,8 @@ public class UserController {
      * @throws Exception
      */
     @PostMapping("/admin/password")
-    @RequiresRoles({Constant.SYS_ASMIN_ROLE})
+    //拥有超级管理员或管理员角色的用户可以访问这个接口
+    @RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
     public PublicResult<String> resetPassWord (@ValidationParam("userNo,passWord,rePassWord")
                                                @RequestBody JSONObject requestJson ) throws Exception{
         User user = userService.selectById(requestJson.getString("userNo"));
@@ -145,6 +148,36 @@ public class UserController {
         Page<User> page = userService.selectPage(new Page<>(pageIndex, pageSize), ew);
         return new PublicResult<PageResult>(PublicResultConstant.SUCCESS, new PageResult<>(
                 page.getTotal(), pageIndex, pageSize, page.getRecords()));
+    }
+
+    @GetMapping("/admin/infoList")
+    @ApiOperation(value="获取用户列表", notes="需要header里加入Authorization")
+    //拥有超级管理员或管理员角色的用户可以访问这个接口
+    @RequiresRoles(value={Constant.RoleType.ADMIN,Constant.RoleType.SYS_ASMIN_ROLE},logical = Logical.OR)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageIndex", value = "第几页"
+                    , dataType = "String",paramType="query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页多少条"
+                    , dataType = "String",paramType="query"),
+            @ApiImplicitParam(name = "info", value = "会员名称或者电话"
+                    , dataType = "String",paramType="query"),
+            @ApiImplicitParam(name = "startTime", value = "开始时间"
+                    , dataType = "Long",paramType="query"),
+            @ApiImplicitParam(name = "endTime", value = "结束时间"
+                    , dataType = "Long",paramType="query")
+    })
+    public PublicResult findInfoList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
+                                     @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize,
+                                     //info-->用户名或者电话号码
+                                     @RequestParam(name = "info", defaultValue = "", required = false) String info,
+                                     @RequestParam(name = "startTime", defaultValue = "", required = false) String startTime,
+                                     @RequestParam(name = "endTime", defaultValue = "", required = false) String endTime) throws Exception{
+        //启用或禁用的用户
+        Integer []  status= {1,2};
+        //自定义分页关联查询列表
+        Page<User> userPage = userService.selectPageByConditionUser(new Page<User>(pageIndex, pageSize),info,status,
+                startTime,endTime);
+        return new PublicResult(PublicResultConstant.SUCCESS, new PageResult<>(userPage.getTotal(),pageIndex,pageSize,userPage.getRecords()));
     }
 
     @ApiOperation(value="获取用户详细信息", notes="根据url的id来获取用户详细信息")

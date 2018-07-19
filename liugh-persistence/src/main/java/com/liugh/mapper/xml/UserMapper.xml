@@ -20,4 +20,37 @@
         user_no AS userNo, mobile, user_name AS userName, pass_word AS passWord, unit, create_time AS createTime, avatar, status, job
     </sql>
 
+
+    <resultMap id="UserModel" type="com.liugh.entity.User">
+        <id column="user_no" property="userNo" />
+        <result column="mobile" property="mobile" />
+        <result column="user_name" property="userName" />
+        <result column="pass_word" property="passWord" />
+        <result column="unit" property="unit" />
+        <result column="create_time" property="createTime" />
+        <result column="avatar" property="avatar" />
+        <result column="status" property="status" />
+        <result column="job" property="job" />
+        <result column="role_name" property="roleName" />
+    </resultMap>
+
+
+    <!-- 等同于编写一个普通 list 查询，mybatis-plus 自动替你分页 -->
+    <select id="selectPageByConditionUser"  resultMap="UserModel">
+        select u.*,r.role_name from tb_user u,tb_user_to_role t ,tb_role r
+        where u.user_no =t.user_no AND  t.role_code =r.role_code and r.role_name = 'user'
+        <if test="info != null and info != '' ">
+            and (u.mobile like concat('%',#{info},'%')  or u.user_name like concat('%',#{info},'%'))
+        </if>
+        <if test="startTime != null and startTime != '' and endTime != null and endTime != '' ">
+            and u.create_time between #{startTime,jdbcType=BIGINT} and #{endTime,jdbcType=BIGINT}
+        </if>
+        and u.status in
+        <foreach item="item" index="index" collection="status"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER BY u.create_time DESC
+    </select>
+
 </mapper>

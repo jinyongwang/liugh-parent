@@ -1,6 +1,7 @@
 package com.liugh.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.liugh.base.Constant;
 import com.liugh.entity.Menu;
@@ -37,6 +38,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private IUserToRoleService userToRoleService;
     @Autowired
     private IMenuService menuService;
+
+    @Autowired
+    private UserMapper mapper;
 
     @Override
 //    @Cacheable(value = "UserToRole",keyGenerator="wiselyKeyGenerator")
@@ -95,6 +99,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         boolean resultRole = userToRoleService.delete(ew);
         boolean  resultUser = this.deleteById(userNo);
         return resultRole && resultUser;
+    }
+
+    @Override
+    public Page<User> selectPageByConditionUser(Page<User> userPage, String info, Integer[] status, String startTime, String endTime) {
+        //注意！！ 分页 total 是经过插件自动 回写 到传入 page 对象
+        return userPage.setRecords(mapper.selectPageByConditionUser(userPage, info,status,startTime,endTime));
     }
 
 

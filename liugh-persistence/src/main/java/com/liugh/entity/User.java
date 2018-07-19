@@ -67,6 +67,17 @@ public class User extends Model<User> {
     @TableField(exist = false)
     private String token;
 
+    @TableField(exist = false)
+    private String roleName;
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
     public String getToken() {
         return token;
     }
