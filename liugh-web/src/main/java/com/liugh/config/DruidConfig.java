@@ -74,12 +74,12 @@ public class DruidConfig {
         //添加初始化参数：initParams
 
         //白名单：
-        servletRegistrationBean.addInitParameter("allow", "127.0.0.1");
+//        servletRegistrationBean.addInitParameter("allow", "127.0.0.1");
         //IP黑名单 (存在共同时，deny优先于allow) : 如果满足deny的话提示:Sorry, you are not permitted to view this page.
 //        servletRegistrationBean.addInitParameter("deny", "192.168.0.151");
         //登录查看信息的账号密码.
-//        servletRegistrationBean.addInitParameter("loginUsername", "liugh");
-//        servletRegistrationBean.addInitParameter("loginPassword", "liugh");
+        servletRegistrationBean.addInitParameter("loginUsername", "liugh");
+        servletRegistrationBean.addInitParameter("loginPassword", "liugh");
         //是否能够重置数据.
         servletRegistrationBean.addInitParameter("resetEnable", "false");
         return servletRegistrationBean;
