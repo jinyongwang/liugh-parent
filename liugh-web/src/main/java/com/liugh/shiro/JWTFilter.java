@@ -129,8 +129,10 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
                 if(ComUtil.isEmpty(authorization)){
                     //如果当前url不需要认证，则注入当前登录用户时，给一个空的
                     httpServletRequest.setAttribute("currentUser",new User());
+                    Constant.isPass=true;
                     return true;
                 }else {
+                    Constant.isPass=true;
                     super.preHandle(request, response);
                 }
             }
@@ -139,9 +141,11 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
                     && (split[1].equals(httpServletRequest.getMethod()) ||  split[1].equals("RequestMapping"))){
                 if(isSameUrl(split[0],httpServletRequest.getRequestURI())){
                     if(ComUtil.isEmpty(authorization)){
+                        Constant.isPass=true;
                         httpServletRequest.setAttribute("currentUser",new User());
                         return true;
                     }else {
+                        Constant.isPass=true;
                         super.preHandle(request, response);
                     }
                 }
