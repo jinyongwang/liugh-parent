@@ -1,6 +1,7 @@
 package com.liugh.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.liugh.annotation.Log;
 import com.liugh.annotation.Pass;
 import com.liugh.annotation.ValidationParam;
@@ -9,6 +10,7 @@ import com.liugh.base.PublicResult;
 import com.liugh.base.PublicResultConstant;
 import com.liugh.entity.SmsVerify;
 import com.liugh.entity.User;
+import com.liugh.service.IRoleService;
 import com.liugh.service.ISmsVerifyService;
 import com.liugh.service.IUserService;
 import com.liugh.util.ComUtil;
@@ -20,10 +22,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
@@ -42,6 +41,8 @@ public class LoginController {
     private IUserService userService;
     @Autowired
     private ISmsVerifyService smsVerifyService;
+    @Autowired
+    private IRoleService roleService;
 
     @ApiOperation(value="手机密码登录", notes="body体参数,不需要Authorization",produces = "application/json")
     @ApiImplicitParams({
@@ -58,7 +59,7 @@ public class LoginController {
         if(!StringUtil.checkMobileNumber(mobile)){
             return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, null);
         }
-        User user = userService.getUserByMobile(mobile);
+        User user = userService.selectOne(new EntityWrapper<User>().where("mobile = {0} and status = 1",mobile));
         if (ComUtil.isEmpty(user) || !BCrypt.checkpw(requestJson.getString("passWord"), user.getPassWord())) {
             return new PublicResult<>(PublicResultConstant.INVALID_USERNAME_PASSWORD, null);
         }
@@ -81,8 +82,9 @@ public class LoginController {
             return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, null);
         }
         User user = userService.getUserByMobile(mobile);
-        if (ComUtil.isEmpty(user)) {
-            return new PublicResult<>(PublicResultConstant.INVALID_USER, null);
+        //如果不是启用的状态
+        if(!ComUtil.isEmpty(user) && user.getStatus() != Constant.ENABLE){
+            return new PublicResult<>("该用户状态不是启用的!", null);
         }
         List<SmsVerify> smsVerifies = smsVerifyService.getByMobileAndCaptchaAndType(mobile,
                 requestJson.getString("captcha"), SmsSendUtil.SMSType.getType(SmsSendUtil.SMSType.AUTH.name()));
@@ -91,6 +93,14 @@ public class LoginController {
         }
         if(SmsSendUtil.isCaptchaPassTime(smsVerifies.get(0).getCreateTime())){
             return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_PASS, null);
+        }
+        if (ComUtil.isEmpty(user)) {
+            User userRegister = new User();
+            //设置默认密码
+            userRegister.setPassWord(BCrypt.hashpw("123456", BCrypt.gensalt()));
+            userRegister.setMobile(mobile);
+            userRegister.setUserName(mobile);
+            user =userService.register(userRegister, Constant.RoleType.USER);
         }
         Map<String, Object> result = userService.getLoginUserAndMenuInfo(user);
         return new PublicResult<>(PublicResultConstant.SUCCESS, result);
@@ -129,9 +139,8 @@ public class LoginController {
         }
         userRegister.setPassWord(BCrypt.hashpw(requestJson.getString("passWord"), BCrypt.gensalt()));
         //默认注册普通用户
-        boolean result = userService.register(userRegister, Constant.RoleType.USER);
-        return result? new PublicResult<>(PublicResultConstant.SUCCESS, null):
-                new PublicResult<>("注册失败，请联系管理员！",null);
+        userService.register(userRegister, Constant.RoleType.USER);
+        return new PublicResult<>(PublicResultConstant.SUCCESS, null);
     }
 
 
@@ -153,6 +162,7 @@ public class LoginController {
             return new PublicResult<>(PublicResultConstant.INVALID_RE_PASSWORD, null);
         }
         User user = userService.getUserByMobile(mobile);
+        roleService.getRoleIsAdminByUserNo(user.getUserNo());
         if(ComUtil.isEmpty(user)){
             return new PublicResult<>(PublicResultConstant.INVALID_USER, null);
         }
@@ -169,6 +179,19 @@ public class LoginController {
         return  new PublicResult<String>(PublicResultConstant.SUCCESS, null);
     }
 
+    /**
+     * 检查用户是否注册过
+     * @param mobile
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/check/mobile")
+    @Pass
+    @ApiIgnore
+    public PublicResult loginBycaptcha(@RequestParam("mobile") String mobile) throws Exception{
+        User user = userService.getUserByMobile(mobile);
+        return new PublicResult<>(PublicResultConstant.SUCCESS, !ComUtil.isEmpty(user));
+    }
 
     @ApiIgnore
     @RequestMapping(path = "/401",produces = "application/json;charset=utf-8")

@@ -31,7 +31,7 @@ public interface IUserService extends IService<User> {
      * @param roleCode
      * @return
      */
-     boolean register(User user, String roleCode);
+    User register(User user, String roleCode);
 
     Map<String, Object> getLoginUserAndMenuInfo(User user);
 

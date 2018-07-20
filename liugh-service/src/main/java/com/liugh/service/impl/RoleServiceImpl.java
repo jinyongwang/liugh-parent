@@ -5,6 +5,7 @@ import com.liugh.base.BusinessException;
 import com.liugh.base.Constant;
 import com.liugh.entity.Menu;
 import com.liugh.entity.RoleToMenu;
+import com.liugh.entity.UserToRole;
 import com.liugh.model.RoleModel;
 import com.liugh.service.IMenuService;
 import com.liugh.service.IRoleService;
@@ -12,6 +13,7 @@ import com.liugh.entity.Role;
 import com.liugh.mapper.RoleMapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.liugh.service.IRoleToMenuService;
+import com.liugh.service.IUserToRoleService;
 import com.liugh.util.ComUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Autowired
     private IRoleToMenuService roleToMenuService;
+
+    @Autowired
+    private IUserToRoleService userToRoleService;
 
     @Autowired
     private IMenuService menuService;
@@ -73,6 +78,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         return result;
 
     }
+
+    @Override
+    public void getRoleIsAdminByUserNo(String userNo) throws Exception {
+        UserToRole userToRole = userToRoleService.selectByUserNo(userNo);
+        Role role = this.selectById(userToRole.getRoleCode());
+        if(role.getRoleName().equals(Constant.RoleType.SYS_ASMIN_ROLE)){
+            throw new BusinessException("不能修改管理员信息!");
+        }
+    }
+
 
     @Override
     public Map<String, Object> getMenuByRoleCode(String roleCode) {

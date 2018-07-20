@@ -59,7 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public boolean register(User user, String  roleCode) {
+    public User register(User user, String  roleCode) {
         user.setUserNo(GenerationSequenceUtil.generateUUID("user"));
         user.setCreateTime(System.currentTimeMillis());
         boolean result = this.insert(user);
@@ -67,9 +67,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             UserToRole userToRole  = new UserToRole();
             userToRole.setUserNo(user.getUserNo());
             userToRole.setRoleCode(roleCode);
-            result = userToRoleService.insert(userToRole);
+            userToRoleService.insert(userToRole);
         }
-        return result;
+        return user;
     }
 
     @Override

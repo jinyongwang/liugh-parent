@@ -38,4 +38,11 @@ public interface IRoleService extends IService<Role> {
      */
     Map<String,Object> getMenuByRoleCode(String roleCode);
 
+    /**
+     * 判断当前是否是超级管理员,如果是,不能修改信息 抛出异常
+     * @param userNo
+     * @throws Exception
+     */
+    void getRoleIsAdminByUserNo(String userNo) throws Exception;
+
 }
