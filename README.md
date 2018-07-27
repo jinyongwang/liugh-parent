@@ -30,13 +30,15 @@
 
     ![](https://oscimg.oschina.net/oscnet/b8bf9844be47150516ad003764f831d8e6c.jpg)
 
+8.完成微信/微博/QQ第三方登录功能,WebSocket实时消息推送,短信登录注册等功能.
+
 ## 三、程序逻辑
 
-1.填写用户名密码用POST请求访问/login接口，返回token令牌等信息，失败则直接跳转401错误页面。
+1.填写用户名密码用POST请求访问/login接口，返回token令牌等信息，失败则直接返回身份错误信息。
 
 2.在之后需要验证身份的请求的Headers中添加Authorization和登录时返回的token令牌。
 
-3.服务端进行token认证，失败跳转401页面。
+3.服务端进行token认证，失败身份错误信息。
 
 4.用JWT做认证（登录），Shiro做授权。
 

@@ -1,6 +1,9 @@
 package com.liugh.shiro;
 
+import com.alibaba.fastjson.JSONObject;
 import com.liugh.base.Constant;
+import com.liugh.base.PublicResult;
+import com.liugh.base.PublicResultConstant;
 import com.liugh.config.SpringContextBean;
 import com.liugh.entity.User;
 import com.liugh.service.IUserService;
@@ -18,6 +21,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @author liugh
@@ -71,7 +75,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
                 executeLogin(request, response);
             } catch (Exception e) {
                 e.printStackTrace();
-                response401(request, response);
+                responseError(request, response);
             }
         }
         return true;
@@ -106,7 +110,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             return true;
         }
         if(ComUtil.isEmpty(authorization)){
-            response401(request, response);
+            responseError(request, response);
             return false;
         }
         return super.preHandle(request, response);
@@ -178,14 +182,22 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     }
 
     /**
-     * 将非法请求跳转到 /401
+     * 非法url返回身份错误信息
      */
-    private void response401(ServletRequest req, ServletResponse resp) {
+    private void responseError(ServletRequest request, ServletResponse response) {
+        PrintWriter out = null;
         try {
-            HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
-            httpServletResponse.sendRedirect("/api/401");
-        } catch (IOException e) {
-            logger.error(e.getMessage());
+            response.setCharacterEncoding("utf-8");
+            out = response.getWriter();
+            response.setContentType("application/json; charset=utf-8");
+            out.print(JSONObject.toJSONString(new PublicResult<>(PublicResultConstant.UNAUTHORIZED, null)));
+            out.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if (out != null) {
+                out.close();
+            }
         }
     }
 }

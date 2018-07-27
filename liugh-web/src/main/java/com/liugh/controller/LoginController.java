@@ -201,10 +201,4 @@ public class LoginController {
         User user = userService.getUserByMobile(mobile);
         return new PublicResult<>(PublicResultConstant.SUCCESS, !ComUtil.isEmpty(user));
     }
-
-    @ApiIgnore
-    @RequestMapping(path = "/401",produces = "application/json;charset=utf-8")
-    public PublicResult<String> unauthorized() {
-        return new PublicResult<>(PublicResultConstant.UNAUTHORIZED, null);
-    }
 }

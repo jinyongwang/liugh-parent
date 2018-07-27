@@ -25,9 +25,6 @@ import java.util.Objects;
 @Configuration
 public class ParameterCheckAspect {
 
-    /**
-     * 防止XSS攻击
-     */
     @Pointcut("execution(* com.liugh.controller..*(..))  ")
     public void aspect() {
     }
