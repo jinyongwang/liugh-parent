@@ -13,6 +13,7 @@ import com.liugh.util.JWTUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -27,6 +28,7 @@ public class RecordLogAspect implements AspectApi {
 
     private Logger logger = LoggerFactory.getLogger(RecordLogAspect.class);
 
+    @Async
     @Override
     public Object doHandlerAspect(Object [] obj ,ProceedingJoinPoint pjp, Method method,boolean isAll) throws Throwable{
         Log log  = method.getAnnotation( Log.class );

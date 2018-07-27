@@ -208,9 +208,9 @@ CREATE TABLE `tb_user` (
 -- ----------------------------
 -- Records of tb_user
 -- ----------------------------
-INSERT INTO `tb_user` VALUES ('user-006efece76c8433d8974c1a2f98422b6', '13888888888', 'javaer', '$2a$10$VwPL.rHo4PETgCcLDTN2LOwE.ksgCA0jLHbVX5yXEoisHWihX7S/i', null, '1529982192887', null, '2', 'java开发');
-INSERT INTO `tb_user` VALUES ('user-190f8710857f4a239570387ffc676c39', '15802933752', 'eee', '$2a$10$fJ9Ou1Ffi9XDf1OQbn0NNe7UGqyRHkOj/hKiELuCXifLVqRATWB.W', 'eee', '1529999033844', null, '2', 'eee');
-INSERT INTO `tb_user` VALUES ('user-573388ebd14348cf8b546a6bfdf98ca3', '18792420526', '5', '$2a$10$fRJZ6tiCQpGUxsKVcA4yeeRMySiMAtL60aGGRuvJEqzE4LEOuYg2q', '5', '1530086891950', null, '2', '5');
+INSERT INTO `tb_user` VALUES ('user-006efece76c8433d8974c1a2f98422b6', '13888888888', 'javaer', '$2a$10$VwPL.rHo4PETgCcLDTN2LOwE.ksgCA0jLHbVX5yXEoisHWihX7S/i', null, '1529982192887', null, '1', 'java开发');
+INSERT INTO `tb_user` VALUES ('user-190f8710857f4a239570387ffc676c39', '15802933752', 'eee', '$2a$10$fJ9Ou1Ffi9XDf1OQbn0NNe7UGqyRHkOj/hKiELuCXifLVqRATWB.W', 'eee', '1529999033844', null, '1', 'eee');
+INSERT INTO `tb_user` VALUES ('user-573388ebd14348cf8b546a6bfdf98ca3', '18792420526', '5', '$2a$10$fRJZ6tiCQpGUxsKVcA4yeeRMySiMAtL60aGGRuvJEqzE4LEOuYg2q', '5', '1530086891950', null, '1', '5');
 
 -- ----------------------------
 -- Table structure for tb_user_to_role
