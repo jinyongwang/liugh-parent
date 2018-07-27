@@ -8,11 +8,14 @@ import com.liugh.annotation.ValidationParam;
 import com.liugh.base.Constant;
 import com.liugh.base.PublicResult;
 import com.liugh.base.PublicResultConstant;
+import com.liugh.entity.Notice;
 import com.liugh.entity.SmsVerify;
 import com.liugh.entity.User;
+import com.liugh.service.INoticeService;
 import com.liugh.service.IRoleService;
 import com.liugh.service.ISmsVerifyService;
 import com.liugh.service.IUserService;
+import com.liugh.service.impl.MyWebSocketService;
 import com.liugh.util.ComUtil;
 import com.liugh.util.SmsSendUtil;
 import com.liugh.util.StringUtil;
@@ -44,6 +47,9 @@ public class LoginController {
     @Autowired
     private IRoleService roleService;
 
+    @Autowired
+    private INoticeService noticeService;
+
     @ApiOperation(value="手机密码登录", notes="body体参数,不需要Authorization",produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "requestJson", value = "{\"mobile\":\"17765071662\",\"passWord\":\"123456\"}"
@@ -64,6 +70,9 @@ public class LoginController {
             return new PublicResult<>(PublicResultConstant.INVALID_USERNAME_PASSWORD, null);
         }
         Map<String, Object> result = userService.getLoginUserAndMenuInfo(user);
+        //测试websocket用户登录给管理员发送消息的例子  前端代码参考父目录下WebSocketDemo.html
+        noticeService.insertByThemeNo("themeNo-cwr3fsxf233edasdfcf2s3","13888888888");
+        MyWebSocketService.sendMessageTo(JSONObject.toJSONString(user),"13888888888");
         return new PublicResult<>(PublicResultConstant.SUCCESS, result);
     }
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liugh.mapper.NoticeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.liugh.entity.Notice">
+        <id column="notice_id" property="noticeId" />
+        <result column="title" property="title" />
+        <result column="type" property="type" />
+        <result column="create_time" property="createTime" />
+        <result column="mobile" property="mobile" />
+        <result column="theme_no" property="themeNo" />
+        <result column="is_read" property="isRead" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        notice_id AS noticeId, title, type, create_time AS createTime, mobile, theme_no AS themeNo, is_read AS isRead
+    </sql>
+
+</mapper>

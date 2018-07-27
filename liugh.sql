@@ -44,6 +44,18 @@ CREATE TABLE `tb_user_thirdparty` (
   PRIMARY KEY (`user_thirdparty_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='第三方用户表';
 
+DROP TABLE IF EXISTS `tb_notice`;
+CREATE TABLE `tb_notice` (
+  `notice_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `title` varchar(100) DEFAULT NULL COMMENT '标题',
+  `type` int(2) DEFAULT NULL COMMENT '类型 1:消息类型11;2:消息类型22;3:消息类型33;4:消息类型44;5:消息类型55',
+  `create_time` bigint(20) NOT NULL COMMENT '创建时间',
+  `mobile` varchar(50) NOT NULL COMMENT '消息所有者',
+  `theme_no` varchar(50) NOT NULL COMMENT '关联的主题no',
+  `is_read` int(2) NOT NULL COMMENT '是否已读 0 未读; 1 已读',
+  PRIMARY KEY (`notice_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='消息通知表';
+
 
 
 -- ----------------------------
