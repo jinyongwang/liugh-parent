@@ -56,11 +56,13 @@
 -   Eclipse、IDEA运行SpringbootApplication.java，则可启动项目。或在liugh-parent目录下运行命令mvn clean package，然后在liugh-web/target目录下运行java -jar liugh-web.jar命令
 
     
--   访问登录接口：localhost:8081/api/login
+-   访问登录接口：localhost:8081/api/v1/login
     
 -   账号密码：13888888888/123456(管理员)
     
 -   获取token访问其他接口
+
+-   注意!访问的接口url统一会加上/api/v1
     
 
 运行截图：

@@ -31,7 +31,7 @@ import java.util.List;
  * @since 2018-06-25
  */
 @RestController
-@RequestMapping("/api/smsVerify")
+@RequestMapping("/smsVerify")
 @Api(description="短信模块")
 public class SmsVerifyController {
 

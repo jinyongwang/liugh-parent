@@ -14,7 +14,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * @since 2018-05-08
  */
 @RestController
-@RequestMapping("/api/operationLog")
+@RequestMapping("/operationLog")
 //不加入swagger ui里
 @ApiIgnore
 public class OperationLogController {

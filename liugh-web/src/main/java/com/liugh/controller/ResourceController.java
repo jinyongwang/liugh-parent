@@ -16,7 +16,7 @@ import java.util.List;
  * @since on 2018/5/11.
  */
 @RestController
-@RequestMapping("/api/resource")
+@RequestMapping("/resource")
 //不加入swagger ui里
 @ApiIgnore
 public class ResourceController {

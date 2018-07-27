@@ -15,7 +15,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * @since 2018-05-03
  */
 @RestController
-@RequestMapping("/api/permission")
+@RequestMapping("/permission")
 //不加入swagger ui里
 @ApiIgnore
 public class MenuController {

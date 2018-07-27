@@ -37,7 +37,7 @@ import java.util.Map;
  * @since 2018-05-03
  */
 @RestController
-@RequestMapping("/api/role")
+@RequestMapping("/role")
 public class RoleController {
 
     @Autowired

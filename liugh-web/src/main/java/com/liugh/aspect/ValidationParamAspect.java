@@ -29,9 +29,7 @@ public class ValidationParamAspect implements AspectApi{
         HttpServletRequest request = sra.getRequest();
         String requestURI = request.getRequestURI();
         //获取类名上的url
-        Class<?> declaringClass = method.getDeclaringClass();
-        Annotation[] annotations = declaringClass.getAnnotations();
-        String url = getMethodUrl(method, annotations);
+        String url = getMethodUrl(method);
         if(requestURI.equals(url)) {
             if (!ComUtil.isEmpty(validationParamValue)) {
                 for (int i = 0; i < obj.length; i++) {
@@ -51,10 +49,11 @@ public class ValidationParamAspect implements AspectApi{
     /**
      * 获取方法上的url地址
      * @param method
-     * @param annotations
      * @return
      */
-    private String getMethodUrl(Method method, Annotation[] annotations) {
+    private String getMethodUrl(Method method) {
+        Class<?> declaringClass = method.getDeclaringClass();
+        Annotation[] annotations = declaringClass.getAnnotations();
         StringBuilder url = new StringBuilder();
         for (Annotation annotation:annotations) {
             if(annotation instanceof RequestMapping){

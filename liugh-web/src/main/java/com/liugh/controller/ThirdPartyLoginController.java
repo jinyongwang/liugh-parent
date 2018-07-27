@@ -30,7 +30,7 @@ import java.util.Map;
  */
 @Controller
 @ApiIgnore
-@RequestMapping("/api/thirdPartyLogin")
+@RequestMapping("/thirdPartyLogin")
 public class ThirdPartyLoginController {
 
     @Autowired

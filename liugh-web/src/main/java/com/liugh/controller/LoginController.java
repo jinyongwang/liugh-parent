@@ -37,7 +37,6 @@ import java.util.Map;
  * @since 2018-05-03
  */
 @RestController
-@RequestMapping("/api")
 @Api(description="身份认证模块")
 public class LoginController {
     @Autowired

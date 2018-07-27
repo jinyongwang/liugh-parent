@@ -29,7 +29,7 @@ import java.util.List;
  * @since 2018-07-27
  */
 @RestController
-@RequestMapping("/api/notice")
+@RequestMapping("/notice")
 @ApiIgnore
 public class NoticeController {
 

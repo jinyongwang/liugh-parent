@@ -41,7 +41,7 @@ import java.util.List;
  * @since 2018-05-03
  */
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
