@@ -32,6 +32,20 @@ CREATE TABLE `tb_menu` (
   PRIMARY KEY (`menu_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2024 DEFAULT CHARSET=utf8 COMMENT='菜单表';
 
+DROP TABLE IF EXISTS `tb_user_thirdparty`;
+CREATE TABLE `tb_user_thirdparty` (
+  `user_thirdparty_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `open_id` varchar(128) NOT NULL COMMENT '第三方Id',
+  `user_no` varchar(50) DEFAULT NULL COMMENT '绑定用户的id',
+  `access_token` varchar(500) DEFAULT NULL COMMENT '第三方token',
+  `provider_type` varchar(32) NOT NULL COMMENT '第三方类型 qq:QQ 微信:WX 微博:SINA',
+  `status` int(2) DEFAULT '1' COMMENT '状态值（1：启用，2：禁用，3：删除）',
+  `create_time` bigint(20) NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`user_thirdparty_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='第三方用户表';
+
+
+
 -- ----------------------------
 -- Records of tb_menu
 -- ----------------------------
