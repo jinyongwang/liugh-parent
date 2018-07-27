@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liugh.mapper.UserThirdpartyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.liugh.entity.UserThirdparty">
+        <id column="user_thirdparty_id" property="userThirdpartyId" />
+        <result column="open_id" property="openId" />
+        <result column="user_no" property="userNo" />
+        <result column="access_token" property="accessToken" />
+        <result column="provider_type" property="providerType" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_thirdparty_id AS userThirdpartyId, open_id AS openId, user_no AS userNo, access_token AS accessToken, provider_type AS providerType, status, create_time AS createTime
+    </sql>
+
+</mapper>
