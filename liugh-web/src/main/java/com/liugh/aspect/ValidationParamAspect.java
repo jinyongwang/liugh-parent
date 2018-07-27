@@ -6,7 +6,13 @@ import com.liugh.exception.ParamJsonException;
 import com.liugh.util.ComUtil;
 import com.liugh.util.StringUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
@@ -18,18 +24,54 @@ public class ValidationParamAspect implements AspectApi{
     public Object doHandlerAspect(Object [] obj ,ProceedingJoinPoint pjp, Method method,boolean isAll) throws Throwable{
        //获取注解的value值返回
         String validationParamValue = StringUtil.getMethodAnnotationOne(method,ValidationParam.class.getSimpleName());
-        if(!ComUtil.isEmpty(validationParamValue)){
-            for (int i = 0; i < obj.length; i++) {
-                if(obj[i] instanceof JSONObject){
-                    JSONObject jsonObject = JSONObject.parseObject(obj[i].toString());
-                    //是否有所有必须参数
-                    hasAllRequired(jsonObject,validationParamValue);
-                }else {
-                    continue;
+        RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes sra = (ServletRequestAttributes) ra;
+        HttpServletRequest request = sra.getRequest();
+        String requestURI = request.getRequestURI();
+        //获取类名上的url
+        Class<?> declaringClass = method.getDeclaringClass();
+        Annotation[] annotations = declaringClass.getAnnotations();
+        String url = getMethodUrl(method, annotations);
+        if(requestURI.equals(url)) {
+            if (!ComUtil.isEmpty(validationParamValue)) {
+                for (int i = 0; i < obj.length; i++) {
+                    if (obj[i] instanceof JSONObject) {
+                        JSONObject jsonObject = JSONObject.parseObject(obj[i].toString());
+                        //是否有所有必须参数
+                        hasAllRequired(jsonObject, validationParamValue);
+                    } else {
+                        continue;
+                    }
                 }
             }
         }
         return obj;
+    }
+
+    /**
+     * 获取方法上的url地址
+     * @param method
+     * @param annotations
+     * @return
+     */
+    private String getMethodUrl(Method method, Annotation[] annotations) {
+        StringBuilder url = new StringBuilder();
+        for (Annotation annotation:annotations) {
+            if(annotation instanceof RequestMapping){
+                String[] value = ((RequestMapping) annotation).value();
+                for (String tempUrl:value) {
+                    url.append(tempUrl);
+                }
+            }
+        }
+        Annotation[] declaredAnnotations = method.getDeclaredAnnotations();
+        for (Annotation annotation:declaredAnnotations) {
+            String tempAnnotations = annotation.toString();
+            if(tempAnnotations.indexOf("Mapping")>0){
+                url.append(tempAnnotations.substring(tempAnnotations.indexOf("value=[")+7,tempAnnotations.lastIndexOf("],")));
+            }
+        }
+        return url.toString().replaceAll("/+", "/");
     }
 
 
