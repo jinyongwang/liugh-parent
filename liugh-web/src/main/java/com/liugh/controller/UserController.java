@@ -137,7 +137,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/pageList")
-    @RequiresPermissions(value = {"user:list"})
+//    @RequiresPermissions(value = {"user:list"})
     public PublicResult findList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
                                  @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize,
                                  @RequestParam(value = "userName", defaultValue = "",required = false) String userName) {
@@ -183,7 +183,7 @@ public class UserController {
     @ApiOperation(value="获取用户详细信息", notes="根据url的id来获取用户详细信息")
     @ApiImplicitParam(name = "userNo", value = "用户ID", required = true, dataType = "String",paramType = "path")
     @GetMapping(value = "/{userNo}")
-    @RequiresPermissions(value = {"user:list"})
+//    @RequiresPermissions(value = {"user:list"})
     public PublicResult<User> findOneUser(@PathVariable("userNo") Integer userNo) {
         User user = userService.selectById(userNo);
         return ComUtil.isEmpty(user)?new PublicResult<>(PublicResultConstant.INVALID_USER, null): new PublicResult<>(PublicResultConstant.SUCCESS, user);
@@ -192,7 +192,7 @@ public class UserController {
     @ApiOperation(value="删除用户", notes="根据url的id来删除用户")
     @ApiImplicitParam(name = "userNo", value = "用户ID", required = true, dataType = "String",paramType = "path")
     @DeleteMapping(value = "/{userNo}")
-    @RequiresPermissions(value = {"user:delete"})
+//    @RequiresPermissions(value = {"user:delete"})
     public PublicResult<String> deleteUser(@PathVariable("userNo") String userNo) {
         User user = userService.selectById(userNo);
         if (ComUtil.isEmpty(user)) {

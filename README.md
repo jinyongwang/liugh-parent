@@ -28,7 +28,7 @@
 
 7.使用POST请求登录返回token和权限信息，保证请求无状态，返回实体如果属性为空不显示。
 
-    ![](https://oscimg.oschina.net/oscnet/b8bf9844be47150516ad003764f831d8e6c.jpg)
+    ![](https://oscimg.oschina.net/oscnet/65315a182f2e70eca0a6e71147f9cfaced4.jpg)
 
 8.完成微信/微博/QQ第三方登录功能,WebSocket实时消息推送,短信登录注册等功能.
 
@@ -67,7 +67,7 @@
 
 运行截图：
 
-![](https://oscimg.oschina.net/oscnet/e137ecc4a4228933736a833b85f537d3bd2.jpg)
+![](https://oscimg.oschina.net/oscnet/6c45f5bfa57fa868b4fb700011f943e65b0.jpg)
 
 彩蛋：项目注释完整，并且自定义了启动图案~
 

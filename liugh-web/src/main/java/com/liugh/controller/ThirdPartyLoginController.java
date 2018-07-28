@@ -3,7 +3,7 @@ package com.liugh.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.liugh.annotation.Pass;
-import com.liugh.config.Resources;
+import com.liugh.config.ResourcesConfig;
 import com.liugh.config.ThirdPartyLoginHelper;
 import com.liugh.entity.User;
 import com.liugh.entity.UserThirdparty;
@@ -77,10 +77,10 @@ public class ThirdPartyLoginController {
                 thirdUser.setProvider("QQ");
                 writeHrefHtml(request, response, thirdUser);
             } else {// 如果未获取到OpenID
-                response.sendRedirect(Resources.THIRDPARTY.getString("my_login"));
+                response.sendRedirect(ResourcesConfig.THIRDPARTY.getString("my_login"));
             }
         } else {// 如果没有返回令牌，则直接返回到登录页面
-            response.sendRedirect(Resources.THIRDPARTY.getString("my_login"));
+            response.sendRedirect(ResourcesConfig.THIRDPARTY.getString("my_login"));
         }
     }
 
@@ -104,10 +104,10 @@ public class ThirdPartyLoginController {
                 thirdUser.setProvider("WX");
                 writeHrefHtml(request, response, thirdUser);
             } else {// 如果未获取到OpenID
-                response.sendRedirect(Resources.THIRDPARTY.getString("my_login"));
+                response.sendRedirect(ResourcesConfig.THIRDPARTY.getString("my_login"));
             }
         } else {// 如果没有返回令牌，则直接返回到登录页面
-            response.sendRedirect(Resources.THIRDPARTY.getString("my_login"));
+            response.sendRedirect(ResourcesConfig.THIRDPARTY.getString("my_login"));
         }
     }
 
@@ -144,10 +144,10 @@ public class ThirdPartyLoginController {
                 // 返回token
                 writeHrefHtml(request, response, thirdUser);
             } else {// 如果未获取到OpenID
-                response.sendRedirect(Resources.THIRDPARTY.getString("my_login"));
+                response.sendRedirect(ResourcesConfig.THIRDPARTY.getString("my_login"));
             }
         } else {// 如果没有返回令牌，则直接返回到登录页面
-            response.sendRedirect(Resources.THIRDPARTY.getString("my_login"));
+            response.sendRedirect(ResourcesConfig.THIRDPARTY.getString("my_login"));
         }
     }
 
@@ -155,7 +155,7 @@ public class ThirdPartyLoginController {
     @GetMapping("/cancel/callback/sina")
     @Pass
     public String sinaCancelCallback(HttpServletRequest request, ModelMap modelMap) {
-        return Resources.THIRDPARTY.getString("my_login");
+        return ResourcesConfig.THIRDPARTY.getString("my_login");
     }
 
 
@@ -175,7 +175,7 @@ public class ThirdPartyLoginController {
                 "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
                 "    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n" +
                 "    <title>Document</title>\n" +
-                "    <script>window.location.href='"+Resources.THIRDPARTY.getString("login_success")+"?token="+user.getToken()+"'</script>\n" +
+                "    <script>window.location.href='"+ResourcesConfig.THIRDPARTY.getString("login_success")+"?token="+user.getToken()+"'</script>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "</body>\n" +

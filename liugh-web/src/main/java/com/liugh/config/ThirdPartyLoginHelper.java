@@ -31,9 +31,9 @@ public final class ThirdPartyLoginHelper {
      */
     public static final ThirdPartyUser getQQUserinfo(String token, String openid) throws Exception {
         ThirdPartyUser user = new ThirdPartyUser();
-        String url = Resources.THIRDPARTY.getString("getUserInfoURL_qq");
+        String url = ResourcesConfig.THIRDPARTY.getString("getUserInfoURL_qq");
         url = url + "?format=json&access_token=" + token + "&oauth_consumer_key="
-                + Resources.THIRDPARTY.getString("app_id_qq") + "&openid=" + openid;
+                + ResourcesConfig.THIRDPARTY.getString("app_id_qq") + "&openid=" + openid;
         String res = HttpUtil.get(url);
         JSONObject json = JSON.parseObject(res);
         if (json.getIntValue("ret") == 0) {
@@ -60,7 +60,7 @@ public final class ThirdPartyLoginHelper {
     /** 获取微信用户信息 */
     public static final ThirdPartyUser getWxUserinfo(String token, String openid) throws Exception {
         ThirdPartyUser user = new ThirdPartyUser();
-        String url = Resources.THIRDPARTY.getString("getUserInfoURL_wx");
+        String url = ResourcesConfig.THIRDPARTY.getString("getUserInfoURL_wx");
         url = url + "?access_token=" + token + "&openid=" + openid;
         String res = HttpUtil.get(url);
         JSONObject json = JSON.parseObject(res);
@@ -93,7 +93,7 @@ public final class ThirdPartyLoginHelper {
      */
     public static final ThirdPartyUser getSinaUserinfo(String token, String uid) throws Exception {
         ThirdPartyUser user = new ThirdPartyUser();
-        String url = Resources.THIRDPARTY.getString("getUserInfoURL_sina");
+        String url = ResourcesConfig.THIRDPARTY.getString("getUserInfoURL_sina");
         url = url + "?access_token=" + token + "&uid=" + uid;
         String res = HttpUtil.get(url);
         JSONObject json = JSON.parseObject(res);
@@ -122,16 +122,16 @@ public final class ThirdPartyLoginHelper {
     public static final Map<String, String> getQQTokenAndOpenid(String code, String host) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
         // 获取令牌
-        String tokenUrl = Resources.THIRDPARTY.getString("accessTokenURL_qq");
-        tokenUrl = tokenUrl + "?grant_type=authorization_code&client_id=" + Resources.THIRDPARTY.getString("app_id_qq")
-        + "&client_secret=" + Resources.THIRDPARTY.getString("app_key_qq") + "&code=" + code
-        + "&redirect_uri=http://" + host + Resources.THIRDPARTY.getString("redirect_url_qq");
+        String tokenUrl = ResourcesConfig.THIRDPARTY.getString("accessTokenURL_qq");
+        tokenUrl = tokenUrl + "?grant_type=authorization_code&client_id=" + ResourcesConfig.THIRDPARTY.getString("app_id_qq")
+        + "&client_secret=" + ResourcesConfig.THIRDPARTY.getString("app_key_qq") + "&code=" + code
+        + "&redirect_uri=http://" + host + ResourcesConfig.THIRDPARTY.getString("redirect_url_qq");
         String tokenRes = HttpUtil.get(tokenUrl);
         if (tokenRes != null && tokenRes.indexOf("access_token") > -1) {
             Map<String, String> tokenMap = toMap(tokenRes);
             map.put("access_token", tokenMap.get("access_token"));
             // 获取QQ用户的唯一标识openID
-            String openIdUrl = Resources.THIRDPARTY.getString("getOpenIDURL_qq");
+            String openIdUrl = ResourcesConfig.THIRDPARTY.getString("getOpenIDURL_qq");
             openIdUrl = openIdUrl + "?access_token=" + tokenMap.get("access_token");
             String openIdRes = HttpUtil.get(openIdUrl);
             int i = openIdRes.indexOf("(");
@@ -140,7 +140,7 @@ public final class ThirdPartyLoginHelper {
             JSONObject openidObj = JSON.parseObject(openIdRes);
             map.put("openId", openidObj.getString("openid"));
         } else {
-            throw new IllegalArgumentException(Resources.getMessage("THIRDPARTY.LOGIN.NOTOKEN", "QQ"));
+            throw new IllegalArgumentException(ResourcesConfig.getMessage("THIRDPARTY.LOGIN.NOTOKEN", "QQ"));
         }
         return map;
     }
@@ -155,9 +155,9 @@ public final class ThirdPartyLoginHelper {
     public static final Map<String, String> getWxTokenAndOpenid(String code, String host) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
         // 获取令牌
-        String tokenUrl = Resources.THIRDPARTY.getString("accessTokenURL_wx");
-        tokenUrl = tokenUrl + "?appid=" + Resources.THIRDPARTY.getString("app_id_wx") + "&secret="
-                + Resources.THIRDPARTY.getString("app_key_wx") + "&code=" + code + "&grant_type=authorization_code";
+        String tokenUrl = ResourcesConfig.THIRDPARTY.getString("accessTokenURL_wx");
+        tokenUrl = tokenUrl + "?appid=" + ResourcesConfig.THIRDPARTY.getString("app_id_wx") + "&secret="
+                + ResourcesConfig.THIRDPARTY.getString("app_key_wx") + "&code=" + code + "&grant_type=authorization_code";
         String tokenRes = HttpUtil.get(tokenUrl);
         if (tokenRes != null && tokenRes.indexOf("access_token") > -1) {
             Map<String, String> tokenMap = toMap(tokenRes);
@@ -165,7 +165,7 @@ public final class ThirdPartyLoginHelper {
             // 获取微信用户的唯一标识openid
             map.put("openId", tokenMap.get("openid"));
         } else {
-            throw new IllegalArgumentException(Resources.getMessage("THIRDPARTY.LOGIN.NOTOKEN", "weixin"));
+            throw new IllegalArgumentException(ResourcesConfig.getMessage("THIRDPARTY.LOGIN.NOTOKEN", "weixin"));
         }
         return map;
     }
@@ -181,15 +181,15 @@ public final class ThirdPartyLoginHelper {
         JSONObject json = null;
         try {
             // 获取令牌
-            String tokenUrl = Resources.THIRDPARTY.getString("accessTokenURL_sina");
+            String tokenUrl = ResourcesConfig.THIRDPARTY.getString("accessTokenURL_sina");
             ArrayList<NameValuePair> list = new ArrayList<NameValuePair>();
             NameValuePair params1 = new NameValuePair();
             params1.setName("client_id");
-            params1.setValue(Resources.THIRDPARTY.getString("app_id_sina"));
+            params1.setValue(ResourcesConfig.THIRDPARTY.getString("app_id_sina"));
             list.add(params1);
             NameValuePair params2 = new NameValuePair();
             params2.setName("client_secret");
-            params2.setValue(Resources.THIRDPARTY.getString("app_key_sina"));
+            params2.setValue(ResourcesConfig.THIRDPARTY.getString("app_key_sina"));
             list.add(params2);
             NameValuePair params3 = new NameValuePair();
             params3.setName("grant_type");
@@ -197,7 +197,7 @@ public final class ThirdPartyLoginHelper {
             list.add(params3);
             NameValuePair params4 = new NameValuePair();
             params4.setName("redirect_uri");
-            params4.setValue("http://" + host + Resources.THIRDPARTY.getString("redirect_url_sina"));
+            params4.setValue("http://" + host + ResourcesConfig.THIRDPARTY.getString("redirect_url_sina"));
             list.add(params4);
             NameValuePair params5 = new NameValuePair();
             params5.setName("code");
@@ -209,7 +209,7 @@ public final class ThirdPartyLoginHelper {
             if (tokenRes != null && tokenRes.indexOf("access_token") > -1) {
                 json = JSON.parseObject(tokenRes);
             } else {
-                throw new IllegalArgumentException(Resources.getMessage("THIRDPARTY.LOGIN.NOTOKEN", "sina"));
+                throw new IllegalArgumentException(ResourcesConfig.getMessage("THIRDPARTY.LOGIN.NOTOKEN", "sina"));
             }
         } catch (Exception e) {
             logger.error("", e);
@@ -235,15 +235,15 @@ public final class ThirdPartyLoginHelper {
 
     public static String getRedirectUrl(String host , String type) {
         String url = "";
-        url = Resources.THIRDPARTY.getString("authorizeURL_" + type);
+        url = ResourcesConfig.THIRDPARTY.getString("authorizeURL_" + type);
         if ("wx".equals(type)) {
-            url = url + "?appid=" + Resources.THIRDPARTY.getString("app_id_" + type) + "&redirect_uri=http://" + host
-                    + Resources.THIRDPARTY.getString("redirect_url_" + type) + "&response_type=code&scope="
-                    + Resources.THIRDPARTY.getString("scope_" + type) + "&state=fhmj";
+            url = url + "?appid=" + ResourcesConfig.THIRDPARTY.getString("app_id_" + type) + "&redirect_uri=http://" + host
+                    + ResourcesConfig.THIRDPARTY.getString("redirect_url_" + type) + "&response_type=code&scope="
+                    + ResourcesConfig.THIRDPARTY.getString("scope_" + type) + "&state=fhmj";
         } else {
-            url = url + "?client_id=" + Resources.THIRDPARTY.getString("app_id_" + type) + "&response_type=code&scope="
-                    + Resources.THIRDPARTY.getString("scope_" + type) + "&redirect_uri=http://" + host
-                    + Resources.THIRDPARTY.getString("redirect_url_" + type);
+            url = url + "?client_id=" + ResourcesConfig.THIRDPARTY.getString("app_id_" + type) + "&response_type=code&scope="
+                    + ResourcesConfig.THIRDPARTY.getString("scope_" + type) + "&redirect_uri=http://" + host
+                    + ResourcesConfig.THIRDPARTY.getString("redirect_url_" + type);
         }
         return url;
     }
