@@ -40,8 +40,9 @@ public class SwaggerConfig {
                 .required(false).build();
         List<Parameter> aParameters = new ArrayList<Parameter>();
         aParameters.add(aParameterBuilder.build());
-        return new Docket(DocumentationType.SWAGGER_2).groupName("v1").select().apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.ant("/api/**")).build().apiInfo(apiInfo1()).globalOperationParameters(aParameters);
+        return new Docket(DocumentationType.SWAGGER_2).groupName("v1").select()
+                .apis(RequestHandlerSelectors.basePackage("com.liugh.controller"))
+                .paths(PathSelectors.ant("/**")).build().apiInfo(apiInfo1()).globalOperationParameters(aParameters);
     }
 
 
