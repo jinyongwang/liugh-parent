@@ -1,7 +1,8 @@
 package com.liugh.controller;
 
-import com.liugh.base.PublicResult;
 import com.liugh.base.PublicResultConstant;
+import com.liugh.config.ResponseHelper;
+import com.liugh.config.ResponseModel;
 import com.liugh.util.ComUtil;
 import com.liugh.util.FileUtil;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ import java.util.List;
 public class ResourceController {
 
     @PostMapping
-    public PublicResult uploadResource(@RequestParam("files")MultipartFile[] multipartFiles) throws Exception {
+    public ResponseModel uploadResource(@RequestParam("files")MultipartFile[] multipartFiles) throws Exception {
         List<String> filePaths = new ArrayList<>();
         if(!ComUtil.isEmpty(multipartFiles) && multipartFiles.length != 0) {
             for (MultipartFile multipartFile : multipartFiles) {
@@ -32,19 +33,19 @@ public class ResourceController {
                 );
             }
         }
-        return new PublicResult<List>(PublicResultConstant.SUCCESS, filePaths);
+        return ResponseHelper.buildResponseModel(filePaths);
     }
 
     @DeleteMapping
-    public PublicResult deleteResource(@RequestParam("filePaths") List<String> filePaths){
+    public ResponseModel deleteResource(@RequestParam("filePaths") List<String> filePaths){
         if(!ComUtil.isEmpty(filePaths) && filePaths.size() !=0){
             for (String item: filePaths) {
                 if(!FileUtil.deleteUploadedFile(item)){
-                    return new PublicResult<String>(PublicResultConstant.ERROR, null);
+                    return ResponseHelper.validationFailure(PublicResultConstant.ERROR);
                 }
             }
         }
-        return new PublicResult<String>(PublicResultConstant.SUCCESS, null);
+        return ResponseHelper.buildResponseModel(filePaths);
     }
 
 }

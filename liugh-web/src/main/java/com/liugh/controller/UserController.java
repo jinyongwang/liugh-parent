@@ -5,13 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.liugh.annotation.CurrentUser;
-import com.liugh.annotation.ParamXssPass;
-import com.liugh.annotation.Pass;
 import com.liugh.annotation.ValidationParam;
 import com.liugh.base.Constant;
-import com.liugh.base.PageResult;
-import com.liugh.base.PublicResult;
 import com.liugh.base.PublicResultConstant;
+import com.liugh.config.ResponseHelper;
+import com.liugh.config.ResponseModel;
 import com.liugh.entity.SmsVerify;
 import com.liugh.entity.User;
 import com.liugh.service.ISmsVerifyService;
@@ -23,12 +21,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -57,42 +53,42 @@ public class UserController {
      * @throws Exception
      */
     @GetMapping("/currentUser")
-    public PublicResult<User> getUser( @CurrentUser User user) throws Exception{
-        return new PublicResult<User>(PublicResultConstant.SUCCESS, user);
+    public ResponseModel<User> getUser(@CurrentUser User user) throws Exception{
+        return ResponseHelper.buildResponseModel(user);
     }
 
     @PostMapping("/mobile")
-    public PublicResult<String> resetMobile(@CurrentUser User currentUser,
+    public ResponseModel<String> resetMobile(@CurrentUser User currentUser,
                                             @ValidationParam("newMobile,captcha")@RequestBody JSONObject requestJson ){
         String newMobile = requestJson.getString("newMobile");
         if(!StringUtil.checkMobileNumber(newMobile)){
-            return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, null);
+            return ResponseHelper.validationFailure(PublicResultConstant.MOBILE_ERROR);
         }
         List<SmsVerify> smsVerifies = smsVerifyService.getByMobileAndCaptchaAndType(newMobile,
                 requestJson.getString("captcha"), SmsSendUtil.SMSType.getType(SmsSendUtil.SMSType.MODIFYINFO.name()));
         if(ComUtil.isEmpty(smsVerifies)){
-            return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_ERROR, null);
+            return ResponseHelper.validationFailure(PublicResultConstant.VERIFY_PARAM_ERROR);
         }
         if(SmsSendUtil.isCaptchaPassTime(smsVerifies.get(0).getCreateTime())){
-            return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_PASS, null);
+            return ResponseHelper.validationFailure(PublicResultConstant.VERIFY_PARAM_PASS);
         }
         currentUser.setMobile(newMobile);
         userService.updateById(currentUser);
-        return new PublicResult<>(PublicResultConstant.SUCCESS, null);
+        return ResponseHelper.buildResponseModel(null);
     }
 
     @PostMapping("/password")
-    public PublicResult<String> resetPassWord (@CurrentUser User currentUser,@ValidationParam("oldPassWord,passWord,rePassWord")
+    public ResponseModel<String> resetPassWord (@CurrentUser User currentUser,@ValidationParam("oldPassWord,passWord,rePassWord")
     @RequestBody JSONObject requestJson ) throws Exception{
         if (!requestJson.getString("passWord").equals(requestJson.getString("rePassWord"))) {
-            return new PublicResult<>(PublicResultConstant.INVALID_RE_PASSWORD, null);
+            return ResponseHelper.validationFailure(PublicResultConstant.INVALID_RE_PASSWORD);
         }
         if(!BCrypt.checkpw(requestJson.getString("oldPassWord"),currentUser.getPassWord())){
-            return new PublicResult<>(PublicResultConstant.INVALID_USERNAME_PASSWORD, null);
+            return ResponseHelper.validationFailure(PublicResultConstant.INVALID_USERNAME_PASSWORD);
         }
         currentUser.setPassWord(BCrypt.hashpw(requestJson.getString("passWord"),BCrypt.gensalt()));
         userService.updateById(currentUser);
-        return  new PublicResult<String>(PublicResultConstant.SUCCESS, null);
+        return ResponseHelper.buildResponseModel(null);
     }
 
     /**
@@ -103,23 +99,23 @@ public class UserController {
     @PostMapping("/admin/password")
     //拥有超级管理员或管理员角色的用户可以访问这个接口
     @RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
-    public PublicResult<String> resetPassWord (@ValidationParam("userNo,passWord,rePassWord")
+    public ResponseModel<String> resetPassWord (@ValidationParam("userNo,passWord,rePassWord")
                                                @RequestBody JSONObject requestJson ) throws Exception{
         User user = userService.selectById(requestJson.getString("userNo"));
         if(ComUtil.isEmpty(user)){
-            return new PublicResult<>(PublicResultConstant.INVALID_USER, null);
+            return ResponseHelper.validationFailure(PublicResultConstant.INVALID_USER);
         }
         if (!requestJson.getString("passWord").equals(requestJson.getString("rePassWord"))) {
-            return new PublicResult<>(PublicResultConstant.INVALID_RE_PASSWORD, null);
+            return ResponseHelper.validationFailure(PublicResultConstant.INVALID_RE_PASSWORD);
         }
         user.setPassWord(BCrypt.hashpw(requestJson.getString("passWord"),BCrypt.gensalt()));
         userService.updateById(user);
-        return  new PublicResult<String>(PublicResultConstant.SUCCESS, null);
+        return ResponseHelper.buildResponseModel(null);
     }
 
 
     @PostMapping("/info")
-    public PublicResult<String> resetUserInfo (@CurrentUser User currentUser,@RequestBody JSONObject requestJson) throws Exception{
+    public ResponseModel<User> resetUserInfo (@CurrentUser User currentUser,@RequestBody JSONObject requestJson) throws Exception{
         if(!ComUtil.isEmpty(requestJson.getString("userName"))){
             currentUser.setUserName(requestJson.getString("userName"));
         }
@@ -133,21 +129,19 @@ public class UserController {
             currentUser.setJob(requestJson.getString("job"));
         }
         userService.updateById(currentUser);
-        return  new PublicResult<String>(PublicResultConstant.SUCCESS, null);
+        return ResponseHelper.buildResponseModel(currentUser);
     }
 
     @GetMapping(value = "/pageList")
 //    @RequiresPermissions(value = {"user:list"})
-    public PublicResult findList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
+    public ResponseModel<Page<User>> findList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
                                  @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize,
                                  @RequestParam(value = "userName", defaultValue = "",required = false) String userName) {
         EntityWrapper<User> ew = new EntityWrapper<>();
         if (!ComUtil.isEmpty(userName)) {
             ew.like("user_name", userName);
         }
-        Page<User> page = userService.selectPage(new Page<>(pageIndex, pageSize), ew);
-        return new PublicResult<PageResult>(PublicResultConstant.SUCCESS, new PageResult<>(
-                page.getTotal(), pageIndex, pageSize, page.getRecords()));
+        return ResponseHelper.buildResponseModel(userService.selectPage(new Page<>(pageIndex, pageSize), ew));
     }
 
     @GetMapping("/admin/infoList")
@@ -166,7 +160,7 @@ public class UserController {
             @ApiImplicitParam(name = "endTime", value = "结束时间"
                     , dataType = "Long",paramType="query")
     })
-    public PublicResult findInfoList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
+    public ResponseModel findInfoList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
                                      @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize,
                                      //info-->用户名或者电话号码
                                      @RequestParam(name = "info", defaultValue = "", required = false) String info,
@@ -177,29 +171,29 @@ public class UserController {
         //自定义分页关联查询列表
         Page<User> userPage = userService.selectPageByConditionUser(new Page<User>(pageIndex, pageSize),info,status,
                 startTime,endTime);
-        return new PublicResult(PublicResultConstant.SUCCESS, new PageResult<>(userPage.getTotal(),pageIndex,pageSize,userPage.getRecords()));
+        return ResponseHelper.buildResponseModel(userPage);
     }
 
     @ApiOperation(value="获取用户详细信息", notes="根据url的id来获取用户详细信息")
     @ApiImplicitParam(name = "userNo", value = "用户ID", required = true, dataType = "String",paramType = "path")
     @GetMapping(value = "/{userNo}")
 //    @RequiresPermissions(value = {"user:list"})
-    public PublicResult<User> findOneUser(@PathVariable("userNo") Integer userNo) {
+    public ResponseModel<User> findOneUser(@PathVariable("userNo") Integer userNo) {
         User user = userService.selectById(userNo);
-        return ComUtil.isEmpty(user)?new PublicResult<>(PublicResultConstant.INVALID_USER, null): new PublicResult<>(PublicResultConstant.SUCCESS, user);
+        return ResponseHelper.buildResponseModel(user);
     }
 
     @ApiOperation(value="删除用户", notes="根据url的id来删除用户")
     @ApiImplicitParam(name = "userNo", value = "用户ID", required = true, dataType = "String",paramType = "path")
     @DeleteMapping(value = "/{userNo}")
 //    @RequiresPermissions(value = {"user:delete"})
-    public PublicResult<String> deleteUser(@PathVariable("userNo") String userNo) {
+    public ResponseModel deleteUser(@PathVariable("userNo") String userNo) {
         User user = userService.selectById(userNo);
         if (ComUtil.isEmpty(user)) {
-            return new PublicResult<>(PublicResultConstant.INVALID_USER, null);
+            return ResponseHelper.validationFailure(PublicResultConstant.INVALID_USER);
         }
         boolean result = userService.deleteByUserNo(userNo);
-        return result?new PublicResult<>(PublicResultConstant.SUCCESS, null): new PublicResult<>(PublicResultConstant.ERROR, null);
+        return ResponseHelper.buildResponseModel(result);
     }
 }
 

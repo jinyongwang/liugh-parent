@@ -2,8 +2,8 @@ package com.liugh.shiro;
 
 import com.alibaba.fastjson.JSONObject;
 import com.liugh.base.Constant;
-import com.liugh.base.PublicResult;
 import com.liugh.base.PublicResultConstant;
+import com.liugh.config.ResponseHelper;
 import com.liugh.config.SpringContextBean;
 import com.liugh.entity.User;
 import com.liugh.service.IUserService;
@@ -20,7 +20,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
@@ -190,7 +189,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             response.setCharacterEncoding("utf-8");
             out = response.getWriter();
             response.setContentType("application/json; charset=utf-8");
-            out.print(JSONObject.toJSONString(new PublicResult<>(PublicResultConstant.UNAUTHORIZED, null)));
+            out.print(JSONObject.toJSONString(ResponseHelper.validationFailure(PublicResultConstant.UNAUTHORIZED)));
             out.flush();
         } catch (Exception e) {
             e.printStackTrace();

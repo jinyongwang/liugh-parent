@@ -1,8 +1,6 @@
 package com.liugh.config;
 
-import com.liugh.base.BaseResult;
 import com.liugh.base.BusinessException;
-import com.liugh.base.PublicResult;
 import com.liugh.base.PublicResultConstant;
 import com.liugh.exception.ParamJsonException;
 import com.liugh.exception.UnauthorizedException;
@@ -43,10 +41,10 @@ public class AllControllerAdvice {
      */
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public PublicResult<String> errorHandler(Exception ex) {
+    public ResponseModel<String> errorHandler(Exception ex) {
         ex.printStackTrace();
         logger.error("接口出现严重异常：{}", ex.getMessage());
-        return new PublicResult<>(PublicResultConstant.FAILED, null);
+        return ResponseHelper.validationFailure(PublicResultConstant.FAILED);
     }
 
     /**
@@ -56,8 +54,8 @@ public class AllControllerAdvice {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseBody
-    public PublicResult<String> handleUnauthorized() {
-        return new PublicResult<>(PublicResultConstant.USER_NO_PERMITION, null);
+    public ResponseModel<String> handleUnauthorized() {
+        return ResponseHelper.validationFailure(PublicResultConstant.USER_NO_PERMITION);
     }
 
     /**
@@ -68,8 +66,8 @@ public class AllControllerAdvice {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(ShiroException.class)
     @ResponseBody
-    public PublicResult<String> handleShiroException(ShiroException e) {
-        return new PublicResult<>(PublicResultConstant.USER_NO_PERMITION, null);
+    public ResponseModel<String> handleShiroException(ShiroException e) {
+        return ResponseHelper.validationFailure(PublicResultConstant.USER_NO_PERMITION);
     }
 
     /**
@@ -79,30 +77,30 @@ public class AllControllerAdvice {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(BusinessException.class)
     @ResponseBody
-    public BaseResult handleBusinessException(BusinessException e) {
+    public ResponseModel handleBusinessException(BusinessException e) {
         if(e instanceof BusinessException) {
             logger.info("数据操作失败："+e.getMessage());
-            return new BaseResult(PublicResultConstant.DATA_ERROR.getResult(), e.getMessage(),null);
+            return ResponseHelper.validationFailure(PublicResultConstant.DATA_ERROR);
         }
-        return new PublicResult(PublicResultConstant.ERROR, null);
+        return ResponseHelper.validationFailure(PublicResultConstant.ERROR);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(TemplateInputException.class)
     @ResponseBody
-    public PublicResult<String> handleTemplateInputException(TemplateInputException e) {
-        return new PublicResult<>(PublicResultConstant.USER_NO_PERMITION, null);
+    public ResponseModel<String> handleTemplateInputException(TemplateInputException e) {
+        return ResponseHelper.validationFailure(PublicResultConstant.USER_NO_PERMITION);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(value = ParamJsonException.class)
     @ResponseBody
-    public BaseResult<String> handleParamJsonException(Exception e) {
+    public ResponseModel<String> handleParamJsonException(Exception e) {
         if(e instanceof ParamJsonException) {
             logger.info("参数错误："+e.getMessage());
-            return new BaseResult<>(PublicResultConstant.PARAM_ERROR.getResult(), e.getMessage(),null);
+            return ResponseHelper.validationFailure(PublicResultConstant.PARAM_ERROR);
         }
-        return new PublicResult<>(PublicResultConstant.ERROR, null);
+        return ResponseHelper.validationFailure(PublicResultConstant.ERROR);
     }
 
 

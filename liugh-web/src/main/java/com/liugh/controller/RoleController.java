@@ -4,25 +4,18 @@ package com.liugh.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.liugh.base.Constant;
-import com.liugh.base.PageResult;
-import com.liugh.base.PublicResult;
 import com.liugh.base.PublicResultConstant;
+import com.liugh.config.ResponseHelper;
+import com.liugh.config.ResponseModel;
 import com.liugh.entity.Role;
 import com.liugh.entity.UserToRole;
 import com.liugh.model.RoleModel;
 import com.liugh.service.IRoleService;
 import com.liugh.service.IUserToRoleService;
 import com.liugh.util.ComUtil;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,13 +45,13 @@ public class RoleController {
      */
     @GetMapping("/pageList")
     @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
-    public  PublicResult getPageList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
+    public ResponseModel<Page<Role>> getPageList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
                                      @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize){
         Page<Role> rolePage = roleService.selectPage(new Page<>(pageIndex, pageSize));
         //根据姓名查分页
 //        Page<Role> rolePage = roleService.selectPage(new Page<>(pageIndex, pageSize),
 //                new EntityWrapper<Role>().where("role_name like {0}","%"+name+"%"));
-        return new PublicResult(PublicResultConstant.SUCCESS,new PageResult<>(rolePage.getTotal(),pageIndex,pageSize,rolePage.getRecords()));
+        return ResponseHelper.buildResponseModel(rolePage);
     }
 
     /**
@@ -66,10 +59,9 @@ public class RoleController {
      */
     @GetMapping("/all")
     @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
-
-    public  PublicResult getAllRole(){
+    public  ResponseModel<List<Role>> getAllRole(){
         List<Role> roleList = roleService.selectList(new EntityWrapper<Role>());
-        return new PublicResult(PublicResultConstant.SUCCESS,roleList);
+        return ResponseHelper.buildResponseModel(roleList);
     }
 
     /**
@@ -77,16 +69,16 @@ public class RoleController {
      */
     @GetMapping(value = "/{roleCode}")
     @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
-    public PublicResult getById(@PathVariable("roleCode") String roleCode){
+    public ResponseModel getById(@PathVariable("roleCode") String roleCode){
         Role role = roleService.selectById(roleCode);
         if(ComUtil.isEmpty(role)){
-            return new PublicResult(PublicResultConstant.INVALID_ROLE,null);
+            return ResponseHelper.validationFailure(PublicResultConstant.INVALID_ROLE);
         }
         Map<String, Object> result = new HashMap<>();
         result.put("role", role);
         //权限信息
         result.put("nodes", roleService.getMenuByRoleCode(role.getRoleCode()));
-        return new PublicResult<>(PublicResultConstant.SUCCESS, result);
+        return ResponseHelper.buildResponseModel(result);
     }
 
     /**
@@ -94,15 +86,15 @@ public class RoleController {
      */
     @DeleteMapping(value = "/{roleCode}")
     @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
-    public PublicResult deleteRole(@PathVariable("roleCode") String roleCode){
+    public ResponseModel deleteRole(@PathVariable("roleCode") String roleCode){
         if (ComUtil.isEmpty(roleService.selectById(roleCode))) {
-            return new PublicResult<>(PublicResultConstant.INVALID_ROLE, null);
+            return ResponseHelper.validationFailure("角色不存在");
         }
         if(!ComUtil.isEmpty(userToRoleService.selectList(new EntityWrapper<UserToRole>().eq("role_code",roleCode)))){
-            return new PublicResult<>("角色存在相关用户,请先删除相关角色的用户", null);
+            return ResponseHelper.validationFailure("角色存在相关用户,请先删除相关角色的用户");
         }
         boolean result = roleService.delete(new EntityWrapper<Role>().eq("role_code",roleCode));
-        return result?new PublicResult<>(PublicResultConstant.SUCCESS, null): new PublicResult<>(PublicResultConstant.ERROR, null);
+        return ResponseHelper.buildResponseModel(result);
     }
 
     /**
@@ -112,9 +104,9 @@ public class RoleController {
      */
     @PostMapping
     @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
-    public PublicResult<String> addRole(RoleModel roleModel) throws Exception{
+    public ResponseModel addRole(RoleModel roleModel) throws Exception{
         boolean result = roleService.addRoleAndPermission(roleModel);
-        return result?new PublicResult<>(PublicResultConstant.SUCCESS, null):new PublicResult<>(PublicResultConstant.INVALID_USER, null);
+        return ResponseHelper.buildResponseModel(result);
     }
 
     /**
@@ -122,13 +114,13 @@ public class RoleController {
      */
     @PutMapping
     @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
-    public PublicResult<String> updateRole(RoleModel roleModel) throws Exception{
+    public ResponseModel updateRole(RoleModel roleModel) throws Exception{
         if (roleModel.getRoleCode().equals(
                 roleService.selectOne(new EntityWrapper<Role>().eq("role_name",Constant.RoleType.SYS_ASMIN_ROLE)).getRoleCode())){
-            return new PublicResult<>("超级管理员权限不可修改", null);
+            return ResponseHelper.internalServerError("超级管理员权限不可修改");
         }
         boolean result = roleService.updateRoleInfo(roleModel);
-        return !result?new PublicResult<>(PublicResultConstant.INVALID_ROLE, null): new PublicResult<>(PublicResultConstant.SUCCESS, null);
+        return ResponseHelper.buildResponseModel(result);
     }
 
 

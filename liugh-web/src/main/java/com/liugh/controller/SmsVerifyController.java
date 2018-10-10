@@ -1,12 +1,12 @@
 package com.liugh.controller;
 
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.liugh.annotation.Log;
 import com.liugh.annotation.Pass;
-import com.liugh.base.PublicResult;
 import com.liugh.base.PublicResultConstant;
 import com.liugh.base.SmsSendResponse;
+import com.liugh.config.ResponseHelper;
+import com.liugh.config.ResponseModel;
 import com.liugh.entity.SmsVerify;
 import com.liugh.service.ISmsVerifyService;
 import com.liugh.util.ComUtil;
@@ -49,9 +49,9 @@ public class SmsVerifyController {
     @GetMapping("/{smsType}/{mobile}")
     @Pass
     @Log(description = "获取短信验证码接口:/smsVerify/{smsType}/{mobile}")
-   public PublicResult<SmsVerify> getCaptcha (@PathVariable String smsType,@PathVariable String mobile) throws Exception{
+   public ResponseModel<SmsVerify> getCaptcha (@PathVariable String smsType, @PathVariable String mobile) throws Exception{
         if(!StringUtil.checkMobileNumber(mobile)){
-            return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, null);
+            return ResponseHelper.validationFailure(PublicResultConstant.MOBILE_ERROR);
         }
         String randNum = GenerationSequenceUtil.getRandNum(4);
         SmsSendResponse smsSendResponse = SmsSendUtil.sendMessage(mobile,
@@ -59,7 +59,7 @@ public class SmsVerifyController {
         SmsVerify smsVerify = new SmsVerify(smsSendResponse.getMsgId()
                 ,mobile,randNum, SmsSendUtil.SMSType.getType(smsType),System.currentTimeMillis());
         smsVerifyService.insert(smsVerify);
-        return  new PublicResult<>(PublicResultConstant.SUCCESS, null);
+        return ResponseHelper.buildResponseModel(smsVerify);
    }
 
 
@@ -75,20 +75,20 @@ public class SmsVerifyController {
     })
     @GetMapping("/captcha/check")
     @Pass
-    public PublicResult<Boolean> captchaCheck (@RequestParam String smsType,
+    public ResponseModel captchaCheck (@RequestParam String smsType,
             @RequestParam String mobile ,@RequestParam String captcha) throws Exception{
         if(!StringUtil.checkMobileNumber(mobile)){
-            return new PublicResult<>(PublicResultConstant.MOBILE_ERROR, false);
+            return ResponseHelper.validationFailure(PublicResultConstant.MOBILE_ERROR);
         }
         List<SmsVerify> smsVerifies = smsVerifyService.getByMobileAndCaptchaAndType(mobile,
                 captcha,SmsSendUtil.SMSType.getType(smsType));
         if(ComUtil.isEmpty(smsVerifies)){
-            return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_ERROR, false);
+            return ResponseHelper.validationFailure(PublicResultConstant.VERIFY_PARAM_ERROR);
         }
         if(SmsSendUtil.isCaptchaPassTime(smsVerifies.get(0).getCreateTime())){
-            return new PublicResult<>(PublicResultConstant.VERIFY_PARAM_PASS, false);
+            return ResponseHelper.validationFailure(PublicResultConstant.VERIFY_PARAM_PASS);
         }
-        return  new PublicResult<>(PublicResultConstant.SUCCESS, true);
+        return ResponseHelper.buildResponseModel(true);
     }
 }
 
