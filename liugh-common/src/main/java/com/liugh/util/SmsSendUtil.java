@@ -189,6 +189,6 @@ public class SmsSendUtil {
     }
 
     public static void main(String[] args) throws BusinessException{
-         sendMessage("17765071662", "我试试请求，看一看结果");
+         sendMessage("13888888888", "我试试请求，看一看结果");
     }
 }

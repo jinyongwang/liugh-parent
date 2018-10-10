@@ -69,7 +69,7 @@ public class ShiroConfig {
         //通过http://127.0.0.1:9527/druid/index.html 访问 liugh/liugh
         filterRuleMap.put("/druid/**", "anon");
         //放行webSocket
-        filterRuleMap.put("/api/v1/websocket/*", "anon");
+        filterRuleMap.put("/websocket/*", "anon");
         //放行swagger
         filterRuleMap.put("/swagger-ui.html", "anon");
         filterRuleMap.put("/swagger-resources", "anon");

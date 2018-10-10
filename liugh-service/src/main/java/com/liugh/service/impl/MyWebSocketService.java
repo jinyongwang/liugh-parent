@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author liugh
  * @since on 2018/7/11.
  */
-@ServerEndpoint(value = "/api/websocket/{mobile}")
+@ServerEndpoint(value = "/websocket/{mobile}")
 @Component
 public class MyWebSocketService {
 
@@ -79,12 +79,15 @@ public class MyWebSocketService {
      */
     @OnMessage
     public void onMessage(String message) throws IOException {
-        JSONObject requestJson =JSONObject.parseObject(message);
-        if (!requestJson.getString("to").equals("all")){
-            sendMessageTo(requestJson.toJSONString(), requestJson.get("to").toString());
-        }else{
-            sendMessageAll(requestJson.toJSONString());
-        }
+        logger.info(message);
+        sendMessageAll(message);
+        //发送给指定用户,json格式
+//        JSONObject requestJson =JSONObject.parseObject(message);
+//        if (!requestJson.getString("to").equals("all")){
+//            sendMessageTo(requestJson.toJSONString(), requestJson.get("to").toString());
+//        }else{
+//            sendMessageAll(requestJson.toJSONString());
+//        }
     }
 
     public static void sendMessageTo(String message, String To) throws IOException {

@@ -51,7 +51,7 @@ public class LoginController {
 
     @ApiOperation(value="手机密码登录", notes="body体参数,不需要Authorization",produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "requestJson", value = "{\"mobile\":\"17765071662\",\"passWord\":\"123456\"}"
+            @ApiImplicitParam(name = "requestJson", value = "{\"mobile\":\"13888888888\",\"passWord\":\"123456\"}"
                     , required = true, dataType = "String",paramType="body")
     })
     @PostMapping("/login")
@@ -77,7 +77,7 @@ public class LoginController {
 
     @ApiOperation(value="短信验证码登录", notes="body体参数,不需要Authorization",produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "requestJson", value = "{\"mobile\":\"17765071662\",\"captcha\":\"5780\"}"
+            @ApiImplicitParam(name = "requestJson", value = "{\"mobile\":\"13888888888\",\"captcha\":\"5780\"}"
                     , required = true, dataType = "String",paramType="body")
     })
     @PostMapping("/login/captcha")
@@ -118,7 +118,7 @@ public class LoginController {
 
     @ApiOperation(value="手机验证码注册", notes="body体参数,不需要Authorization",produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "requestJson", value = "{\"userName\":\"liugh\",\"mobile\":\"17765071662\",</br>" +
+            @ApiImplicitParam(name = "requestJson", value = "{\"userName\":\"liugh\",\"mobile\":\"13888888888\",</br>" +
                     "\"captcha\":\"5780\",\"passWord\":\"123456\",</br>\"rePassWord\":\"123456\",\"job\":\"java开发\"," +
                     "</br>\"unit(可不传)\":\"xxx公司\"}"
                     , required = true, dataType = "String",paramType="body")
