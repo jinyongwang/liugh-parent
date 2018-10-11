@@ -24,7 +24,7 @@
 
      ![](https://static.oschina.net/uploads/space/2018/0512/234950_u2kv_3577599.png)
 
-6.用SpringAOP切面编程进行声明式事务，过滤请求参数，防止XSS攻击。
+6.用SpringAOP切面编程进行声明式事务(service层增删改方法命名规范会自动加上事物)，过滤请求参数，防止XSS攻击。
 
 7.使用POST请求登录返回token和权限信息，保证请求无状态，返回实体如果属性为空不显示。
 
