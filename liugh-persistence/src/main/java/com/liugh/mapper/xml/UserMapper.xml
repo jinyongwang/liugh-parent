@@ -6,8 +6,8 @@
     <resultMap id="BaseResultMap" type="com.liugh.entity.User">
         <id column="user_no" property="userNo" />
         <result column="mobile" property="mobile" />
-        <result column="user_name" property="userName" />
-        <result column="pass_word" property="passWord" />
+        <result column="user_name" property="username" />
+        <result column="pass_word" property="password" />
         <result column="unit" property="unit" />
         <result column="create_time" property="createTime" />
         <result column="avatar" property="avatar" />
@@ -17,15 +17,15 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        user_no AS userNo, mobile, user_name AS userName, pass_word AS passWord, unit, create_time AS createTime, avatar, status, job
+        user_no AS userNo, mobile, user_name AS username, pass_word AS password, unit, create_time AS createTime, avatar, status, job
     </sql>
 
 
     <resultMap id="UserModel" type="com.liugh.entity.User">
         <id column="user_no" property="userNo" />
         <result column="mobile" property="mobile" />
-        <result column="user_name" property="userName" />
-        <result column="pass_word" property="passWord" />
+        <result column="user_name" property="username" />
+        <result column="pass_word" property="password" />
         <result column="unit" property="unit" />
         <result column="create_time" property="createTime" />
         <result column="avatar" property="avatar" />

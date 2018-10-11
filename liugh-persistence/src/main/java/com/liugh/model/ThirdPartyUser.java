@@ -21,7 +21,7 @@ import java.io.Serializable;
 @ToString
 public class ThirdPartyUser implements Serializable {
 	private String account;// 用户
-	private String userName;// 用户昵称
+	private String username;// 用户昵称
 	private String avatarUrl;// 用户头像地址
 	private String gender;// 用户性别
 	private String token;// 用户认证

@@ -78,15 +78,15 @@ public class UserController {
     }
 
     @PostMapping("/password")
-    public ResponseModel<String> resetPassWord (@CurrentUser User currentUser,@ValidationParam("oldPassWord,passWord,rePassWord")
+    public ResponseModel<String> resetPassWord (@CurrentUser User currentUser,@ValidationParam("oldPassword,password,rePassword")
     @RequestBody JSONObject requestJson ) throws Exception{
-        if (!requestJson.getString("passWord").equals(requestJson.getString("rePassWord"))) {
+        if (!requestJson.getString("password").equals(requestJson.getString("rePassword"))) {
             return ResponseHelper.validationFailure(PublicResultConstant.INVALID_RE_PASSWORD);
         }
-        if(!BCrypt.checkpw(requestJson.getString("oldPassWord"),currentUser.getPassWord())){
+        if(!BCrypt.checkpw(requestJson.getString("oldPassword"),currentUser.getPassword())){
             return ResponseHelper.validationFailure(PublicResultConstant.INVALID_USERNAME_PASSWORD);
         }
-        currentUser.setPassWord(BCrypt.hashpw(requestJson.getString("passWord"),BCrypt.gensalt()));
+        currentUser.setPassword(BCrypt.hashpw(requestJson.getString("password"),BCrypt.gensalt()));
         userService.updateById(currentUser);
         return ResponseHelper.buildResponseModel(null);
     }
@@ -99,16 +99,16 @@ public class UserController {
     @PostMapping("/admin/password")
     //拥有超级管理员或管理员角色的用户可以访问这个接口
     @RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
-    public ResponseModel<String> resetPassWord (@ValidationParam("userNo,passWord,rePassWord")
+    public ResponseModel<String> resetPassWord (@ValidationParam("userNo,password,rePassword")
                                                @RequestBody JSONObject requestJson ) throws Exception{
         User user = userService.selectById(requestJson.getString("userNo"));
         if(ComUtil.isEmpty(user)){
             return ResponseHelper.validationFailure(PublicResultConstant.INVALID_USER);
         }
-        if (!requestJson.getString("passWord").equals(requestJson.getString("rePassWord"))) {
+        if (!requestJson.getString("password").equals(requestJson.getString("rePassword"))) {
             return ResponseHelper.validationFailure(PublicResultConstant.INVALID_RE_PASSWORD);
         }
-        user.setPassWord(BCrypt.hashpw(requestJson.getString("passWord"),BCrypt.gensalt()));
+        user.setPassword(BCrypt.hashpw(requestJson.getString("password"),BCrypt.gensalt()));
         userService.updateById(user);
         return ResponseHelper.buildResponseModel(null);
     }
@@ -116,8 +116,8 @@ public class UserController {
 
     @PostMapping("/info")
     public ResponseModel<User> resetUserInfo (@CurrentUser User currentUser,@RequestBody JSONObject requestJson) throws Exception{
-        if(!ComUtil.isEmpty(requestJson.getString("userName"))){
-            currentUser.setUserName(requestJson.getString("userName"));
+        if(!ComUtil.isEmpty(requestJson.getString("username"))){
+            currentUser.setUsername(requestJson.getString("username"));
         }
         if(!ComUtil.isEmpty(requestJson.getString("avatar"))){
             currentUser.setAvatar(requestJson.getString("avatar"));
@@ -133,13 +133,16 @@ public class UserController {
     }
 
     @GetMapping(value = "/pageList")
+    //暂时换成了角色控制权限,改变请看MyRealm.class
 //    @RequiresPermissions(value = {"user:list"})
+    //拥有超级管理员或管理员角色的用户可以访问这个接口
+    @RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
     public ResponseModel<Page<User>> findList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
                                  @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize,
-                                 @RequestParam(value = "userName", defaultValue = "",required = false) String userName) {
+                                 @RequestParam(value = "username", defaultValue = "",required = false) String username) {
         EntityWrapper<User> ew = new EntityWrapper<>();
-        if (!ComUtil.isEmpty(userName)) {
-            ew.like("user_name", userName);
+        if (!ComUtil.isEmpty(username)) {
+            ew.like("user_name", username);
         }
         return ResponseHelper.buildResponseModel(userService.selectPage(new Page<>(pageIndex, pageSize), ew));
     }
@@ -177,7 +180,10 @@ public class UserController {
     @ApiOperation(value="获取用户详细信息", notes="根据url的id来获取用户详细信息")
     @ApiImplicitParam(name = "userNo", value = "用户ID", required = true, dataType = "String",paramType = "path")
     @GetMapping(value = "/{userNo}")
+    //暂时换成了角色控制权限,改变请看MyRealm.class
 //    @RequiresPermissions(value = {"user:list"})
+    //拥有超级管理员或管理员角色的用户可以访问这个接口
+    @RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
     public ResponseModel<User> findOneUser(@PathVariable("userNo") Integer userNo) {
         User user = userService.selectById(userNo);
         return ResponseHelper.buildResponseModel(user);
@@ -186,7 +192,10 @@ public class UserController {
     @ApiOperation(value="删除用户", notes="根据url的id来删除用户")
     @ApiImplicitParam(name = "userNo", value = "用户ID", required = true, dataType = "String",paramType = "path")
     @DeleteMapping(value = "/{userNo}")
+    //暂时换成了角色控制权限,改变请看MyRealm.class
 //    @RequiresPermissions(value = {"user:delete"})
+    //拥有超级管理员或管理员角色的用户可以访问这个接口
+    @RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
     public ResponseModel deleteUser(@PathVariable("userNo") String userNo) {
         User user = userService.selectById(userNo);
         if (ComUtil.isEmpty(user)) {

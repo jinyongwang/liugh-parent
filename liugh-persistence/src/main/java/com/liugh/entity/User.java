@@ -39,12 +39,12 @@ public class User extends Model<User> {
      * 姓名
      */
     @TableField("user_name")
-    private String userName;
+    private String username;
     /**
      * 密码
      */
     @TableField("pass_word")
-    private String passWord;
+    private String password;
     /**
      * 单位
      */

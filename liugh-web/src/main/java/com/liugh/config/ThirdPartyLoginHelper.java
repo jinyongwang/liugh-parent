@@ -37,7 +37,7 @@ public final class ThirdPartyLoginHelper {
         String res = HttpUtil.get(url);
         JSONObject json = JSON.parseObject(res);
         if (json.getIntValue("ret") == 0) {
-            user.setUserName(json.getString("nickname"));
+            user.setUsername(json.getString("nickname"));
             String img = json.getString("figureurl_qq_2");
             if (img == null || "".equals(img)) {
                 img = json.getString("figureurl_qq_1");
@@ -65,7 +65,7 @@ public final class ThirdPartyLoginHelper {
         String res = HttpUtil.get(url);
         JSONObject json = JSON.parseObject(res);
         if (json.getString("errcode") == null) {
-            user.setUserName(json.getString("nickname"));
+            user.setUsername(json.getString("nickname"));
             String img = json.getString("headimgurl");
             if (img != null && !"".equals(img)) {
                 user.setAvatarUrl(img);
@@ -99,7 +99,7 @@ public final class ThirdPartyLoginHelper {
         JSONObject json = JSON.parseObject(res);
         String name = json.getString("name");
         String nickName = StringUtils.isBlank(json.getString("screen_name")) ? name : json.getString("screen_name");
-        ThirdPartyUser user =ThirdPartyUser.builder().avatarUrl(json.getString("avatar_large")).userName(nickName)
+        ThirdPartyUser user =ThirdPartyUser.builder().avatarUrl(json.getString("avatar_large")).username(nickName)
                 .token(token).openid(uid).provider("sina").build();
         if ("f".equals(json.getString("gender"))) {
             user.setGender("0");

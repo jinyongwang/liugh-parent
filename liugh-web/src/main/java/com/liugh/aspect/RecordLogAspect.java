@@ -95,14 +95,14 @@ public class RecordLogAspect implements AspectApi {
         for (int i = 0; i < args.length; i++) {
             if(args[i] instanceof JSONObject){
                 JSONObject parse = (JSONObject)JSONObject.parse(args[i].toString());
-                if(!ComUtil.isEmpty(parse.getString("passWord"))){
-                    parse.put("passWord","*******");
+                if(!ComUtil.isEmpty(parse.getString("password"))){
+                    parse.put("password","*******");
                 }
-                if(!ComUtil.isEmpty(parse.getString("rePassWord"))){
-                    parse.put("rePassWord","*******");
+                if(!ComUtil.isEmpty(parse.getString("rePassword"))){
+                    parse.put("rePassword","*******");
                 }
-                if(!ComUtil.isEmpty(parse.getString("oldPassWord"))){
-                    parse.put("oldPassWord","*******");
+                if(!ComUtil.isEmpty(parse.getString("oldPassword"))){
+                    parse.put("oldPassword","*******");
                 }
                 operationLog.setActionArgs(parse.toString());
             }else if(args[i] instanceof String

@@ -16,7 +16,7 @@
 
 3.使用JSONObject统一获取body请求参数，减少实体类的数量。完成自定义@ValidationParam注解验证请求参数是否为空。
 
-      ![](https://oscimg.oschina.net/oscnet/3aef52625a42756283ab5a5aeaa4d800a2c.jpg)
+      ![](https://oscimg.oschina.net/oscnet/0a49416cda448576c075f104310ac02a85f.jpg)
 
 4.使用bcrypt算法加密密码，著名代码托管网站Github和美国军方防火墙同样采用此算法，靠bcrypt算法会成功保住密码强度不算很高的大部分账户。
 
@@ -28,7 +28,7 @@
 
 7.使用POST请求登录返回token和权限信息，保证请求无状态，返回实体如果属性为空不显示。
 
-    ![](https://oscimg.oschina.net/oscnet/65315a182f2e70eca0a6e71147f9cfaced4.jpg)
+    ![](https://oscimg.oschina.net/oscnet/f408e29462912bfdd1a9415a0d74d351d9a.jpg)
 
 8.完成微信/微博/QQ第三方登录功能,WebSocket实时消息推送,短信登录注册等功能.
 
@@ -67,7 +67,7 @@
 
 运行截图：
 
-![](https://oscimg.oschina.net/oscnet/6c45f5bfa57fa868b4fb700011f943e65b0.jpg)
+![](https://oscimg.oschina.net/oscnet/522117b788ebf4bda5c5eacaa6bf1279546.jpg)
 
 彩蛋：项目注释完整，并且自定义了启动图案~
 

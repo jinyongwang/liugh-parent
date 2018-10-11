@@ -27,7 +27,7 @@ public class UserThirdpartyServiceImpl extends ServiceImpl<UserThirdpartyMapper,
 
     @Override
     public User insertThirdPartyUser(ThirdPartyUser param, String password) throws Exception{
-        User sysUser = User.builder().passWord(password).userName("游客"+param.getOpenid()).mobile(param.getOpenid())
+        User sysUser = User.builder().password(password).username("游客"+param.getOpenid()).mobile(param.getOpenid())
                 .avatar(param.getAvatarUrl()).build();
         User register = userService.register(sysUser, Constant.RoleType.USER);
         // 初始化第三方信息

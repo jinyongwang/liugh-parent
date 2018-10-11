@@ -74,7 +74,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public Map<String, Object> getLoginUserAndMenuInfo(User user) {
         Map<String, Object> result = new HashMap<>();
         UserToRole userToRole = userToRoleService.selectByUserNo(user.getUserNo());
-        user.setToken(JWTUtil.sign(user.getUserNo(), user.getPassWord()));
+        user.setToken(JWTUtil.sign(user.getUserNo(), user.getPassword()));
         result.put("user",user);
         List<Menu> buttonList = new ArrayList<Menu>();
         //根据角色主键查询启用的菜单权限
