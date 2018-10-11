@@ -16,7 +16,7 @@
 
 3.使用JSONObject统一获取body请求参数，减少实体类的数量。完成自定义@ValidationParam注解验证请求参数是否为空。
 
-      ![](https://oscimg.oschina.net/oscnet/0a49416cda448576c075f104310ac02a85f.jpg)
+      ![](https://oscimg.oschina.net/oscnet/f3baf3e96123d41a8fff8bf2ac62684b9bb.jpg)
 
 4.使用bcrypt算法加密密码，著名代码托管网站Github和美国军方防火墙同样采用此算法，靠bcrypt算法会成功保住密码强度不算很高的大部分账户。
 
