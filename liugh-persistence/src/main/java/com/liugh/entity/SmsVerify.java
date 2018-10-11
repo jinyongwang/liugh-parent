@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.*;
 
 /**
  * <p>
@@ -16,11 +17,16 @@ import com.baomidou.mybatisplus.annotations.TableName;
  * @author liugh123
  * @since 2018-06-25
  */
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @TableName("tb_sms_verify")
 public class SmsVerify extends Model<SmsVerify> {
 
     private static final long serialVersionUID = 1L;
-
     /**
      * 主键
      */
@@ -51,78 +57,9 @@ public class SmsVerify extends Model<SmsVerify> {
     @TableField("create_time")
     private Long createTime;
 
-    public SmsVerify(){}
-
-    public SmsVerify(String smsId, String mobile, String smsVerify, Integer smsType, Long createTime) {
-        this.smsId = smsId;
-        this.mobile = mobile;
-        this.smsVerify = smsVerify;
-        this.smsType = smsType;
-        this.createTime = createTime;
-    }
-
-    public Integer getSmsVerifyId() {
-        return smsVerifyId;
-    }
-
-    public void setSmsVerifyId(Integer smsVerifyId) {
-        this.smsVerifyId = smsVerifyId;
-    }
-
-    public String getSmsId() {
-        return smsId;
-    }
-
-    public void setSmsId(String smsId) {
-        this.smsId = smsId;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getSmsVerify() {
-        return smsVerify;
-    }
-
-    public void setSmsVerify(String smsVerify) {
-        this.smsVerify = smsVerify;
-    }
-
-    public Integer getSmsType() {
-        return smsType;
-    }
-
-    public void setSmsType(Integer smsType) {
-        this.smsType = smsType;
-    }
-
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
     @Override
     protected Serializable pkVal() {
         return this.smsVerifyId;
     }
 
-    @Override
-    public String toString() {
-        return "SmsVerify{" +
-        "smsVerifyId=" + smsVerifyId +
-        ", smsId=" + smsId +
-        ", mobile=" + mobile +
-        ", smsVerify=" + smsVerify +
-        ", smsType=" + smsType +
-        ", createTime=" + createTime +
-        "}";
-    }
 }

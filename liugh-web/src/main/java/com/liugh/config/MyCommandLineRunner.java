@@ -3,9 +3,8 @@ package com.liugh.config;
 import com.liugh.annotation.Pass;
 import com.liugh.base.Constant;
 import com.liugh.util.ComUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -27,9 +26,10 @@ import java.util.jar.JarFile;
  * @Since 2018-05-10
  */
 @Component
+//日志打印 log.info
+@Slf4j
 public class MyCommandLineRunner implements CommandLineRunner {
 
-	private Logger logger = LoggerFactory.getLogger(MyCommandLineRunner.class);
 
 	@Value("${controller.scanPackage}")
 	private String scanPackage;
@@ -85,7 +85,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
 			}
 		}
 		Constant.METHOD_URL_SET=urlAndMethodSet;
-		logger.info("@Pass:"+urlAndMethodSet);
+		log.info("@Pass:"+urlAndMethodSet);
 	}
 
 	private String  getRequestUrl(String[] classUrl, String[] methodUrl, StringBuilder sb,String requestName) {

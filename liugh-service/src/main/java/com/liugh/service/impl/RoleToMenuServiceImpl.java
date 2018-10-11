@@ -40,7 +40,7 @@ public class RoleToMenuServiceImpl extends ServiceImpl<RoleToMenuMapper, RoleToM
         if (!ComUtil.isEmpty(menuCodes)) {
             List<RoleToMenu> modelList = new ArrayList<>();
             for (String menuCode : menuCodes) {
-                modelList.add(new RoleToMenu(roleCode, menuCode));
+                modelList.add(RoleToMenu.builder().roleCode(roleCode).menuCode(menuCode).build());
             }
             result = this.insertBatch(modelList);
         }

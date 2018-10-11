@@ -21,12 +21,8 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,7 +30,6 @@ import java.util.Set;
  * @since 2018-05-03
  */
 public class MyRealm extends AuthorizingRealm {
-    private Logger logger = LoggerFactory.getLogger(MyRealm.class);
     private IUserService userService;
     private IUserToRoleService userToRoleService;
     private IMenuService menuService;

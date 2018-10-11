@@ -19,15 +19,9 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
 
     @Override
     public void insertByThemeNo(String themeNo,String  mobile) {
-        Notice notice =new Notice();
-        notice.setThemeNo(themeNo);
-        //自己设定业务类型
-        notice.setType(1);
-        notice.setTitle("测试通知1111111111");
-        notice.setMobile(mobile);
-        notice.setCreateTime(System.currentTimeMillis());
-        //未读
-        notice.setIsRead(0);
+        Notice notice = Notice.builder().themeNo(themeNo).type(1).title("测试通知1111111111")
+                                                                        //未读
+                .mobile(mobile).createTime(System.currentTimeMillis()).isRead(0).build();
         this.insert(notice);
     }
 }

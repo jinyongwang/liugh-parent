@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.*;
+
 import java.io.Serializable;
 
 /**
@@ -17,6 +19,12 @@ import java.io.Serializable;
  * @author liugh123
  * @since 2018-07-27
  */
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @TableName("tb_notice")
 public class Notice extends Model<Notice> {
 
@@ -55,78 +63,9 @@ public class Notice extends Model<Notice> {
     @TableField("is_read")
     private Integer isRead;
 
-
-    public Integer getNoticeId() {
-        return noticeId;
-    }
-
-    public void setNoticeId(Integer noticeId) {
-        this.noticeId = noticeId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getThemeNo() {
-        return themeNo;
-    }
-
-    public void setThemeNo(String themeNo) {
-        this.themeNo = themeNo;
-    }
-
-    public Integer getIsRead() {
-        return isRead;
-    }
-
-    public void setIsRead(Integer isRead) {
-        this.isRead = isRead;
-    }
-
     @Override
     protected Serializable pkVal() {
         return this.noticeId;
     }
 
-    @Override
-    public String toString() {
-        return "Notice{" +
-        "noticeId=" + noticeId +
-        ", title=" + title +
-        ", type=" + type +
-        ", createTime=" + createTime +
-        ", mobile=" + mobile +
-        ", themeNo=" + themeNo +
-        ", isRead=" + isRead +
-        "}";
-    }
 }

@@ -92,23 +92,20 @@ public final class ThirdPartyLoginHelper {
      * @return
      */
     public static final ThirdPartyUser getSinaUserinfo(String token, String uid) throws Exception {
-        ThirdPartyUser user = new ThirdPartyUser();
+
         String url = ResourcesConfig.THIRDPARTY.getString("getUserInfoURL_sina");
         url = url + "?access_token=" + token + "&uid=" + uid;
         String res = HttpUtil.get(url);
         JSONObject json = JSON.parseObject(res);
         String name = json.getString("name");
         String nickName = StringUtils.isBlank(json.getString("screen_name")) ? name : json.getString("screen_name");
-        user.setAvatarUrl(json.getString("avatar_large"));
-        user.setUserName(nickName);
+        ThirdPartyUser user =ThirdPartyUser.builder().avatarUrl(json.getString("avatar_large")).userName(nickName)
+                .token(token).openid(uid).provider("sina").build();
         if ("f".equals(json.getString("gender"))) {
             user.setGender("0");
         } else {
             user.setGender("1");
         }
-        user.setToken(token);
-        user.setOpenid(uid);
-        user.setProvider("sina");
         return user;
     }
 

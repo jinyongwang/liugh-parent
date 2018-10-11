@@ -101,19 +101,15 @@ public class ParameterCheckAspect {
             switch (c) {
                 case '>':
                     //全角大于号
-                    sb.append("&gt;");
+                    sb.append("《");
                     break;
                 case '<':
                     //全角小于号
-                    sb.append("&lt;");
+                    sb.append("》");
                     break;
                 case '\'':
                     //全角单引号
                     sb.append('‘');
-                    break;
-                case '&':
-                    //全角
-                    sb.append('＆');
                     break;
                 case '\\':
                     //全角斜线

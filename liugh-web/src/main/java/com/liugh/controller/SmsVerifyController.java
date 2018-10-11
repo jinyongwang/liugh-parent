@@ -56,8 +56,8 @@ public class SmsVerifyController {
         String randNum = GenerationSequenceUtil.getRandNum(4);
         SmsSendResponse smsSendResponse = SmsSendUtil.sendMessage(mobile,
                 "校验码: " + randNum+"。您正在进行"+SmsSendUtil.SMSType.getSMSType(smsType).toString()+"的操作,请在5分钟内完成验证，注意保密哦！");
-        SmsVerify smsVerify = new SmsVerify(smsSendResponse.getMsgId()
-                ,mobile,randNum, SmsSendUtil.SMSType.getType(smsType),System.currentTimeMillis());
+        SmsVerify smsVerify =SmsVerify.builder().smsId(smsSendResponse.getMsgId()).mobile(mobile).smsVerify(randNum)
+                .smsType(SmsSendUtil.SMSType.getType(smsType)).createTime(System.currentTimeMillis()).build();
         smsVerifyService.insert(smsVerify);
         return ResponseHelper.buildResponseModel(smsVerify);
    }

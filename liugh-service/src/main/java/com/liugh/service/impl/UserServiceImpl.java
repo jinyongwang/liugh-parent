@@ -64,9 +64,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setCreateTime(System.currentTimeMillis());
         boolean result = this.insert(user);
         if (result) {
-            UserToRole userToRole  = new UserToRole();
-            userToRole.setUserNo(user.getUserNo());
-            userToRole.setRoleCode(roleCode);
+            UserToRole userToRole  = UserToRole.builder().userNo(user.getUserNo()).roleCode(roleCode).build();
             userToRoleService.insert(userToRole);
         }
         return user;

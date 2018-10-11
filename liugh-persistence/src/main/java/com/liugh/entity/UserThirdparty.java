@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.*;
+
 import java.io.Serializable;
 
 /**
@@ -17,6 +19,12 @@ import java.io.Serializable;
  * @author liugh123
  * @since 2018-07-27
  */
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @TableName("tb_user_thirdparty")
 public class UserThirdparty extends Model<UserThirdparty> {
 
@@ -57,78 +65,9 @@ public class UserThirdparty extends Model<UserThirdparty> {
     @TableField("create_time")
     private Long createTime;
 
-
-    public Integer getUserThirdpartyId() {
-        return userThirdpartyId;
-    }
-
-    public void setUserThirdpartyId(Integer userThirdpartyId) {
-        this.userThirdpartyId = userThirdpartyId;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
-    public String getUserNo() {
-        return userNo;
-    }
-
-    public void setUserNo(String userNo) {
-        this.userNo = userNo;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getProviderType() {
-        return providerType;
-    }
-
-    public void setProviderType(String providerType) {
-        this.providerType = providerType;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
     @Override
     protected Serializable pkVal() {
         return this.userThirdpartyId;
     }
 
-    @Override
-    public String toString() {
-        return "UserThirdparty{" +
-        "userThirdpartyId=" + userThirdpartyId +
-        ", openId=" + openId +
-        ", userNo=" + userNo +
-        ", accessToken=" + accessToken +
-        ", providerType=" + providerType +
-        ", status=" + status +
-        ", createTime=" + createTime +
-        "}";
-    }
 }

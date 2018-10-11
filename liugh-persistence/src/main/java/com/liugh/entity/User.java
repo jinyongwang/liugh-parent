@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.*;
 
 /**
  * <p>
@@ -15,13 +16,16 @@ import com.baomidou.mybatisplus.annotations.TableName;
  * @author liugh123
  * @since 2018-06-25
  */
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @TableName("tb_user")
 public class User extends Model<User> {
 
     private static final long serialVersionUID = 1L;
-
-    public User(){}
-
     /**
      * 用户主键
      */
@@ -70,111 +74,10 @@ public class User extends Model<User> {
     @TableField(exist = false)
     private String roleName;
 
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getUserNo() {
-        return userNo;
-    }
-
-    public void setUserNo(String userNo) {
-        this.userNo = userNo;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getJob() {
-        return job;
-    }
-
-    public void setJob(String job) {
-        this.job = job;
-    }
 
     @Override
     protected Serializable pkVal() {
         return this.userNo;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userNo=" + userNo +
-                ", mobile=" + mobile +
-                ", userName=" + userName +
-                ", passWord=" + passWord +
-                ", unit=" + unit +
-                ", createTime=" + createTime +
-                ", avatar=" + avatar +
-                ", status=" + status +
-                ", job=" + job +
-                "}";
-    }
 }

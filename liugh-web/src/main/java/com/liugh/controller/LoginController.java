@@ -103,11 +103,9 @@ public class LoginController {
             return ResponseHelper.validationFailure(PublicResultConstant.VERIFY_PARAM_PASS);
         }
         if (ComUtil.isEmpty(user)) {
-            User userRegister = new User();
             //设置默认密码
-            userRegister.setPassWord(BCrypt.hashpw("123456", BCrypt.gensalt()));
-            userRegister.setMobile(mobile);
-            userRegister.setUserName(mobile);
+            User userRegister = User.builder().passWord(BCrypt.hashpw("123456", BCrypt.gensalt()))
+                    .mobile(mobile).userName(mobile).build();
             user =userService.register(userRegister, Constant.RoleType.USER);
         }
         Map<String, Object> result = userService.getLoginUserAndMenuInfo(user);

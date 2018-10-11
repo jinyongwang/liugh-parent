@@ -27,20 +27,12 @@ public class UserThirdpartyServiceImpl extends ServiceImpl<UserThirdpartyMapper,
 
     @Override
     public User insertThirdPartyUser(ThirdPartyUser param, String password) throws Exception{
-        User sysUser = new User();
-        sysUser.setPassWord(password);
-        sysUser.setUserName("游客"+param.getOpenid());
-        sysUser.setMobile(param.getOpenid());
-        sysUser.setAvatar(param.getAvatarUrl());
+        User sysUser = User.builder().passWord(password).userName("游客"+param.getOpenid()).mobile(param.getOpenid())
+                .avatar(param.getAvatarUrl()).build();
         User register = userService.register(sysUser, Constant.RoleType.USER);
         // 初始化第三方信息
-        UserThirdparty thirdparty = new UserThirdparty();
-        thirdparty.setProviderType(param.getProvider());
-        thirdparty.setOpenId(param.getOpenid());
-        thirdparty.setCreateTime(System.currentTimeMillis());
-        thirdparty.setUserNo(register.getUserNo());
-        thirdparty.setStatus(Constant.ENABLE);
-        thirdparty.setAccessToken(param.getToken());
+        UserThirdparty thirdparty = UserThirdparty.builder().providerType(param.getProvider()).openId(param.getOpenid()).createTime(System.currentTimeMillis())
+                .userNo(register.getUserNo()).status(Constant.ENABLE).accessToken(param.getToken()).build();
         this.insert(thirdparty);
         return register;
     }
