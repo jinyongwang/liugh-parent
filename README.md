@@ -32,6 +32,8 @@
 
 8.完成微信/微博/QQ第三方登录功能,WebSocket实时消息推送,短信登录注册等功能.
 
+9.完成方法限流注解,重要防刷方法被访问距离下一次时间可调节
+
 ## 三、程序逻辑
 
 1.填写用户名密码用POST请求访问/login接口，返回token令牌等信息，失败则直接返回身份错误信息。
@@ -67,7 +69,7 @@
 
 运行截图：
 
-![](https://oscimg.oschina.net/oscnet/522117b788ebf4bda5c5eacaa6bf1279546.jpg)
+![](https://oscimg.oschina.net/oscnet/e734e53d9c9e92665fc8eae18168f845686.jpg)
 
 彩蛋：项目注释完整，并且自定义了启动图案~
 

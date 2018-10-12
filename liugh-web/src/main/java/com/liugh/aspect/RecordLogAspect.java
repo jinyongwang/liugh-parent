@@ -21,16 +21,28 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 记录日志切面
  * @author liugh
  * @since on 2018/5/10.
  */
-public class RecordLogAspect implements AspectApi {
+public class RecordLogAspect extends AspectManager {
+
+    private AspectApi aspectApi;
+
+    public RecordLogAspect(AspectApi aspectApi){
+        super();
+        this.aspectApi=aspectApi;
+    }
+
+    public Object doHandlerAspect(ProceedingJoinPoint pjp, Method method) throws Throwable{
+        aspectApi.doHandlerAspect(pjp,method);
+        return doLog(pjp,method);
+    }
 
     private Logger logger = LoggerFactory.getLogger(RecordLogAspect.class);
 
     @Async
-    @Override
-    public Object doHandlerAspect(Object [] obj ,ProceedingJoinPoint pjp, Method method,boolean isAll) throws Throwable{
+    public Object doLog(ProceedingJoinPoint pjp, Method method) throws Throwable{
         Log log  = method.getAnnotation( Log.class );
         // 异常日志信息
         String actionLog = null;
@@ -42,11 +54,7 @@ public class RecordLogAspect implements AspectApi {
         // 开始时间戳
         long operationTime = System.currentTimeMillis();
         try {
-            if(isAll){
-               AspectHandler aspectHandler = new ValidationParamOperate();
-               aspectHandler.doAspectHandler(pjp,obj,method,false);
-            }
-            return pjp.proceed(obj);
+            return pjp.proceed(pjp.getArgs());
         } catch ( Throwable throwable ) {
             isException = true;
             actionLog = throwable.getMessage();

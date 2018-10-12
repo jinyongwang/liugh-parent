@@ -16,12 +16,27 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
+ * 验证参数切面
  * @author liugh
  * @since on 2018/5/10.
  */
-public class ValidationParamAspect implements AspectApi{
+public class ValidationParamAspect extends AspectManager{
+
+    private AspectApi aspectApi;
+
+    public ValidationParamAspect(AspectApi aspectApi){
+        super();
+        this.aspectApi=aspectApi;
+    }
     @Override
-    public Object doHandlerAspect(Object [] obj ,ProceedingJoinPoint pjp, Method method,boolean isAll) throws Throwable{
+    public Object doHandlerAspect(ProceedingJoinPoint pjp, Method method) throws Throwable{
+        aspectApi.doHandlerAspect(pjp,method);
+        validationParam(pjp,method);
+        return null;
+    }
+
+
+    public void validationParam(ProceedingJoinPoint pjp, Method method) throws Throwable{
        //获取注解的value值返回
         String validationParamValue = StringUtil.getMethodAnnotationOne(method,ValidationParam.class.getSimpleName());
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
@@ -30,6 +45,7 @@ public class ValidationParamAspect implements AspectApi{
         String requestURI = request.getRequestURI();
         //获取类名上的url
         String url = getMethodUrl(method,request.getContextPath());
+        Object[] obj = pjp.getArgs();
         if(requestURI.equals(url)) {
             if (!ComUtil.isEmpty(validationParamValue)) {
                 for (int i = 0; i < obj.length; i++) {
@@ -43,7 +59,6 @@ public class ValidationParamAspect implements AspectApi{
                 }
             }
         }
-        return obj;
     }
 
     /**

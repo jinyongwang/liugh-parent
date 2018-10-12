@@ -4,9 +4,11 @@ import java.lang.reflect.Method;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
- * @author liugh
+ * @author liugh 装饰器模式
  * @since on 2018/5/10.
  */
 public interface AspectApi {
-     Object doHandlerAspect(Object [] obj , ProceedingJoinPoint pjp, Method method,boolean isAll)throws Throwable;
+
+     Object doHandlerAspect(ProceedingJoinPoint pjp, Method method)throws Throwable;
+
 }

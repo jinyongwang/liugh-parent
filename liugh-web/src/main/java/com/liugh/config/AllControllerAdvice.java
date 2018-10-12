@@ -80,7 +80,7 @@ public class AllControllerAdvice {
     public ResponseModel handleBusinessException(BusinessException e) {
         if(e instanceof BusinessException) {
             logger.info("数据操作失败："+e.getMessage());
-            return ResponseHelper.validationFailure(PublicResultConstant.DATA_ERROR);
+            return ResponseHelper.validationFailure("数据操作失败："+e.getMessage());
         }
         return ResponseHelper.validationFailure(PublicResultConstant.ERROR);
     }
@@ -98,7 +98,7 @@ public class AllControllerAdvice {
     public ResponseModel<String> handleParamJsonException(Exception e) {
         if(e instanceof ParamJsonException) {
             logger.info("参数错误："+e.getMessage());
-            return ResponseHelper.validationFailure(PublicResultConstant.PARAM_ERROR);
+            return ResponseHelper.validationFailure("参数错误："+ e.getMessage());
         }
         return ResponseHelper.validationFailure(PublicResultConstant.ERROR);
     }
