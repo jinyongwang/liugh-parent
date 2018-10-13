@@ -36,7 +36,7 @@ public class ValidationParamAspect extends AspectManager{
     }
 
 
-    public void validationParam(ProceedingJoinPoint pjp, Method method) throws Throwable{
+    private void validationParam(ProceedingJoinPoint pjp, Method method) throws Throwable{
        //获取注解的value值返回
         String validationParamValue = StringUtil.getMethodAnnotationOne(method,ValidationParam.class.getSimpleName());
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
@@ -95,7 +95,7 @@ public class ValidationParamAspect extends AspectManager{
      * @param jsonObject
      * @param requiredColumns
      */
-    public void hasAllRequired(final JSONObject jsonObject, String requiredColumns) {
+    private void hasAllRequired(final JSONObject jsonObject, String requiredColumns) {
         if (!ComUtil.isEmpty(requiredColumns)) {
             //验证字段非空
             String[] columns = requiredColumns.split(",");

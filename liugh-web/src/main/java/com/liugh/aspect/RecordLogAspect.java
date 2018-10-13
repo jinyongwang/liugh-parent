@@ -34,6 +34,7 @@ public class RecordLogAspect extends AspectManager {
         this.aspectApi=aspectApi;
     }
 
+    @Override
     public Object doHandlerAspect(ProceedingJoinPoint pjp, Method method) throws Throwable{
         aspectApi.doHandlerAspect(pjp,method);
         return doLog(pjp,method);
@@ -42,7 +43,7 @@ public class RecordLogAspect extends AspectManager {
     private Logger logger = LoggerFactory.getLogger(RecordLogAspect.class);
 
     @Async
-    public Object doLog(ProceedingJoinPoint pjp, Method method) throws Throwable{
+    private Object doLog(ProceedingJoinPoint pjp, Method method) throws Throwable{
         Log log  = method.getAnnotation( Log.class );
         // 异常日志信息
         String actionLog = null;
@@ -159,7 +160,7 @@ public class RecordLogAspect extends AspectManager {
     }
 
 
-    public  String getIpAddress(HttpServletRequest request) {
+    private  String getIpAddress(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
