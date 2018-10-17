@@ -37,7 +37,7 @@ public class LoginController {
                     , required = true, dataType = "String",paramType="body")
     })
     @PostMapping("/login")
-    @Log(description="前台密码登录接口:/login")
+    @Log(action="SignIn",modelName= "Login",description="前台密码登录接口")
     @Pass
     public ResponseModel<Map<String, Object>> login(
             @ValidationParam("mobile,password")@RequestBody JSONObject requestJson) throws Exception{
@@ -50,7 +50,7 @@ public class LoginController {
                     , required = true, dataType = "String",paramType="body")
     })
     @PostMapping("/login/captcha")
-    @Log(description="前台短信验证码登录接口:/login/captcha")
+    @Log(action="SignInByCaptcha",modelName= "Login",description="前台短信验证码登录接口")
     @Pass
     public ResponseModel<Map<String, Object>> loginBycaptcha(
             @ValidationParam("mobile,captcha")@RequestBody JSONObject requestJson) throws Exception{
@@ -67,7 +67,7 @@ public class LoginController {
                     , required = true, dataType = "String",paramType="body")
     })
     @PostMapping("/register")
-    @Log(description="注册接口:/register")
+    @Log(action="register",modelName= "Login",description="注册接口")
     @Pass
     public ResponseModel<User> register(@ValidationParam("username,password,rePassword,mobile,captcha,job")
                                        @RequestBody JSONObject requestJson)throws Exception {

@@ -40,7 +40,7 @@ public class SmsVerifyController {
     @ApiOperation(value="获取验证码接口", notes="路径参数,不需要Authorization")
     @GetMapping("/{smsType}/{mobile}")
     @Pass
-    @Log(description = "获取短信验证码接口:/smsVerify/{smsType}/{mobile}")
+    @Log(action="getCaptcha",modelName= "Sms",description="获取短信验证码接口")
    public ResponseModel<SmsVerify> getCaptcha (@PathVariable String smsType, @PathVariable String mobile) throws Exception{
         return ResponseHelper.buildResponseModel(smsVerifyService.addAndGetMobileAndCaptcha(smsType,mobile));
    }

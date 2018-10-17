@@ -14,11 +14,13 @@
         <result column="create_time" property="createTime" />
         <result column="succeed" property="succeed" />
         <result column="message" property="message" />
+        <result column="model_name" property="modelName" />
+        <result column="action" property="action" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        operation_log_id AS operationLogId, log_description AS logDescription, action_args AS actionArgs, user_no AS userNo, class_name AS className, method_name AS methodName, ip, create_time AS createTime, succeed, message
+        operation_log_id AS operationLogId,model_name AS modelName,action, log_description AS logDescription, action_args AS actionArgs, user_no AS userNo, class_name AS className, method_name AS methodName, ip, create_time AS createTime, succeed, message
     </sql>
 
 </mapper>

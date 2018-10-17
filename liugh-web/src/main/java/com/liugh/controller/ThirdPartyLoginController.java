@@ -2,6 +2,7 @@ package com.liugh.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.liugh.annotation.Log;
 import com.liugh.annotation.Pass;
 import com.liugh.config.ResourcesConfig;
 import com.liugh.config.ThirdPartyLoginHelper;
@@ -46,6 +47,7 @@ public class ThirdPartyLoginController {
      * @param type  微博:sina  微信:wx  QQ:qq
      */
     @RequestMapping("/sns")
+    @Log(action="login",modelName= "thirdPartyLogin",description="第三方用户登录")
     @Pass
     public void thirdLogin(HttpServletRequest request, HttpServletResponse response, @RequestParam("type") String type) {
         //拼接第三方登录授权地址

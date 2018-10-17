@@ -88,6 +88,8 @@ public class RecordLogAspect extends AspectManager {
         operationLog.setClassName(joinPoint.getTarget().getClass().getName() );
         operationLog.setCreateTime(startTime);
         operationLog.setLogDescription(log.description());
+        operationLog.setModelName(log.modelName());
+        operationLog.setAction(log.action());
         if(isException){
             StringBuilder sb = new StringBuilder();
             sb.append(actionLog+" &#10; ");

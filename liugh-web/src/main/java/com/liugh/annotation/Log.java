@@ -12,6 +12,16 @@ import java.lang.annotation.*;
 @Retention( RetentionPolicy.RUNTIME )
 @Documented
 public @interface Log {
+
+	/**
+	 * 模块名称
+	 */
+	String modelName() default "";
+
+	/**
+	 * 操作
+	 */
+	String action()default "";
 	/**
 	 * 描述.
 	 */

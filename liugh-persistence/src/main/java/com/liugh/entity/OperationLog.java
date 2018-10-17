@@ -73,6 +73,17 @@ public class OperationLog extends Model<OperationLog> {
      */
     private String message;
 
+    /**
+     * 模块名称
+     */
+    @TableField("model_name")
+    private String modelName;
+
+    /**
+     * 操作
+     */
+    private String action;
+
     @Override
     protected Serializable pkVal() {
         return this.operationLogId;
