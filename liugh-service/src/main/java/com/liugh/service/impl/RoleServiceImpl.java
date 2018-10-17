@@ -3,6 +3,7 @@ package com.liugh.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.liugh.base.BusinessException;
 import com.liugh.base.Constant;
+import com.liugh.base.PublicResultConstant;
 import com.liugh.entity.Menu;
 import com.liugh.entity.RoleToMenu;
 import com.liugh.entity.UserToRole;
@@ -50,7 +51,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         BeanUtils.copyProperties(roleModel,role);
         boolean result = this.insert(role);
         if (! result) {
-            throw  new BusinessException("更新角色信息失败");
+            throw  new BusinessException(PublicResultConstant.UPDATE_ROLEINFO_ERROR);
         }
         result = roleToMenuService.saveAll(role.getRoleCode(), roleModel.getMenuCodes());
         return result;
@@ -58,6 +59,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     public boolean updateRoleInfo(RoleModel roleModel) throws Exception{
+        if (roleModel.getRoleCode().equals(
+                this.selectOne(new EntityWrapper<Role>().eq("role_name",Constant.RoleType.SYS_ASMIN_ROLE)).getRoleCode())){
+            throw  new BusinessException(PublicResultConstant.UPDATE_SYSADMIN_INFO_ERROR);
+        }
         Role role = this.selectById(roleModel.getRoleCode());
         if (ComUtil.isEmpty(role)) {
             return false;
@@ -65,7 +70,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         BeanUtils.copyProperties(roleModel,role);
         boolean result = this.updateById(role);
         if (! result) {
-            throw  new BusinessException("更新角色信息失败");
+            throw  new BusinessException(PublicResultConstant.UPDATE_ROLEINFO_ERROR);
         }
         result = roleToMenuService.delete(new EntityWrapper<RoleToMenu>().eq("role_code",roleModel.getRoleCode()));
         if (! result) {
@@ -84,8 +89,32 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         UserToRole userToRole = userToRoleService.selectByUserNo(userNo);
         Role role = this.selectById(userToRole.getRoleCode());
         if(role.getRoleName().equals(Constant.RoleType.SYS_ASMIN_ROLE)){
-            throw new BusinessException("不能修改管理员信息!");
+            throw new BusinessException(PublicResultConstant.UPDATE_SYSADMIN_INFO_ERROR);
         }
+    }
+
+    @Override
+    public Map<String, Object> selectByRoleCode(String roleCode) throws Exception {
+        Role role = this.selectById(roleCode);
+        if(ComUtil.isEmpty(role)){
+            throw new BusinessException(PublicResultConstant.INVALID_ROLE);
+        }
+        Map<String, Object> result = new HashMap<>();
+        result.put("role", role);
+        //权限信息
+        result.put("nodes", this.getMenuByRoleCode(role.getRoleCode()));
+        return result;
+    }
+
+    @Override
+    public void deleteByRoleCode(String roleCode) throws Exception {
+        if (ComUtil.isEmpty(this.selectById(roleCode))) {
+            throw new BusinessException("角色不存在");
+        }
+        if(!ComUtil.isEmpty(userToRoleService.selectList(new EntityWrapper<UserToRole>().eq("role_code",roleCode)))){
+            throw new BusinessException("角色存在相关用户,请先删除相关角色的用户");
+        }
+        this.delete(new EntityWrapper<Role>().eq("role_code",roleCode));
     }
 
 

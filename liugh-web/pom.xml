@@ -72,10 +72,6 @@
             <artifactId>mybatis-plus</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.t3hnar</groupId>
-            <artifactId>scala-bcrypt_2.10</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
         </dependency>

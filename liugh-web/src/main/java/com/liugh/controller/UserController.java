@@ -11,23 +11,16 @@ import com.liugh.base.Constant;
 import com.liugh.base.PublicResultConstant;
 import com.liugh.config.ResponseHelper;
 import com.liugh.config.ResponseModel;
-import com.liugh.entity.SmsVerify;
 import com.liugh.entity.User;
-import com.liugh.service.ISmsVerifyService;
 import com.liugh.service.IUserService;
 import com.liugh.util.ComUtil;
-import com.liugh.util.SmsSendUtil;
-import com.liugh.util.StringUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * <p>
@@ -44,8 +37,6 @@ public class UserController {
     @Autowired
     IUserService userService;
 
-    @Autowired
-    private ISmsVerifyService smsVerifyService;
 
     /**
      * 获取当前登录用户信息
@@ -60,36 +51,17 @@ public class UserController {
 
     @PostMapping("/mobile")
     public ResponseModel<String> resetMobile(@CurrentUser User currentUser,
-                                            @ValidationParam("newMobile,captcha")@RequestBody JSONObject requestJson ){
-        String newMobile = requestJson.getString("newMobile");
-        if(!StringUtil.checkMobileNumber(newMobile)){
-            return ResponseHelper.validationFailure(PublicResultConstant.MOBILE_ERROR);
-        }
-        List<SmsVerify> smsVerifies = smsVerifyService.getByMobileAndCaptchaAndType(newMobile,
-                requestJson.getString("captcha"), SmsSendUtil.SMSType.getType(SmsSendUtil.SMSType.MODIFYINFO.name()));
-        if(ComUtil.isEmpty(smsVerifies)){
-            return ResponseHelper.validationFailure(PublicResultConstant.VERIFY_PARAM_ERROR);
-        }
-        if(SmsSendUtil.isCaptchaPassTime(smsVerifies.get(0).getCreateTime())){
-            return ResponseHelper.validationFailure(PublicResultConstant.VERIFY_PARAM_PASS);
-        }
-        currentUser.setMobile(newMobile);
-        userService.updateById(currentUser);
-        return ResponseHelper.buildResponseModel(null);
+                                            @ValidationParam("newMobile,captcha")@RequestBody JSONObject requestJson )
+            throws Exception{
+        userService.resetMobile(currentUser,requestJson);
+        return ResponseHelper.buildResponseModel(PublicResultConstant.SUCCEED);
     }
 
     @PostMapping("/password")
-    public ResponseModel<String> resetPassWord (@CurrentUser User currentUser,@ValidationParam("oldPassword,password,rePassword")
-    @RequestBody JSONObject requestJson ) throws Exception{
-        if (!requestJson.getString("password").equals(requestJson.getString("rePassword"))) {
-            return ResponseHelper.validationFailure(PublicResultConstant.INVALID_RE_PASSWORD);
-        }
-        if(!BCrypt.checkpw(requestJson.getString("oldPassword"),currentUser.getPassword())){
-            return ResponseHelper.validationFailure(PublicResultConstant.INVALID_USERNAME_PASSWORD);
-        }
-        currentUser.setPassword(BCrypt.hashpw(requestJson.getString("password"),BCrypt.gensalt()));
-        userService.updateById(currentUser);
-        return ResponseHelper.buildResponseModel(null);
+    public ResponseModel<String> resetPassWord (@CurrentUser User currentUser,
+            @ValidationParam("oldPassword,password,rePassword")@RequestBody JSONObject requestJson ) throws Exception{
+        userService.resetPassWord(currentUser,requestJson);
+        return ResponseHelper.buildResponseModel(PublicResultConstant.SUCCEED);
     }
 
     /**
@@ -102,16 +74,8 @@ public class UserController {
     @RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
     public ResponseModel<String> resetPassWord (@ValidationParam("userNo,password,rePassword")
                                                @RequestBody JSONObject requestJson ) throws Exception{
-        User user = userService.selectById(requestJson.getString("userNo"));
-        if(ComUtil.isEmpty(user)){
-            return ResponseHelper.validationFailure(PublicResultConstant.INVALID_USER);
-        }
-        if (!requestJson.getString("password").equals(requestJson.getString("rePassword"))) {
-            return ResponseHelper.validationFailure(PublicResultConstant.INVALID_RE_PASSWORD);
-        }
-        user.setPassword(BCrypt.hashpw(requestJson.getString("password"),BCrypt.gensalt()));
-        userService.updateById(user);
-        return ResponseHelper.buildResponseModel(null);
+        userService.resetPassWord(userService.selectById(requestJson.getString("userNo")),requestJson);
+        return ResponseHelper.buildResponseModel(PublicResultConstant.SUCCEED);
     }
 
 
@@ -142,11 +106,8 @@ public class UserController {
     public ResponseModel<Page<User>> findList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
                                  @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize,
                                  @RequestParam(value = "username", defaultValue = "",required = false) String username) {
-        EntityWrapper<User> ew = new EntityWrapper<>();
-        if (!ComUtil.isEmpty(username)) {
-            ew.like("user_name", username);
-        }
-        return ResponseHelper.buildResponseModel(userService.selectPage(new Page<>(pageIndex, pageSize), ew));
+        return ResponseHelper.buildResponseModel(userService.selectPage(new Page<>(pageIndex, pageSize),
+            ComUtil.isEmpty(username)?new EntityWrapper<User>(): new EntityWrapper<User>().like("user_name", username)));
     }
 
     @GetMapping("/admin/infoList")
@@ -198,13 +159,10 @@ public class UserController {
 //    @RequiresPermissions(value = {"user:delete"})
     //拥有超级管理员或管理员角色的用户可以访问这个接口
     @RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
-    public ResponseModel deleteUser(@PathVariable("userNo") String userNo) {
-        User user = userService.selectById(userNo);
-        if (ComUtil.isEmpty(user)) {
-            return ResponseHelper.validationFailure(PublicResultConstant.INVALID_USER);
-        }
-        boolean result = userService.deleteByUserNo(userNo);
-        return ResponseHelper.buildResponseModel(result);
+    public ResponseModel deleteUser(@PathVariable("userNo") String userNo) throws Exception{
+
+       userService.deleteByUserNo(userNo);
+        return ResponseHelper.buildResponseModel(PublicResultConstant.SUCCEED);
     }
 }
 

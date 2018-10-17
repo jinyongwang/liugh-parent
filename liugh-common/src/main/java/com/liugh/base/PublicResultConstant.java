@@ -8,6 +8,8 @@ public class PublicResultConstant {
 
     public static final String FAILED  = "系统错误";
 
+    public static final String SUCCEED = "操作成功";
+
     public static final String UNAUTHORIZED  = "获取登录用户信息失败";
 
     public static final String ERROR  = "操作失败";
@@ -33,4 +35,8 @@ public class PublicResultConstant {
     public static final String VERIFY_PARAM_PASS  = "校验码过期";
 
     public static final String MOBILE_ERROR  = "手机号格式错误";
+
+    public static final String UPDATE_ROLEINFO_ERROR  = "更新角色信息失败";
+
+    public static final String UPDATE_SYSADMIN_INFO_ERROR  = "不能修改管理员信息!";
 }

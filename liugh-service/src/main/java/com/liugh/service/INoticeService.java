@@ -1,7 +1,9 @@
 package com.liugh.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.liugh.entity.Notice;
 import com.baomidou.mybatisplus.service.IService;
+import com.liugh.entity.User;
 
 /**
  * <p>
@@ -19,4 +21,8 @@ public interface INoticeService extends IService<Notice> {
      * @param mobile 电话
      */
     void insertByThemeNo(String themeNo,String  mobile);
+
+    void deleteByNotices(User user)throws Exception;
+
+    void read(JSONObject requestJson)throws Exception;
 }

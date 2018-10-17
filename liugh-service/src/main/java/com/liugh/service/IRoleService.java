@@ -45,4 +45,7 @@ public interface IRoleService extends IService<Role> {
      */
     void getRoleIsAdminByUserNo(String userNo) throws Exception;
 
+    Map<String, Object> selectByRoleCode(String roleCode)throws Exception;
+
+    void deleteByRoleCode(String roleCode)throws Exception;
 }
