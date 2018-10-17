@@ -228,3 +228,42 @@ CREATE TABLE `tb_user_to_role` (
 -- ----------------------------
 INSERT INTO `tb_user_to_role` VALUES ('2', 'user-006efece76c8433d8974c1a2f98422b6', 'role-cf8fea2055344df59a0d3e80540c78f9');
 INSERT INTO `tb_user_to_role` VALUES ('3', 'user-190f8710857f4a239570387ffc676c39', 'role-f7943542d87a4f028f446b71d9ede25d');
+
+
+DROP TABLE IF EXISTS `tb_order`;
+CREATE TABLE `tb_order` (
+  `sequence_nbr` bigint(20) NOT NULL COMMENT '物理主键',
+  `user_no` varchar(50) NOT NULL COMMENT '用户id',
+  `order_no` varchar(20) NOT NULL COMMENT '订单的唯一编号',
+  `source` varchar(32) DEFAULT NULL COMMENT '订单来源',
+  `order_type` varchar(32) NOT NULL COMMENT '订单类型(商品，设计)',
+  `create_time` bigint(20) NOT NULL COMMENT '创建时间',
+  `order_status` varchar(32) NOT NULL COMMENT '订单状态',
+  `order_amount` int(11) NOT NULL COMMENT '订单金额',
+  `postage` int(11) NOT NULL COMMENT '邮费',
+  `pay_amount` int(11) NOT NULL COMMENT '实际支付金额',
+  `discount` int(11) DEFAULT '0' COMMENT '折扣金额',
+  `coupon` int(11) DEFAULT '0' COMMENT '优惠金额',
+  `is_comment` varchar(1) NOT NULL COMMENT '是否已评价',
+  `receipt_detail` varchar(500) DEFAULT NULL COMMENT '发票信息',
+  `transport_id` bigint(20) DEFAULT NULL COMMENT '物流记录id',
+  `receiver_mobile` varchar(11) NOT NULL COMMENT '收货人手机号',
+  `receiver_name` varchar(50) NOT NULL COMMENT '收货人姓名',
+  `receiver_address` varchar(500) DEFAULT NULL COMMENT '收货信息(json存储)',
+  `is_split` varchar(1) NOT NULL COMMENT '是否已拆单',
+  `rec_status` varchar(1) NOT NULL DEFAULT 'a' COMMENT '数据状态 :i 非激活 /a  激活',
+  `cancel_result` varchar(100) DEFAULT NULL COMMENT '取消订单理由',
+  `check_fail_result` varchar(100) DEFAULT NULL COMMENT '审核不通过理由',
+  `order_recode` varchar(100) DEFAULT NULL COMMENT '处理订单跟进记录',
+  `description` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`sequence_nbr`),
+  UNIQUE KEY `INDEX_ORDER_NO` (`order_no`) USING BTREE,
+  KEY `INDEX_USER_ID` (`user_no`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单主表，当前表只保存流转中的订单信息';
+
+-- ----------------------------
+-- Records of tb_order
+-- ----------------------------
+INSERT INTO `tb_order` VALUES ('770480571594227712', 'user-006efece76c8433d8974c1a2f98422b6', '770480571594227712', 'postman', 'Product', '1539763171888', 'waitDelivery', '4540000', '0', '4540000', '0', '0', 'N', '{\"receiptType\":\"普通纸质发票\",\"receiptTitle\":\"公司\",\"receiptContent\":\"中国\"}', null, '13888888888', '刘大神', '西安', 'Y', 'A', null, null, null, null);
+INSERT INTO `tb_order` VALUES ('770480571984297984', 'user-006efece76c8433d8974c1a2f98422b6', '770480571594227713', 'postman', 'Product', '1539763171888', 'waitReceive', '3360000', '0', '3360000', '0', '0', 'N', '{\"receiptType\":\"普通纸质发票\",\"receiptTitle\":\"公司\",\"receiptContent\":\"中国\"}', null, '13888888888', '刘大神', '西安', 'N', 'A', null, null, null, null);
+INSERT INTO `tb_order` VALUES ('770480572001075200', 'user-006efece76c8433d8974c1a2f98422b6', '770480571594227714', 'postman', 'Product', '1539763171888', 'waitDelivery', '1180000', '0', '1180000', '0', '0', 'N', '{\"receiptType\":\"普通纸质发票\",\"receiptTitle\":\"公司\",\"receiptContent\":\"中国\"}', '872003869557731328', '13888888888', '刘大神', '西安', 'N', 'A', null, null, null, null);

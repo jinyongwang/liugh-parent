@@ -4,9 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.liugh.base.Constant;
 import com.liugh.base.PublicResultConstant;
 import com.liugh.config.ResponseHelper;
-import com.liugh.config.SpringContextBean;
 import com.liugh.entity.User;
 import com.liugh.service.IUserService;
+import com.liugh.service.SpringContextBeanService;
 import com.liugh.util.ComUtil;
 import com.liugh.util.JWTUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -78,7 +78,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
 
     private void setUserBean(ServletRequest request, ServletResponse response, JWTToken token) {
         if (this.userService == null) {
-            this.userService = SpringContextBean.getBean(IUserService.class);
+            this.userService = SpringContextBeanService.getBean(IUserService.class);
         }
         String userNo =  JWTUtil.getUserNo(token.getPrincipal().toString());
         User userBean = userService.selectById(userNo);

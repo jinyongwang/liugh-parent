@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.liugh.annotation.Log;
-import com.liugh.config.SpringContextBean;
+import com.liugh.service.SpringContextBeanService;
 import com.liugh.entity.OperationLog;
 import com.liugh.service.IOperationLogService;
 import com.liugh.util.ComUtil;
@@ -75,7 +75,7 @@ public class RecordLogAspect extends AspectManager {
                             boolean isException,
                             StackTraceElement[] stackTrace) {
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
-        IOperationLogService operationLogService = SpringContextBean.getBean(IOperationLogService.class);
+        IOperationLogService operationLogService = SpringContextBeanService.getBean(IOperationLogService.class);
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
         HttpServletRequest request = sra.getRequest();
         String authorization = request.getHeader("Authorization");

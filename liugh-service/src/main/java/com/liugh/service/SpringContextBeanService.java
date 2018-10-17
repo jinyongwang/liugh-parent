@@ -1,4 +1,4 @@
-package com.liugh.config;
+package com.liugh.service;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -11,12 +11,11 @@ import org.springframework.stereotype.Component;
  * @since 2018-03-21
  */
 @Component
-public class SpringContextBean implements ApplicationContextAware {
+public class SpringContextBeanService implements ApplicationContextAware {
     private static ApplicationContext context = null;
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
-    {
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException{
         context = applicationContext;
     }
 
