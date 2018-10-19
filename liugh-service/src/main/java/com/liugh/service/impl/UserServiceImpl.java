@@ -102,16 +102,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public boolean deleteByUserNo(String userNo) throws Exception{
+    public void deleteByUserNo(String userNo) throws Exception{
         User user = this.selectById(userNo);
         if (ComUtil.isEmpty(user)) {
             throw new BusinessException(PublicResultConstant.INVALID_USER);
         }
         EntityWrapper<UserToRole> ew = new EntityWrapper<>();
         ew.eq("user_no", userNo);
-        boolean resultRole = userToRoleService.delete(ew);
-        boolean  resultUser = this.deleteById(userNo);
-        return resultRole && resultUser;
+        userToRoleService.delete(ew);
+        this.deleteById(userNo);
     }
 
     @Override

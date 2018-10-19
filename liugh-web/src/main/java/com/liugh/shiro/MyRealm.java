@@ -2,11 +2,13 @@ package com.liugh.shiro;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.liugh.base.Constant;
+import com.liugh.entity.Menu;
 import com.liugh.entity.Role;
 import com.liugh.entity.User;
 import com.liugh.entity.UserToRole;
 import com.liugh.exception.UnauthorizedException;
 import com.liugh.service.*;
+import com.liugh.util.ComUtil;
 import com.liugh.util.JWTUtil;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -18,6 +20,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -57,13 +60,13 @@ public class MyRealm extends AuthorizingRealm {
         UserToRole userToRole = userToRoleService.selectByUserNo(user.getUserNo());
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        ArrayList<String> pers = new ArrayList<>();
-        Set<String> roleNameSet = new HashSet<>();
-        Role role = roleService.selectOne(new EntityWrapper<Role>().eq("role_code", userToRole.getRoleCode()));
-        roleNameSet.add(role.getRoleName());
-        //添加控制角色级别的权限
-        simpleAuthorizationInfo.addRoles(roleNameSet);
         /*
+        Role role = roleService.selectOne(new EntityWrapper<Role>().eq("role_code", userToRole.getRoleCode()));
+        //添加控制角色级别的权限
+        Set<String> roleNameSet = new HashSet<>();
+        roleNameSet.add(role.getRoleName());
+        simpleAuthorizationInfo.addRoles(roleNameSet);
+        */
         //控制菜单级别按钮  类中用@RequiresPermissions("user:list") 对应数据库中code字段来控制controller
         ArrayList<String> pers = new ArrayList<>();
         List<Menu> menuList = menuService.findMenuByRoleCode(userToRole.getRoleCode());
@@ -74,8 +77,6 @@ public class MyRealm extends AuthorizingRealm {
         }
         Set<String> permission = new HashSet<>(pers);
         simpleAuthorizationInfo.addStringPermissions(permission);
-        */
-
         return simpleAuthorizationInfo;
     }
 

@@ -164,6 +164,7 @@ INSERT INTO `tb_role_to_menu` VALUES ('24', 'role-cf8fea2055344df59a0d3e80540c78
 INSERT INTO `tb_role_to_menu` VALUES ('25', 'role-cf8fea2055344df59a0d3e80540c78f9', 'menu-a8617c31654653a054fdsg23asdg5423');
 INSERT INTO `tb_role_to_menu` VALUES ('26', 'role-cf8fea2055344df59a0d3e80540c78f9', 'menu-a8617c317b204969a054b653df212zg712');
 INSERT INTO `tb_role_to_menu` VALUES ('27', 'role-cf8fea2055344df59a0d3e80540c78f9', 'menu-a8617c31t34ytrfsdfg3j5e36u121rfdg465u');
+INSERT INTO `tb_role_to_menu` VALUES ('28', 'role-f7943542d87a4f028f446b71d9ede25d', 'menu-a8617c31t34ytrfsdfg3j5e36u121rfdg465u');
 
 -- ----------------------------
 -- Table structure for tb_sms_verify
@@ -209,8 +210,8 @@ CREATE TABLE `tb_user` (
 -- Records of tb_user
 -- ----------------------------
 INSERT INTO `tb_user` VALUES ('user-006efece76c8433d8974c1a2f98422b6', '13888888888', 'javaer', '$2a$10$VwPL.rHo4PETgCcLDTN2LOwE.ksgCA0jLHbVX5yXEoisHWihX7S/i', null, '1529982192887', null, '1', 'java开发');
-INSERT INTO `tb_user` VALUES ('user-190f8710857f4a239570387ffc676c39', '15802933752', 'eee', '$2a$10$fJ9Ou1Ffi9XDf1OQbn0NNe7UGqyRHkOj/hKiELuCXifLVqRATWB.W', 'eee', '1529999033844', null, '1', 'eee');
-INSERT INTO `tb_user` VALUES ('user-573388ebd14348cf8b546a6bfdf98ca3', '18792420526', '5', '$2a$10$fRJZ6tiCQpGUxsKVcA4yeeRMySiMAtL60aGGRuvJEqzE4LEOuYg2q', '5', '1530086891950', null, '1', '5');
+INSERT INTO `tb_user` VALUES ('user-190f8710857f4a239570387ffc676c39', '15802933752', 'eee', '$2a$10$VwPL.rHo4PETgCcLDTN2LOwE.ksgCA0jLHbVX5yXEoisHWihX7S/i', 'eee', '1529999033844', null, '1', 'eee');
+INSERT INTO `tb_user` VALUES ('user-573388ebd14348cf8b546a6bfdf98ca3', '18792420526', '5', '$2a$10$VwPL.rHo4PETgCcLDTN2LOwE.ksgCA0jLHbVX5yXEoisHWihX7S/i', '5', '1530086891950', null, '1', '5');
 
 -- ----------------------------
 -- Table structure for tb_user_to_role
@@ -228,6 +229,7 @@ CREATE TABLE `tb_user_to_role` (
 -- ----------------------------
 INSERT INTO `tb_user_to_role` VALUES ('2', 'user-006efece76c8433d8974c1a2f98422b6', 'role-cf8fea2055344df59a0d3e80540c78f9');
 INSERT INTO `tb_user_to_role` VALUES ('3', 'user-190f8710857f4a239570387ffc676c39', 'role-f7943542d87a4f028f446b71d9ede25d');
+INSERT INTO `tb_user_to_role` VALUES ('4', 'user-573388ebd14348cf8b546a6bfdf98ca3', 'role-f7943542d87a4f028f446b71d9ede25d');
 
 
 DROP TABLE IF EXISTS `tb_order`;

@@ -36,7 +36,7 @@ public interface IUserService extends IService<User> {
 
     Map<String, Object> getLoginUserAndMenuInfo(User user);
 
-    boolean deleteByUserNo(String userNo)throws Exception;
+    void deleteByUserNo(String userNo)throws Exception;
 
     Page<User> selectPageByConditionUser(Page<User> userPage, String info, Integer[] status, String startTime, String endTime);
 

@@ -35,7 +35,8 @@ public class RoleController {
      *  角色列表
      */
     @GetMapping("/pageList")
-    @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
+    //拥有超级管理员或管理员角色的用户可以访问这个接口,换成角色控制权限,改变请看MyRealm.class
+    //@RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
     public ResponseModel<Page<Role>> getPageList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
                                      @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize){
         //根据姓名查分页
@@ -48,7 +49,6 @@ public class RoleController {
      *  获取所有角色
      */
     @GetMapping("/all")
-    @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
     public  ResponseModel<List<Role>> getAllRole(){
         return ResponseHelper.buildResponseModel(roleService.selectList(new EntityWrapper<Role>()));
     }
@@ -57,7 +57,6 @@ public class RoleController {
      * 获取角色详细信息
      */
     @GetMapping(value = "/{roleCode}")
-    @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
     public ResponseModel getById(@PathVariable("roleCode") String roleCode)throws Exception{
         return ResponseHelper.buildResponseModel(roleService.selectByRoleCode(roleCode));
     }
@@ -66,7 +65,8 @@ public class RoleController {
      * 删除角色
      */
     @DeleteMapping(value = "/{roleCode}")
-    @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
+    //拥有超级管理员或管理员角色的用户可以访问这个接口,换成角色控制权限,改变请看MyRealm.class
+    //@RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
     public ResponseModel deleteRole(@PathVariable("roleCode") String roleCode)throws Exception{
         roleService.deleteByRoleCode(roleCode);
         return ResponseHelper.buildResponseModel(PublicResultConstant.SUCCEED);
@@ -78,7 +78,6 @@ public class RoleController {
      * @return
      */
     @PostMapping
-    @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
     public ResponseModel addRole(RoleModel roleModel) throws Exception{
         return ResponseHelper.buildResponseModel(roleService.addRoleAndPermission(roleModel));
     }
@@ -87,7 +86,6 @@ public class RoleController {
      * 修改角色信息
      */
     @PutMapping
-    @RequiresRoles({Constant.RoleType.SYS_ASMIN_ROLE})
     public ResponseModel updateRole(RoleModel roleModel) throws Exception{
         roleService.updateRoleInfo(roleModel);
         return ResponseHelper.buildResponseModel(PublicResultConstant.SUCCEED);

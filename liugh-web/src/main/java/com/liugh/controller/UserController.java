@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -70,8 +71,6 @@ public class UserController {
      * @throws Exception
      */
     @PostMapping("/admin/password")
-    //拥有超级管理员或管理员角色的用户可以访问这个接口
-    @RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
     public ResponseModel<String> resetPassWord (@ValidationParam("userNo,password,rePassword")
                                                @RequestBody JSONObject requestJson ) throws Exception{
         userService.resetPassWord(userService.selectById(requestJson.getString("userNo")),requestJson);
@@ -98,10 +97,9 @@ public class UserController {
     }
 
     @GetMapping(value = "/pageList")
-    //暂时换成了角色控制权限,改变请看MyRealm.class
-//    @RequiresPermissions(value = {"user:list"})
-    //拥有超级管理员或管理员角色的用户可以访问这个接口
-    @RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
+    @RequiresPermissions(value = {"user:list"})
+    //拥有超级管理员或管理员角色的用户可以访问这个接口,换成角色控制权限,改变请看MyRealm.class
+   //@RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
     @AccessLimit(perSecond=1,timeOut = 2)
     public ResponseModel<Page<User>> findList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
                                  @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize,
@@ -112,8 +110,6 @@ public class UserController {
 
     @GetMapping("/admin/infoList")
     @ApiOperation(value="获取用户列表", notes="需要header里加入Authorization")
-    //拥有超级管理员或管理员角色的用户可以访问这个接口
-    @RequiresRoles(value={Constant.RoleType.ADMIN,Constant.RoleType.SYS_ASMIN_ROLE},logical = Logical.OR)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageIndex", value = "第几页"
                     , dataType = "String",paramType="query"),
@@ -144,10 +140,10 @@ public class UserController {
     @ApiImplicitParam(name = "userNo", value = "用户ID", required = true, dataType = "String",paramType = "path")
     @GetMapping(value = "/{userNo}")
     //暂时换成了角色控制权限,改变请看MyRealm.class
-//    @RequiresPermissions(value = {"user:list"})
-    //拥有超级管理员或管理员角色的用户可以访问这个接口
-    @RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
-    public ResponseModel<User> findOneUser(@PathVariable("userNo") Integer userNo) {
+    @RequiresPermissions(value = {"user:list"})
+    //拥有超级管理员或管理员角色的用户可以访问这个接口,换成角色控制权限,改变请看MyRealm.class
+    //@RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
+    public ResponseModel<User> findOneUser(@PathVariable("userNo") String userNo) {
         User user = userService.selectById(userNo);
         return ResponseHelper.buildResponseModel(user);
     }
@@ -155,10 +151,7 @@ public class UserController {
     @ApiOperation(value="删除用户", notes="根据url的id来删除用户")
     @ApiImplicitParam(name = "userNo", value = "用户ID", required = true, dataType = "String",paramType = "path")
     @DeleteMapping(value = "/{userNo}")
-    //暂时换成了角色控制权限,改变请看MyRealm.class
-//    @RequiresPermissions(value = {"user:delete"})
-    //拥有超级管理员或管理员角色的用户可以访问这个接口
-    @RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
+    @RequiresPermissions(value = {"user:delete"})
     public ResponseModel deleteUser(@PathVariable("userNo") String userNo) throws Exception{
 
        userService.deleteByUserNo(userNo);
