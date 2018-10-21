@@ -97,6 +97,8 @@ CREATE TABLE `tb_operation_log` (
   `method_name` varchar(64) DEFAULT NULL COMMENT '方法名称',
   `ip` varchar(32) DEFAULT NULL,
   `create_time` bigint(20) DEFAULT NULL COMMENT '创建时间',
+  `model_name` varchar(50) DEFAULT NULL COMMENT '模块名称',
+  `action` varchar(50) DEFAULT NULL COMMENT '操作',
   `succeed` int(2) DEFAULT NULL COMMENT '是否成功 1:成功 2异常',
   `message` longtext COMMENT '异常堆栈信息',
   PRIMARY KEY (`operation_log_id`)
@@ -269,7 +271,3 @@ CREATE TABLE `tb_order` (
 INSERT INTO `tb_order` VALUES ('770480571594227712', 'user-006efece76c8433d8974c1a2f98422b6', '770480571594227712', 'postman', 'Product', '1539763171888', 'waitDelivery', '4540000', '0', '4540000', '0', '0', 'N', '{\"receiptType\":\"普通纸质发票\",\"receiptTitle\":\"公司\",\"receiptContent\":\"中国\"}', null, '13888888888', '刘大神', '西安', 'Y', 'A', null, null, null, null);
 INSERT INTO `tb_order` VALUES ('770480571984297984', 'user-006efece76c8433d8974c1a2f98422b6', '770480571594227713', 'postman', 'Product', '1539763171888', 'waitReceive', '3360000', '0', '3360000', '0', '0', 'N', '{\"receiptType\":\"普通纸质发票\",\"receiptTitle\":\"公司\",\"receiptContent\":\"中国\"}', null, '13888888888', '刘大神', '西安', 'N', 'A', null, null, null, null);
 INSERT INTO `tb_order` VALUES ('770480572001075200', 'user-006efece76c8433d8974c1a2f98422b6', '770480571594227714', 'postman', 'Product', '1539763171888', 'waitDelivery', '1180000', '0', '1180000', '0', '0', 'N', '{\"receiptType\":\"普通纸质发票\",\"receiptTitle\":\"公司\",\"receiptContent\":\"中国\"}', '872003869557731328', '13888888888', '刘大神', '西安', 'N', 'A', null, null, null, null);
-
-ALTER table tb_operation_log add COLUMN action DEFAULT null COMMENT '操作' ;
-
-ALTER table tb_operation_log add COLUMN model_name DEFAULT null COMMENT '模块名称' ;
