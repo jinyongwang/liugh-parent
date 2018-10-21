@@ -61,9 +61,9 @@ CREATE TABLE `tb_notice` (
 -- ----------------------------
 -- Records of tb_menu
 -- ----------------------------
-INSERT INTO `tb_menu` VALUES ('1', '0', 'menu-a8617c317b204969a054fdag233das2l', 'user', '用户管理列表', '1', '1', '', '1.jpg');
-INSERT INTO `tb_menu` VALUES ('2', '0', 'menu-afd83fc912eb44d29012049aae184fd4', 'data', '数据管理列表', '1', '1', '/api/data/manager', null);
-INSERT INTO `tb_menu` VALUES ('3', '0', 'menu-a8617c31654653a054b68a343254565fss', 'system', '系统管理', '1', '1', null, 'anticon-laptop');
+INSERT INTO `tb_menu` VALUES ('1', '0', 'menu-a8617c317b204969a054fdag233das2l', 'userMenu', '用户管理列表', '1', '1', '', '1.jpg');
+INSERT INTO `tb_menu` VALUES ('2', '0', 'menu-afd83fc912eb44d29012049aae184fd4', 'userMenu', '数据管理列表', '1', '1', '/api/data/manager', null);
+INSERT INTO `tb_menu` VALUES ('3', '0', 'menu-a8617c31654653a054b68a343254565fss', 'systemMenu', '系统管理', '1', '1', null, 'anticon-laptop');
 INSERT INTO `tb_menu` VALUES ('101', '1', 'menu-974abc42a78040e7ac74ceecb70c02b5', 'user:list', '用户管理列表', '1', '1', '/api/user/manager', null);
 INSERT INTO `tb_menu` VALUES ('102', '1', 'menu-ad61fb43be7d46e7a81e37593042f543', 'role:list', '角色列表', '1', '2', '', null);
 INSERT INTO `tb_menu` VALUES ('201', '2', 'menu-b16897c1c79b45b099939f5333530eaf', 'data:list1', '数据列表1', '1', '1', '', null);
@@ -166,7 +166,8 @@ INSERT INTO `tb_role_to_menu` VALUES ('24', 'role-cf8fea2055344df59a0d3e80540c78
 INSERT INTO `tb_role_to_menu` VALUES ('25', 'role-cf8fea2055344df59a0d3e80540c78f9', 'menu-a8617c31654653a054fdsg23asdg5423');
 INSERT INTO `tb_role_to_menu` VALUES ('26', 'role-cf8fea2055344df59a0d3e80540c78f9', 'menu-a8617c317b204969a054b653df212zg712');
 INSERT INTO `tb_role_to_menu` VALUES ('27', 'role-cf8fea2055344df59a0d3e80540c78f9', 'menu-a8617c31t34ytrfsdfg3j5e36u121rfdg465u');
-INSERT INTO `tb_role_to_menu` VALUES ('28', 'role-f7943542d87a4f028f446b71d9ede25d', 'menu-a8617c31t34ytrfsdfg3j5e36u121rfdg465u');
+INSERT INTO `tb_role_to_menu` VALUES ('28', 'role-f7943542d87a4f028f446b71d9ede25d', 'menu-974abc42a78040e7ac74ceecb70c02b5');
+INSERT INTO `tb_role_to_menu` VALUES ('28', 'role-f7943542d87a4f028f446b71d9ede25d', 'menu-a8617c317b204969a054fdag233das2l');
 
 -- ----------------------------
 -- Table structure for tb_sms_verify
