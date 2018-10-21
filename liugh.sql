@@ -167,7 +167,7 @@ INSERT INTO `tb_role_to_menu` VALUES ('25', 'role-cf8fea2055344df59a0d3e80540c78
 INSERT INTO `tb_role_to_menu` VALUES ('26', 'role-cf8fea2055344df59a0d3e80540c78f9', 'menu-a8617c317b204969a054b653df212zg712');
 INSERT INTO `tb_role_to_menu` VALUES ('27', 'role-cf8fea2055344df59a0d3e80540c78f9', 'menu-a8617c31t34ytrfsdfg3j5e36u121rfdg465u');
 INSERT INTO `tb_role_to_menu` VALUES ('28', 'role-f7943542d87a4f028f446b71d9ede25d', 'menu-974abc42a78040e7ac74ceecb70c02b5');
-INSERT INTO `tb_role_to_menu` VALUES ('28', 'role-f7943542d87a4f028f446b71d9ede25d', 'menu-a8617c317b204969a054fdag233das2l');
+INSERT INTO `tb_role_to_menu` VALUES ('29', 'role-f7943542d87a4f028f446b71d9ede25d', 'menu-a8617c317b204969a054fdag233das2l');
 
 -- ----------------------------
 -- Table structure for tb_sms_verify
