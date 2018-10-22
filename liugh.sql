@@ -121,9 +121,9 @@ CREATE TABLE `tb_role` (
 -- ----------------------------
 -- Records of tb_role
 -- ----------------------------
-INSERT INTO `liugh`.`tb_role` (`role_code`, `role_name`) VALUES ('role-cf8fea2055344df59a0d3e80540c78f9', 'sysadmin');
-INSERT INTO `liugh`.`tb_role` (`role_code`, `role_name`) VALUES ('role-dfsg3tsdfgh55334fsdg2asdf23qrasdf3', 'admin');
-INSERT INTO `liugh`.`tb_role` (`role_code`, `role_name`) VALUES ('role-f7943542d87a4f028f446b71d9ede25d', 'user');
+INSERT INTO `tb_role` (`role_code`, `role_name`) VALUES ('role-cf8fea2055344df59a0d3e80540c78f9', 'sysadmin');
+INSERT INTO `tb_role` (`role_code`, `role_name`) VALUES ('role-dfsg3tsdfgh55334fsdg2asdf23qrasdf3', 'admin');
+INSERT INTO `tb_role` (`role_code`, `role_name`) VALUES ('role-f7943542d87a4f028f446b71d9ede25d', 'user');
 
 
 -- ----------------------------
