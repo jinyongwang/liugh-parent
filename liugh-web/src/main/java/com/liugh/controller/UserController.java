@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.liugh.annotation.AccessLimit;
 import com.liugh.annotation.CurrentUser;
+import com.liugh.annotation.Pass;
 import com.liugh.annotation.ValidationParam;
 import com.liugh.base.Constant;
 import com.liugh.base.PublicResultConstant;
@@ -100,7 +101,7 @@ public class UserController {
     @RequiresPermissions(value = {"user:list"})
     //拥有超级管理员或管理员角色的用户可以访问这个接口,换成角色控制权限,改变请看MyRealm.class
    //@RequiresRoles(value = {Constant.RoleType.SYS_ASMIN_ROLE,Constant.RoleType.ADMIN},logical =  Logical.OR)
-    @AccessLimit(perSecond=1,timeOut = 2)
+    @AccessLimit(perSecond=1,timeOut = 500)//5秒钟生成一个令牌
     public ResponseModel<Page<User>> findList(@RequestParam(name = "pageIndex", defaultValue = "1", required = false) Integer pageIndex,
                                  @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize,
                                  @RequestParam(value = "username", defaultValue = "",required = false) String username) {

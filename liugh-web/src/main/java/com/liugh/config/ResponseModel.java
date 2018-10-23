@@ -5,6 +5,10 @@ package com.liugh.config;
  * @author liugh 53182347@qq.com
  */
 
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 
 public class ResponseModel<T> implements Serializable {
@@ -15,6 +19,9 @@ public class ResponseModel<T> implements Serializable {
     private String code;
 
     public ResponseModel() {
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getResponse();
+        response.setCharacterEncoding("UTF-8");
     }
 
     public String getMessage() {
