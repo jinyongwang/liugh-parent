@@ -26,16 +26,6 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
         super.addArgumentResolvers(argumentResolvers);
     }
 
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(fastJsonHttpMessageConverterEx());
-        super.configureMessageConverters(converters);
-    }
-
-    @Bean
-    public FastJsonHttpMessageConverterEx fastJsonHttpMessageConverterEx() {
-        return new FastJsonHttpMessageConverterEx();
-    }
 
     @Bean
     public CurrentUserMethodArgumentResolver currentUserMethodArgumentResolver() {

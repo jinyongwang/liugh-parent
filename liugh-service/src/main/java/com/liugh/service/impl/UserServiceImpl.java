@@ -133,6 +133,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         //测试websocket用户登录给管理员发送消息的例子  前端代码参考父目录下WebSocketDemo.html
 //        noticeService.insertByThemeNo("themeNo-cwr3fsxf233edasdfcf2s3","13888888888");
 //        MyWebSocketService.sendMessageTo(JSONObject.toJSONString(user),"13888888888");
+        user.setRoleName(null);
         return this.getLoginUserAndMenuInfo(user);
     }
 
