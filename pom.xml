@@ -40,7 +40,6 @@
         <velocity.version>1.7</velocity.version>
         <shiro-spring.version>1.4.0</shiro-spring.version>
         <java-jwt.version>3.2.0</java-jwt.version>
-        <poi.version>3.15</poi.version>
         <dom4j.version>1.6.1</dom4j.version>
         <pinyin4j.version>2.5.0</pinyin4j.version>
         <gson.version>2.7</gson.version>
@@ -105,11 +104,6 @@
                 <optional>true</optional>
             </dependency>
             <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
@@ -130,11 +124,6 @@
                 <version>${velocity.version}</version>
             </dependency>
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <scope>runtime</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-spring</artifactId>
                 <version>${shiro-spring.version}</version>
@@ -143,11 +132,6 @@
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
                 <version>${java-jwt.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi</artifactId>
-                <version>${poi.version}</version>
             </dependency>
             <dependency>
                 <groupId>dom4j</groupId>
