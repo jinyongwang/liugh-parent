@@ -1,6 +1,7 @@
 package com.liugh.util;
 
 import com.liugh.base.Constant;
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
@@ -21,6 +22,9 @@ import java.util.*;
  * @since on 2018/5/8.
  */
 public class FileUtil {
+
+    //2M
+    public static final int FILE_SIZE = 1000000;
 
     private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
@@ -721,6 +725,34 @@ public class FileUtil {
             flag = true;
         }
         return flag;
+    }
+
+
+    /**
+     * 压缩超过2m的图片
+     * @param url
+     * @return
+     * @throws Exception
+     */
+    public static String savePreFile(String url) throws Exception {
+        StringBuffer str = new StringBuffer();
+        str.append("/img/");
+        str.append(DateTimeUtil.formatDatetoString(new Date()));
+        str.append("/pre/");
+        str.append(url.substring(url.lastIndexOf("/")+1));
+        String preUrl = fileUploadPath + str.toString();
+        File filePath = new File(StringUtil.utf8Decoding(preUrl.substring(0,preUrl.lastIndexOf("/"))));
+        if(!filePath.exists()){
+            filePath.mkdirs();
+        }
+        createFile(preUrl);
+        //其中的scale是可以指定图片的大小，值在0到1之间，1f就是原图大小，0.5就是原图的一半大小，这里的大小是指图片的长宽。
+        //而outputQuality是图片的质量，值也是在0到1，越接近于1质量越好，越接近于0质量越差。
+        Thumbnails.of(fileUploadPath+url)
+                .scale(1f)
+                .outputQuality(0.5f)
+                .toFile(preUrl);
+        return str.toString();
     }
 
     /**
