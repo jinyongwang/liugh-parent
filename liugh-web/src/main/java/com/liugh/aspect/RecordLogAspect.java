@@ -25,25 +25,23 @@ import javax.servlet.http.HttpServletRequest;
  * @author liugh
  * @since on 2018/5/10.
  */
-public class RecordLogAspect extends AspectManager {
-
-    private AspectApi aspectApi;
+public class RecordLogAspect extends AbstractAspectManager {
 
     public RecordLogAspect(AspectApi aspectApi){
-        super();
-        this.aspectApi=aspectApi;
+        super(aspectApi);
     }
 
     @Override
     public Object doHandlerAspect(ProceedingJoinPoint pjp, Method method) throws Throwable{
-        aspectApi.doHandlerAspect(pjp,method);
-        return doLog(pjp,method);
+        super.doHandlerAspect(pjp,method);
+        return execute(pjp,method);
     }
 
     private Logger logger = LoggerFactory.getLogger(RecordLogAspect.class);
 
+    @Override
     @Async
-    private Object doLog(ProceedingJoinPoint pjp, Method method) throws Throwable{
+    protected Object execute(ProceedingJoinPoint pjp, Method method) throws Throwable{
         Log log  = method.getAnnotation( Log.class );
         // 异常日志信息
         String actionLog = null;

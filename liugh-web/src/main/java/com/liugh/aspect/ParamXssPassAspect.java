@@ -9,24 +9,22 @@ import java.lang.reflect.Method;
  * 防止xss攻击切面
  * Created by liugh on 2018/10/12.
  */
-public class ParamXssPassAspect extends  AspectManager{
-
-    private AspectApi aspectApi;
+public class ParamXssPassAspect extends  AbstractAspectManager{
 
     public ParamXssPassAspect(AspectApi aspectApi){
-        super();
-        this.aspectApi=aspectApi;
+        super(aspectApi);
     }
 
 
     @Override
     public Object doHandlerAspect(ProceedingJoinPoint pjp, Method method) throws Throwable {
-        aspectApi.doHandlerAspect(pjp,method);
-        handlerRequstParam(pjp);
+        super.doHandlerAspect(pjp,method);
+        execute(pjp,method);
         return null;
     }
 
-    private Object[] handlerRequstParam(ProceedingJoinPoint pjp){
+    @Override
+    protected Object execute(ProceedingJoinPoint pjp, Method method)throws Throwable{
         Object[] args = pjp.getArgs();
         for (int i = 0; i < args.length; i++) {
             if(args[i] instanceof JSONObject){

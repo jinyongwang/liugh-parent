@@ -21,20 +21,16 @@ import java.util.concurrent.TimeUnit;
  * Created by liugh on 2018/10/12.
  */
 @Slf4j
-public class AccessLimitAspect extends AspectManager{
-
-
-    private AspectApi aspectApi;
+public class AccessLimitAspect extends AbstractAspectManager{
 
     public AccessLimitAspect(AspectApi aspectApi){
-        super();
-        this.aspectApi=aspectApi;
+        super(aspectApi);
     }
 
     @Override
     public Object doHandlerAspect(ProceedingJoinPoint pjp, Method method)throws Throwable {
-        aspectApi.doHandlerAspect(pjp,method);
-        doRateLimit(method);
+        super.doHandlerAspect(pjp,method);
+        execute(pjp,method);
         return null;
     }
 
@@ -43,7 +39,8 @@ public class AccessLimitAspect extends AspectManager{
      //使用url做为key,存放令牌桶 防止每次重新创建令牌桶
     private static  Map<String, RateLimiter> limitMap = Maps.newConcurrentMap();
 
-    private void doRateLimit(Method method) throws Exception{
+    @Override
+    public Object execute(ProceedingJoinPoint pjp,Method method) throws Throwable{
         AccessLimit lxRateLimit = method.getAnnotation(AccessLimit.class);
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         // 或者url(存在map集合的key)
@@ -60,5 +57,6 @@ public class AccessLimitAspect extends AspectManager{
             log.info("Error ---时间:{},获取令牌失败.", sdf.format(new Date()));
             throw new BusinessException("服务器繁忙，请稍后再试!");
         }
+        return null;
     }
 }

@@ -20,23 +20,20 @@ import java.lang.reflect.Method;
  * @author liugh
  * @since on 2018/5/10.
  */
-public class ValidationParamAspect extends AspectManager{
-
-    private AspectApi aspectApi;
+public class ValidationParamAspect extends AbstractAspectManager{
 
     public ValidationParamAspect(AspectApi aspectApi){
-        super();
-        this.aspectApi=aspectApi;
+        super(aspectApi);
     }
     @Override
     public Object doHandlerAspect(ProceedingJoinPoint pjp, Method method) throws Throwable{
-        aspectApi.doHandlerAspect(pjp,method);
-        validationParam(pjp,method);
+        super.doHandlerAspect(pjp,method);
+        execute(pjp,method);
         return null;
     }
 
 
-    private void validationParam(ProceedingJoinPoint pjp, Method method) throws Throwable{
+    protected Object execute(ProceedingJoinPoint pjp, Method method) throws Throwable{
        //获取注解的value值返回
         String validationParamValue = StringUtil.getMethodAnnotationOne(method,ValidationParam.class.getSimpleName());
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
@@ -59,6 +56,7 @@ public class ValidationParamAspect extends AspectManager{
                 }
             }
         }
+        return null;
     }
 
     /**
