@@ -32,7 +32,7 @@ public class Constant {
     //菜单类型，1：菜单  2：按钮操作
     public static final int TYPE_BUTTON = 2;
 
-    public static boolean isPass=false;
+    public static ThreadLocal<Boolean> isPass = new ThreadLocal<>();
 
     //启用
     public static final int ENABLE = 1;
