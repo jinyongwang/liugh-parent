@@ -89,7 +89,7 @@ public class MyRealm extends AuthorizingRealm {
             this.userService = SpringContextBeanService.getBean(IUserService.class);
         }
         String token = (String) auth.getCredentials();
-        if(Constant.isPass){
+        if(Constant.isPass.get()){
             return new SimpleAuthenticationInfo(token, token, this.getName());
         }
         // 解密获得username，用于和数据库进行对比
