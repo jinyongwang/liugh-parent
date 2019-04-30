@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
 /**
- * @author liugh
+ * @author grm
  *
  * 代码的执行流程preHandle->isAccessAllowed->isLoginAttempt->executeLogin
  */
@@ -121,34 +121,32 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
      * @throws Exception
      */
     private boolean verificationPassAnnotation(ServletRequest request, ServletResponse response, HttpServletRequest httpServletRequest, String authorization) throws Exception {
-        for (String urlMethod : Constant.METHOD_URL_SET) {
+        for (String urlMethod: Constant.METHOD_URL_SET) {
             String[] split = urlMethod.split(":--:");
-            String reqUrl = split[0];
-            String reqMethod = split[1];
-
-            //是否包含Pass注解
-            boolean isPass = reqUrl.equals(httpServletRequest.getRequestURI())
-                    && (reqMethod.equals(httpServletRequest.getMethod()) || reqMethod.equals("RequestMapping"));
-
-            //REST风格URL参数单独切割处理
-            boolean isPass2 = StringUtils.countMatches(urlMethod, "{") > 0 &&
-                    StringUtils.countMatches(urlMethod, "/") == StringUtils.countMatches(reqUrl, "/")
-                    && (reqMethod.equals(httpServletRequest.getMethod()) || reqMethod.equals("RequestMapping"));
-
-            if (isPass || isPass2) {
-                Constant.isPass.set(true);
-                //判断是否带有authorization
-                if (ComUtil.isEmpty(authorization)) {
+            if(split[0].equals(httpServletRequest.getRequestURI())
+                    && (split[1].equals(httpServletRequest.getMethod()) ||  split[1].equals("RequestMapping"))){
+                Constant.isPass=true;
+                if(ComUtil.isEmpty(authorization)){
                     //如果当前url不需要认证，则注入当前登录用户时，给一个空的
-                    httpServletRequest.setAttribute("currentUser", new User());
+                    httpServletRequest.setAttribute("currentUser",new User());
                     return true;
-                } else {
+                }else {
                     super.preHandle(request, response);
                 }
-            } else {
-                Constant.isPass.set(false);
             }
-
+            if(StringUtils.countMatches(urlMethod, "{")>0 &&
+                    StringUtils.countMatches(urlMethod, "/") == StringUtils.countMatches(split[0], "/")
+                    && (split[1].equals(httpServletRequest.getMethod()) ||  split[1].equals("RequestMapping"))){
+                if(isSameUrl(split[0],httpServletRequest.getRequestURI())){
+                    Constant.isPass=true;
+                    if(ComUtil.isEmpty(authorization)){
+                        httpServletRequest.setAttribute("currentUser",new User());
+                        return true;
+                    }else {
+                        super.preHandle(request, response);
+                    }
+                }
+            }
         }
         return false;
     }

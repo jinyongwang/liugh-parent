@@ -57,6 +57,15 @@ public class RedisConfig extends CachingConfigurerSupport {
 //        cacheManager.setDefaultExpiration(60);//设置缓存保留时间（seconds）
         return cacheManager;
     }
+//    @Bean  springboot 2.0
+//    public CacheManager cacheManager(
+//            @SuppressWarnings("rawtypes") RedisTemplate redisTemplate) {
+//        // 初始化缓存管理器，在这里我们可以缓存的整体过期时间什么的，我这里默认没有配置
+//        RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager
+//                .RedisCacheManagerBuilder
+//                .fromConnectionFactory(jedisConnectionFactory);
+//        return builder.build();
+//    }
 
     //1.项目启动时此方法先被注册成bean被spring管理
     @Bean
