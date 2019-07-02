@@ -9,9 +9,6 @@ import com.liugh.config.ResponseHelper;
 import com.liugh.config.ResponseModel;
 import com.liugh.model.Student1;
 import com.liugh.model.Student2;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;

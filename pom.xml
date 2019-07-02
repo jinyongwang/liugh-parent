@@ -103,13 +103,6 @@
                 <artifactId>spring-boot-autoconfigure</artifactId>
                 <version>${spring-boot-autoconfigure.version}</version>
             </dependency>
-            <!-- 热部署  使用intellij idea ，对应快捷键 Ctrl+Shift+F9重新编译-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-devtools</artifactId>
-                <scope>provided</scope>
-                <optional>true</optional>
-            </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
@@ -180,17 +173,6 @@
                 <artifactId>scala-bcrypt_2.10</artifactId>
                 <version>${scala-bcrypt_2.10.version}</version>
             </dependency>
-            <!-- JUnit test dependency -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>com.jayway.restassured</groupId>
-                <artifactId>rest-assured</artifactId>
-                <version>${rest-assured.version}</version>
-            </dependency>
-
 
             <!-- 文件压缩 -->
             <dependency>
