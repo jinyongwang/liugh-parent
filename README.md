@@ -28,7 +28,7 @@
 
 7.使用POST请求登录返回token和权限信息，保证请求无状态，返回实体如果属性为空不显示。
 
-    ![](https://oscimg.oschina.net/oscnet/f408e29462912bfdd1a9415a0d74d351d9a.jpg)
+    ![](https://oscimg.oschina.net/oscnet/a12b5783657b7fd29f413c4a231bb6d6a7e.jpg)
 
 8.完成微信/微博/QQ第三方登录功能，完成用户名电话邮箱三种方式登录,WebSocket实时消息推送,短信登录注册等功能.
 
