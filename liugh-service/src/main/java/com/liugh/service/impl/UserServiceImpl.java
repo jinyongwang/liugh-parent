@@ -7,11 +7,8 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.liugh.base.BusinessException;
 import com.liugh.base.Constant;
 import com.liugh.base.PublicResultConstant;
-import com.liugh.entity.Menu;
-import com.liugh.entity.SmsVerify;
+import com.liugh.entity.*;
 import com.liugh.service.*;
-import com.liugh.entity.User;
-import com.liugh.entity.UserToRole;
 import com.liugh.mapper.UserMapper;
 import com.liugh.util.*;
 import org.mindrot.jbcrypt.BCrypt;
@@ -45,6 +42,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     private INoticeService noticeService;
+
+
+    @Autowired
+    private IInfoToUserService infoToUserService;
 
     @Autowired
     private ISmsVerifyService smsVerifyService;
@@ -122,20 +123,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public Map<String, Object> checkMobileAndPasswd(JSONObject requestJson) throws Exception{
         //由于 @ValidationParam注解已经验证过mobile和passWord参数，所以可以直接get使用没毛病。
-        String mobile = requestJson.getString("mobile");
-        if(!StringUtil.checkMobileNumber(mobile)){
-            throw new BusinessException(PublicResultConstant.MOBILE_ERROR);
+        String identity = requestJson.getString("identity");
+        InfoToUser infoToUser = infoToUserService.selectOne(new EntityWrapper<InfoToUser>().eq("identity_info ", identity));
+        if(ComUtil.isEmpty(infoToUser)){
+            throw new BusinessException(PublicResultConstant.INVALID_USER);
         }
-        User user = this.selectOne(new EntityWrapper<User>().where("mobile = {0} and status = 1",mobile));
+        User user = this.selectOne(new EntityWrapper<User>().where("user_no = {0} and status = 1",infoToUser.getUserNo()));
         if (ComUtil.isEmpty(user) || !BCrypt.checkpw(requestJson.getString("password"), user.getPassword())) {
             throw new BusinessException(PublicResultConstant.INVALID_USERNAME_PASSWORD);
         }
         //测试websocket用户登录给管理员发送消息的例子  前端代码参考父目录下WebSocketDemo.html
 //        noticeService.insertByThemeNo("themeNo-cwr3fsxf233edasdfcf2s3","13888888888");
 //        MyWebSocketService.sendMessageTo(JSONObject.toJSONString(user),"13888888888");
-        user.setRoleName(null);
         return this.getLoginUserAndMenuInfo(user);
     }
+
+
 
     @Override
     public Map<String, Object> checkMobileAndCatcha(JSONObject requestJson) throws Exception {
@@ -185,8 +188,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw new BusinessException(PublicResultConstant.VERIFY_PARAM_PASS);
         }
         userRegister.setPassword(BCrypt.hashpw(requestJson.getString("password"), BCrypt.gensalt()));
+        User registerUser = this.register(userRegister, Constant.RoleType.USER);
+        infoToUserService.insert(InfoToUser.builder().userNo(registerUser.getUserNo())
+                .identityInfo(userRegister.getMobile()).identityType(Constant.LOGIN_MOBILE).build());
         //默认注册普通用户
-        return this.register(userRegister, Constant.RoleType.USER);
+        return registerUser;
     }
 
     @Override
@@ -244,6 +250,45 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         currentUser.setPassword(BCrypt.hashpw(requestJson.getString("password"),BCrypt.gensalt()));
         this.updateById(currentUser);
+    }
+
+    @Override
+    public User insertUserByAdmin(JSONObject requestJson) throws Exception {
+        User user = requestJson.toJavaObject(User.class);
+        if(!ComUtil.isEmpty(this.selectOne(new EntityWrapper<User>().eq("user_name", user.getUsername())))){
+            throw new BusinessException(PublicResultConstant.INVALID_USER_EXIST);
+        }
+        Role role = roleService.selectOne(
+                new EntityWrapper<Role>().eq("role_name", requestJson.getString("roleName")));
+        if(ComUtil.isEmpty(role)){
+            throw new BusinessException(PublicResultConstant.INVALID_ROLE);
+        }
+        String userNo = GenerationSequenceUtil.generateUUID("user");
+        if(!ComUtil.isEmpty(user.getMobile())){
+            if(!StringUtil.checkMobileNumber(user.getMobile())){
+                throw new BusinessException(PublicResultConstant.MOBILE_ERROR);
+            }
+            infoToUserService.insert(InfoToUser.builder().identityInfo(user.getMobile())
+                    .identityType(Constant.LOGIN_MOBILE).userNo(userNo)
+                    .identityInfo(user.getMobile()).build());
+        }
+        if(!ComUtil.isEmpty(user.getEmail())){
+            if(!StringUtil.checkEmail(user.getEmail())){
+                throw new BusinessException(PublicResultConstant.EMAIL_ERROR);
+            }
+            infoToUserService.insert(InfoToUser.builder().userNo(userNo)
+                    .identityInfo(user.getEmail()).identityType(Constant.LOGIN_EMAIL).build());
+        }
+        user.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt()));
+        user.setUserNo(userNo);
+        user.setCreateTime(System.currentTimeMillis());
+        user.setStatus(Constant.ENABLE);
+        this.insert(user);
+        infoToUserService.insert(InfoToUser.builder().userNo(userNo)
+                .identityInfo(user.getUsername()).identityType(Constant.LOGIN_USERNAME).build());
+        UserToRole userToRole  = UserToRole.builder().userNo(user.getUserNo()).roleCode(role.getRoleCode()).build();
+        userToRoleService.insert(userToRole);
+        return user;
     }
 
 

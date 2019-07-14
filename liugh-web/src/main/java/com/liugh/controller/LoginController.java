@@ -1,9 +1,9 @@
 package com.liugh.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.liugh.annotation.Log;
-import com.liugh.annotation.Pass;
-import com.liugh.annotation.ValidationParam;
+import com.liugh.annotation.*;
+import com.liugh.base.Constant;
+import com.liugh.base.PublicResultConstant;
 import com.liugh.config.ResponseHelper;
 import com.liugh.config.ResponseModel;
 import com.liugh.entity.User;
@@ -13,6 +13,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -31,18 +34,33 @@ public class LoginController {
     private IUserService userService;
 
 
-    @ApiOperation(value="手机密码登录", notes="body体参数,不需要Authorization",produces = "application/json")
+    @ApiOperation(value="手机用户名邮箱密码登录", notes="body体参数,不需要Authorization",produces = "application/json")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "requestJson", value = "{\"mobile\":\"13888888888\",\"password\":\"123456\"}"
+            @ApiImplicitParam(name = "requestJson", value = "{\"identity\":\"13888888888\",\"password\":\"123456\"}"
                     , required = true, dataType = "String",paramType="body")
     })
     @PostMapping("/login")
     @Log(action="SignIn",modelName= "Login",description="前台密码登录接口")
     @Pass
+    //5秒产生一个令牌,放入容量为0.3的令牌桶
+    @AccessLimit(perSecond=0.3,timeOut = 5000)
     public ResponseModel<Map<String, Object>> login(
-            @ValidationParam("mobile,password")@RequestBody JSONObject requestJson) throws Exception{
+            @ValidationParam("identity,password")@RequestBody JSONObject requestJson) throws Exception{
         return ResponseHelper.buildResponseModel(userService.checkMobileAndPasswd(requestJson));
     }
+
+    @ApiIgnore
+    @Log(action="register",modelName= "User",description="添加用户")
+    @PostMapping("/admin/register")
+    //添加用户的按钮权限
+    @RequiresPermissions("user:add")
+    public ResponseModel register(
+            @ValidationParam("username,roleName")@RequestBody JSONObject requestJson,
+            @CurrentUser User user) throws Exception{
+        requestJson.put("createUser", user.getUserNo());
+        return ResponseHelper.buildResponseModel(userService.insertUserByAdmin(requestJson));
+    }
+
 
     @ApiOperation(value="短信验证码登录", notes="body体参数,不需要Authorization",produces = "application/json")
     @ApiImplicitParams({

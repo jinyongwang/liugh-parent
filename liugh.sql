@@ -1,19 +1,47 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
+Source Server         : 本机
 Source Server Version : 50620
 Source Host           : localhost:3306
-Source Database       : cpm
+Source Database       : liugh
 
 Target Server Type    : MYSQL
 Target Server Version : 50620
 File Encoding         : 65001
 
-Date: 2018-07-06 15:43:03
+Date: 2019-07-14 16:59:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for tb_info_to_user
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_info_to_user`;
+CREATE TABLE `tb_info_to_user` (
+  `info_to_user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `identity_info` varchar(50) NOT NULL COMMENT '用户账号',
+  `user_no` varchar(50) NOT NULL COMMENT '用户主键',
+  `identity_type` int(2) NOT NULL COMMENT '登录类型:0 用户名登录 1手机登录 2 邮箱登录',
+  PRIMARY KEY (`info_to_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='用户账号关系表';
+
+-- ----------------------------
+-- Records of tb_info_to_user
+-- ----------------------------
+INSERT INTO `tb_info_to_user` VALUES ('1', '13888888888', 'user-006efece76c8433d8974c1a2f98422b6', '1');
+INSERT INTO `tb_info_to_user` VALUES ('2', 'admin', 'user-006efece76c8433d8974c1a2f98422b6', '0');
+INSERT INTO `tb_info_to_user` VALUES ('3', '53182347@qq.com', 'user-006efece76c8433d8974c1a2f98422b6', '2');
+INSERT INTO `tb_info_to_user` VALUES ('4', '15802933752', 'user-190f8710857f4a239570387ffc676c39', '1');
+INSERT INTO `tb_info_to_user` VALUES ('5', '15802933753@qq.com', 'user-190f8710857f4a239570387ffc676c39', '2');
+INSERT INTO `tb_info_to_user` VALUES ('6', 'user', 'user-190f8710857f4a239570387ffc676c39', '0');
+INSERT INTO `tb_info_to_user` VALUES ('7', '15802933752', 'user-573388ebd14348cf8b546a6bfdf98ca3', '1');
+INSERT INTO `tb_info_to_user` VALUES ('8', 'liugh', 'user-573388ebd14348cf8b546a6bfdf98ca3', '0');
+INSERT INTO `tb_info_to_user` VALUES ('9', '18792420523@qq.com', 'user-573388ebd14348cf8b546a6bfdf98ca3', '2');
+INSERT INTO `tb_info_to_user` VALUES ('11', '17765071663', 'user-2eaa08353bc94aeeaa8087f5096f87f3', '1');
+INSERT INTO `tb_info_to_user` VALUES ('12', '66864662@qq.com', 'user-2eaa08353bc94aeeaa8087f5096f87f3', '2');
+INSERT INTO `tb_info_to_user` VALUES ('13', 'heihei', 'user-2eaa08353bc94aeeaa8087f5096f87f3', '0');
 
 -- ----------------------------
 -- Table structure for tb_menu
@@ -31,32 +59,6 @@ CREATE TABLE `tb_menu` (
   `icon` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`menu_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2024 DEFAULT CHARSET=utf8 COMMENT='菜单表';
-
-DROP TABLE IF EXISTS `tb_user_thirdparty`;
-CREATE TABLE `tb_user_thirdparty` (
-  `user_thirdparty_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `open_id` varchar(128) NOT NULL COMMENT '第三方Id',
-  `user_no` varchar(50) DEFAULT NULL COMMENT '绑定用户的id',
-  `access_token` varchar(500) DEFAULT NULL COMMENT '第三方token',
-  `provider_type` varchar(32) NOT NULL COMMENT '第三方类型 qq:QQ 微信:WX 微博:SINA',
-  `status` int(2) DEFAULT '1' COMMENT '状态值（1：启用，2：禁用，3：删除）',
-  `create_time` bigint(20) NOT NULL COMMENT '创建时间',
-  PRIMARY KEY (`user_thirdparty_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='第三方用户表';
-
-DROP TABLE IF EXISTS `tb_notice`;
-CREATE TABLE `tb_notice` (
-  `notice_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `title` varchar(100) DEFAULT NULL COMMENT '标题',
-  `type` int(2) DEFAULT NULL COMMENT '类型 1:消息类型11;2:消息类型22;3:消息类型33;4:消息类型44;5:消息类型55',
-  `create_time` bigint(20) NOT NULL COMMENT '创建时间',
-  `mobile` varchar(50) NOT NULL COMMENT '消息所有者',
-  `theme_no` varchar(50) NOT NULL COMMENT '关联的主题no',
-  `is_read` int(2) NOT NULL COMMENT '是否已读 0 未读; 1 已读',
-  PRIMARY KEY (`notice_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='消息通知表';
-
-
 
 -- ----------------------------
 -- Records of tb_menu
@@ -85,6 +87,25 @@ INSERT INTO `tb_menu` VALUES ('2022', '202', 'menu-d68955aa58e0428ea824680484a07
 INSERT INTO `tb_menu` VALUES ('2023', '202', 'menu-a8617c317b204969a054b68a3473d3b4', 'data:edit', '属性编辑', '2', '3', '', null);
 
 -- ----------------------------
+-- Table structure for tb_notice
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_notice`;
+CREATE TABLE `tb_notice` (
+  `notice_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `title` varchar(100) DEFAULT NULL COMMENT '标题',
+  `type` int(2) DEFAULT NULL COMMENT '类型 1:消息类型11;2:消息类型22;3:消息类型33;4:消息类型44;5:消息类型55',
+  `create_time` bigint(20) NOT NULL COMMENT '创建时间',
+  `mobile` varchar(50) NOT NULL COMMENT '消息所有者',
+  `theme_no` varchar(50) NOT NULL COMMENT '关联的主题no',
+  `is_read` int(2) NOT NULL COMMENT '是否已读 0 未读; 1 已读',
+  PRIMARY KEY (`notice_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='消息通知表';
+
+-- ----------------------------
+-- Records of tb_notice
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for tb_operation_log
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_operation_log`;
@@ -102,11 +123,61 @@ CREATE TABLE `tb_operation_log` (
   `succeed` int(2) DEFAULT NULL COMMENT '是否成功 1:成功 2异常',
   `message` longtext COMMENT '异常堆栈信息',
   PRIMARY KEY (`operation_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=203 DEFAULT CHARSET=utf8 COMMENT='操作日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=utf8 COMMENT='操作日志表';
 
 -- ----------------------------
 -- Records of tb_operation_log
 -- ----------------------------
+INSERT INTO `tb_operation_log` VALUES ('203', '前台密码登录接口', '{\"password\":\"*******\",\"identity\":\"admin\"}', null, 'com.liugh.controller.LoginController', 'login', '0:0:0:0:0:0:0:1:61415', '1563093405368', 'Login', 'SignIn', '1', null);
+INSERT INTO `tb_operation_log` VALUES ('204', '前台密码登录接口', '{\"password\":\"*******\",\"identity\":\"admin\"}', null, 'com.liugh.controller.LoginController', 'login', '0:0:0:0:0:0:0:1:62364', '1563094229504', 'Login', 'SignIn', '1', null);
+INSERT INTO `tb_operation_log` VALUES ('205', '前台密码登录接口', '{\"password\":\"*******\",\"identity\":\"53182347@qq.com\"}', null, 'com.liugh.controller.LoginController', 'login', '0:0:0:0:0:0:0:1:62364', '1563094238134', 'Login', 'SignIn', '1', null);
+INSERT INTO `tb_operation_log` VALUES ('206', '前台密码登录接口', '{\"password\":\"*******\",\"identity\":\"531823417@qq.com\"}', null, 'com.liugh.controller.LoginController', 'login', '0:0:0:0:0:0:0:1:62364', '1563094242076', 'Login', 'SignIn', '2', '用户不存在 &#10; com.liugh.service.impl.UserServiceImpl.checkMobileAndPasswd(UserServiceImpl.java:129) &#10; sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) &#10; sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) &#10; sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) &#10; java.lang.reflect.Method.invoke(Method.java:498) &#10; org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:333) &#10; org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207) &#10; com.sun.proxy.$Proxy126.checkMobileAndPasswd(Unknown Source) &#10; sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) &#10; sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) &#10; sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) &#10; java.lang.reflect.Method.invoke(Method.java:498) &#10; org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:333) &#10; org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) &#10; org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157) &#10; org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:99) &#10; org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:282) &#10; org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:96) &#10; org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) &#10; org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213) &#10; com.sun.proxy.$Proxy126.checkMobileAndPasswd(Unknown Source) &#10; com.liugh.controller.LoginController.login(LoginController.java:48) &#10; com.liugh.controller.LoginController$$FastClassBySpringCGLIB$$63a1b1d5.invoke(<generated>) &#10; org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:204) &#10; org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:721) &#10; org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157) &#10; org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:97) &#10; com.liugh.aspect.RecordLogAspect.execute(RecordLogAspect.java:56) &#10; com.liugh.aspect.RecordLogAspect.doHandlerAspect(RecordLogAspect.java:37) &#10; com.liugh.config.ControllerAspect.validationPoint(ControllerAspect.java:50) &#10; sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) &#10; sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) &#10; sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) &#10; java.lang.reflect.Method.invoke(Method.java:498) &#10; org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:629) &#10; org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:618) &#10; org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70) &#10; org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) &#10; org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92) &#10; org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) &#10; org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:656) &#10; com.liugh.controller.LoginController$$EnhancerBySpringCGLIB$$3972a38.login(<generated>) &#10; sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) &#10; sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) &#10; sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) &#10; java.lang.reflect.Method.invoke(Method.java:498) &#10; org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) &#10; org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:133) &#10; org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:116) &#10; org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:827) &#10; org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:738) &#10; org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:85) &#10; org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963) &#10; org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:897) &#10; org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:970) &#10; org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:872) &#10; javax.servlet.http.HttpServlet.service(HttpServlet.java:648) &#10; org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:846) &#10; javax.servlet.http.HttpServlet.service(HttpServlet.java:729) &#10; org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:230) &#10; org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165) &#10; org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52) &#10; org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192) &#10; org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165) &#10; org.apache.shiro.web.servlet.ProxiedFilterChain.doFilter(ProxiedFilterChain.java:61) &#10; org.apache.shiro.web.servlet.AdviceFilter.executeChain(AdviceFilter.java:108) &#10; org.apache.shiro.web.servlet.AdviceFilter.doFilterInternal(AdviceFilter.java:137) &#10; org.apache.shiro.web.servlet.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:125) &#10; org.apache.shiro.web.servlet.ProxiedFilterChain.doFilter(ProxiedFilterChain.java:66) &#10; org.apache.shiro.web.servlet.AbstractShiroFilter.executeChain(AbstractShiroFilter.java:449) &#10; org.apache.shiro.web.servlet.AbstractShiroFilter$1.call(AbstractShiroFilter.java:365) &#10; org.apache.shiro.subject.support.SubjectCallable.doCall(SubjectCallable.java:90) &#10; org.apache.shiro.subject.support.SubjectCallable.call(SubjectCallable.java:83) &#10; org.apache.shiro.subject.support.DelegatingSubject.execute(DelegatingSubject.java:387) &#10; org.apache.shiro.web.servlet.AbstractShiroFilter.doFilterInternal(AbstractShiroFilter.java:362) &#10; org.apache.shiro.web.servlet.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:125) &#10; org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192) &#10; org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165) &#10; org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:96) &#10; org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) &#10; org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192) &#10; org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165) &#10; com.alibaba.druid.support.http.WebStatFilter.doFilter(WebStatFilter.java:123) &#10; org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192) &#10; org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165) &#10; org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99) &#10; org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) &#10; org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192) &#10; org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165) &#10; org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105) &#10; org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) &#10; org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192) &#10; org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165) &#10; org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81) &#10; org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) &#10; org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192) &#10; org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165) &#10; org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197) &#10; org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) &#10; org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192) &#10; org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165) &#10; org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198) &#10; org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) &#10; org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:474) &#10; org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140) &#10; org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:79) &#10; org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87) &#10; org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:349) &#10; org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:783) &#10; org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) &#10; org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:798) &#10; org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1434) &#10; org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) &#10; java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) &#10; java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) &#10; org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) &#10; java.lang.Thread.run(Thread.java:745) &#10; ');
+INSERT INTO `tb_operation_log` VALUES ('207', '前台密码登录接口', '{\"password\":\"*******\",\"identity\":\"53182347@qq.com\"}', null, 'com.liugh.controller.LoginController', 'login', '0:0:0:0:0:0:0:1:62599', '1563094481855', 'Login', 'SignIn', '1', null);
+INSERT INTO `tb_operation_log` VALUES ('208', '前台密码登录接口', '{\"password\":\"*******\",\"identity\":\"admin\"}', null, 'com.liugh.controller.LoginController', 'login', '0:0:0:0:0:0:0:1:62599', '1563094517438', 'Login', 'SignIn', '1', null);
+INSERT INTO `tb_operation_log` VALUES ('209', '注册接口', '{\"mobile\":\"17765071663\",\"roleName\":\"user\",\"createUser\":\"user-006efece76c8433d8974c1a2f98422b6\",\"email\":\"66864662@qq.com\",\"username\":\"heihei\"}', 'user-006efece76c8433d8974c1a2f98422b6', 'com.liugh.controller.LoginController', 'register', '0:0:0:0:0:0:0:1:62875', '1563094695899', 'Login', 'register', '1', null);
+INSERT INTO `tb_operation_log` VALUES ('210', '前台密码登录接口', '{\"password\":\"*******\",\"identity\":\"66864662@qq.com\"}', null, 'com.liugh.controller.LoginController', 'login', '0:0:0:0:0:0:0:1:62875', '1563094711757', 'Login', 'SignIn', '1', null);
+INSERT INTO `tb_operation_log` VALUES ('211', '前台密码登录接口', '{\"password\":\"*******\",\"identity\":\"heihei\"}', null, 'com.liugh.controller.LoginController', 'login', '0:0:0:0:0:0:0:1:62875', '1563094728483', 'Login', 'SignIn', '1', null);
+
+-- ----------------------------
+-- Table structure for tb_order
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_order`;
+CREATE TABLE `tb_order` (
+  `sequence_nbr` bigint(20) NOT NULL COMMENT '物理主键',
+  `user_no` varchar(50) NOT NULL COMMENT '用户id',
+  `order_no` varchar(20) NOT NULL COMMENT '订单的唯一编号',
+  `source` varchar(32) DEFAULT NULL COMMENT '订单来源',
+  `order_type` varchar(32) NOT NULL COMMENT '订单类型(商品，设计)',
+  `create_time` bigint(20) NOT NULL COMMENT '创建时间',
+  `order_status` varchar(32) NOT NULL COMMENT '订单状态',
+  `order_amount` int(11) NOT NULL COMMENT '订单金额',
+  `postage` int(11) NOT NULL COMMENT '邮费',
+  `pay_amount` int(11) NOT NULL COMMENT '实际支付金额',
+  `discount` int(11) DEFAULT '0' COMMENT '折扣金额',
+  `coupon` int(11) DEFAULT '0' COMMENT '优惠金额',
+  `is_comment` varchar(1) NOT NULL COMMENT '是否已评价',
+  `receipt_detail` varchar(500) DEFAULT NULL COMMENT '发票信息',
+  `transport_id` bigint(20) DEFAULT NULL COMMENT '物流记录id',
+  `receiver_mobile` varchar(11) NOT NULL COMMENT '收货人手机号',
+  `receiver_name` varchar(50) NOT NULL COMMENT '收货人姓名',
+  `receiver_address` varchar(500) DEFAULT NULL COMMENT '收货信息(json存储)',
+  `is_split` varchar(1) NOT NULL COMMENT '是否已拆单',
+  `rec_status` varchar(1) NOT NULL DEFAULT 'a' COMMENT '数据状态 :i 非激活 /a  激活',
+  `cancel_result` varchar(100) DEFAULT NULL COMMENT '取消订单理由',
+  `check_fail_result` varchar(100) DEFAULT NULL COMMENT '审核不通过理由',
+  `order_recode` varchar(100) DEFAULT NULL COMMENT '处理订单跟进记录',
+  `description` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`sequence_nbr`),
+  UNIQUE KEY `INDEX_ORDER_NO` (`order_no`) USING BTREE,
+  KEY `INDEX_USER_ID` (`user_no`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单主表，当前表只保存流转中的订单信息';
+
+-- ----------------------------
+-- Records of tb_order
+-- ----------------------------
+INSERT INTO `tb_order` VALUES ('770480571594227712', 'user-006efece76c8433d8974c1a2f98422b6', '770480571594227712', 'postman', 'Product', '1539763171888', 'waitDelivery', '4540000', '0', '4540000', '0', '0', 'N', '{\"receiptType\":\"普通纸质发票\",\"receiptTitle\":\"公司\",\"receiptContent\":\"中国\"}', null, '13888888888', '刘大神', '西安', 'Y', 'A', null, null, null, null);
+INSERT INTO `tb_order` VALUES ('770480571984297984', 'user-006efece76c8433d8974c1a2f98422b6', '770480571594227713', 'postman', 'Product', '1539763171888', 'waitReceive', '3360000', '0', '3360000', '0', '0', 'N', '{\"receiptType\":\"普通纸质发票\",\"receiptTitle\":\"公司\",\"receiptContent\":\"中国\"}', null, '13888888888', '刘大神', '西安', 'N', 'A', null, null, null, null);
+INSERT INTO `tb_order` VALUES ('770480572001075200', 'user-006efece76c8433d8974c1a2f98422b6', '770480571594227714', 'postman', 'Product', '1539763171888', 'waitDelivery', '1180000', '0', '1180000', '0', '0', 'N', '{\"receiptType\":\"普通纸质发票\",\"receiptTitle\":\"公司\",\"receiptContent\":\"中国\"}', '872003869557731328', '13888888888', '刘大神', '西安', 'N', 'A', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for tb_role
@@ -121,10 +192,9 @@ CREATE TABLE `tb_role` (
 -- ----------------------------
 -- Records of tb_role
 -- ----------------------------
-INSERT INTO `tb_role` (`role_code`, `role_name`) VALUES ('role-cf8fea2055344df59a0d3e80540c78f9', 'sysadmin');
-INSERT INTO `tb_role` (`role_code`, `role_name`) VALUES ('role-dfsg3tsdfgh55334fsdg2asdf23qrasdf3', 'admin');
-INSERT INTO `tb_role` (`role_code`, `role_name`) VALUES ('role-f7943542d87a4f028f446b71d9ede25d', 'user');
-
+INSERT INTO `tb_role` VALUES ('role-cf8fea2055344df59a0d3e80540c78f9', 'sysadmin');
+INSERT INTO `tb_role` VALUES ('role-dfsg3tsdfgh55334fsdg2asdf23qrasdf3', 'admin');
+INSERT INTO `tb_role` VALUES ('role-f7943542d87a4f028f446b71d9ede25d', 'user');
 
 -- ----------------------------
 -- Table structure for tb_role_to_menu
@@ -135,7 +205,7 @@ CREATE TABLE `tb_role_to_menu` (
   `role_code` varchar(50) NOT NULL COMMENT '角色代号',
   `menu_code` varchar(50) NOT NULL COMMENT '菜单代号,规范权限标识',
   PRIMARY KEY (`role_to_menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='角色菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='角色菜单表';
 
 -- ----------------------------
 -- Records of tb_role_to_menu
@@ -201,7 +271,7 @@ CREATE TABLE `tb_user` (
   `mobile` varchar(11) NOT NULL COMMENT '是电话号码，也是账号（登录用）',
   `user_name` varchar(50) NOT NULL COMMENT '姓名',
   `pass_word` varchar(255) NOT NULL COMMENT '密码',
-  `unit` varchar(50) DEFAULT NULL COMMENT '单位',
+  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
   `create_time` bigint(20) NOT NULL COMMENT '创建时间',
   `avatar` varchar(200) DEFAULT NULL COMMENT '头像',
   `status` int(2) DEFAULT '2' COMMENT '状态值（1：启用，2：禁用，3：删除）',
@@ -212,9 +282,29 @@ CREATE TABLE `tb_user` (
 -- ----------------------------
 -- Records of tb_user
 -- ----------------------------
-INSERT INTO `tb_user` VALUES ('user-006efece76c8433d8974c1a2f98422b6', '13888888888', 'javaer', '$2a$10$VwPL.rHo4PETgCcLDTN2LOwE.ksgCA0jLHbVX5yXEoisHWihX7S/i', null, '1529982192887', null, '1', 'java开发');
-INSERT INTO `tb_user` VALUES ('user-190f8710857f4a239570387ffc676c39', '15802933752', 'eee', '$2a$10$VwPL.rHo4PETgCcLDTN2LOwE.ksgCA0jLHbVX5yXEoisHWihX7S/i', 'eee', '1529999033844', null, '1', 'eee');
-INSERT INTO `tb_user` VALUES ('user-573388ebd14348cf8b546a6bfdf98ca3', '18792420526', '5', '$2a$10$VwPL.rHo4PETgCcLDTN2LOwE.ksgCA0jLHbVX5yXEoisHWihX7S/i', '5', '1530086891950', null, '1', '5');
+INSERT INTO `tb_user` VALUES ('user-006efece76c8433d8974c1a2f98422b6', '13888888888', 'admin', '$2a$10$VwPL.rHo4PETgCcLDTN2LOwE.ksgCA0jLHbVX5yXEoisHWihX7S/i', '53182347@qq.com', '1529982192887', null, '1', 'java开发');
+INSERT INTO `tb_user` VALUES ('user-190f8710857f4a239570387ffc676c39', '15802933753', 'user', '$2a$10$VwPL.rHo4PETgCcLDTN2LOwE.ksgCA0jLHbVX5yXEoisHWihX7S/i', '15802933753@qq.com', '1529999033844', null, '1', 'eee');
+INSERT INTO `tb_user` VALUES ('user-2eaa08353bc94aeeaa8087f5096f87f3', '17765071663', 'heihei', '$2a$10$A378Pg5hCfXW7qs6VFXitOBkI5czk4X.QcxC7irAD1BUgIQr8xKae', '66864662@qq.com', '1563094696422', null, '1', null);
+INSERT INTO `tb_user` VALUES ('user-573388ebd14348cf8b546a6bfdf98ca3', '18792420523', 'liugh', '$2a$10$VwPL.rHo4PETgCcLDTN2LOwE.ksgCA0jLHbVX5yXEoisHWihX7S/i', '18792420523@qq.com', '1530086891950', null, '1', '5');
+
+-- ----------------------------
+-- Table structure for tb_user_thirdparty
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_user_thirdparty`;
+CREATE TABLE `tb_user_thirdparty` (
+  `user_thirdparty_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `open_id` varchar(128) NOT NULL COMMENT '第三方Id',
+  `user_no` varchar(50) DEFAULT NULL COMMENT '绑定用户的id',
+  `access_token` varchar(500) DEFAULT NULL COMMENT '第三方token',
+  `provider_type` varchar(32) NOT NULL COMMENT '第三方类型 qq:QQ 微信:WX 微博:SINA',
+  `status` int(2) DEFAULT '1' COMMENT '状态值（1：启用，2：禁用，3：删除）',
+  `create_time` bigint(20) NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`user_thirdparty_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='第三方用户表';
+
+-- ----------------------------
+-- Records of tb_user_thirdparty
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for tb_user_to_role
@@ -225,7 +315,7 @@ CREATE TABLE `tb_user_to_role` (
   `user_no` varchar(50) NOT NULL COMMENT '用户编号',
   `role_code` varchar(50) NOT NULL COMMENT '角色代号',
   PRIMARY KEY (`user_to_role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户角色关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='用户角色关系表';
 
 -- ----------------------------
 -- Records of tb_user_to_role
@@ -233,42 +323,4 @@ CREATE TABLE `tb_user_to_role` (
 INSERT INTO `tb_user_to_role` VALUES ('2', 'user-006efece76c8433d8974c1a2f98422b6', 'role-cf8fea2055344df59a0d3e80540c78f9');
 INSERT INTO `tb_user_to_role` VALUES ('3', 'user-190f8710857f4a239570387ffc676c39', 'role-f7943542d87a4f028f446b71d9ede25d');
 INSERT INTO `tb_user_to_role` VALUES ('4', 'user-573388ebd14348cf8b546a6bfdf98ca3', 'role-f7943542d87a4f028f446b71d9ede25d');
-
-
-DROP TABLE IF EXISTS `tb_order`;
-CREATE TABLE `tb_order` (
-  `sequence_nbr` bigint(20) NOT NULL COMMENT '物理主键',
-  `user_no` varchar(50) NOT NULL COMMENT '用户id',
-  `order_no` varchar(20) NOT NULL COMMENT '订单的唯一编号',
-  `source` varchar(32) DEFAULT NULL COMMENT '订单来源',
-  `order_type` varchar(32) NOT NULL COMMENT '订单类型(商品，设计)',
-  `create_time` bigint(20) NOT NULL COMMENT '创建时间',
-  `order_status` varchar(32) NOT NULL COMMENT '订单状态',
-  `order_amount` int(11) NOT NULL COMMENT '订单金额',
-  `postage` int(11) NOT NULL COMMENT '邮费',
-  `pay_amount` int(11) NOT NULL COMMENT '实际支付金额',
-  `discount` int(11) DEFAULT '0' COMMENT '折扣金额',
-  `coupon` int(11) DEFAULT '0' COMMENT '优惠金额',
-  `is_comment` varchar(1) NOT NULL COMMENT '是否已评价',
-  `receipt_detail` varchar(500) DEFAULT NULL COMMENT '发票信息',
-  `transport_id` bigint(20) DEFAULT NULL COMMENT '物流记录id',
-  `receiver_mobile` varchar(11) NOT NULL COMMENT '收货人手机号',
-  `receiver_name` varchar(50) NOT NULL COMMENT '收货人姓名',
-  `receiver_address` varchar(500) DEFAULT NULL COMMENT '收货信息(json存储)',
-  `is_split` varchar(1) NOT NULL COMMENT '是否已拆单',
-  `rec_status` varchar(1) NOT NULL DEFAULT 'a' COMMENT '数据状态 :i 非激活 /a  激活',
-  `cancel_result` varchar(100) DEFAULT NULL COMMENT '取消订单理由',
-  `check_fail_result` varchar(100) DEFAULT NULL COMMENT '审核不通过理由',
-  `order_recode` varchar(100) DEFAULT NULL COMMENT '处理订单跟进记录',
-  `description` varchar(255) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`sequence_nbr`),
-  UNIQUE KEY `INDEX_ORDER_NO` (`order_no`) USING BTREE,
-  KEY `INDEX_USER_ID` (`user_no`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单主表，当前表只保存流转中的订单信息';
-
--- ----------------------------
--- Records of tb_order
--- ----------------------------
-INSERT INTO `tb_order` VALUES ('770480571594227712', 'user-006efece76c8433d8974c1a2f98422b6', '770480571594227712', 'postman', 'Product', '1539763171888', 'waitDelivery', '4540000', '0', '4540000', '0', '0', 'N', '{\"receiptType\":\"普通纸质发票\",\"receiptTitle\":\"公司\",\"receiptContent\":\"中国\"}', null, '13888888888', '刘大神', '西安', 'Y', 'A', null, null, null, null);
-INSERT INTO `tb_order` VALUES ('770480571984297984', 'user-006efece76c8433d8974c1a2f98422b6', '770480571594227713', 'postman', 'Product', '1539763171888', 'waitReceive', '3360000', '0', '3360000', '0', '0', 'N', '{\"receiptType\":\"普通纸质发票\",\"receiptTitle\":\"公司\",\"receiptContent\":\"中国\"}', null, '13888888888', '刘大神', '西安', 'N', 'A', null, null, null, null);
-INSERT INTO `tb_order` VALUES ('770480572001075200', 'user-006efece76c8433d8974c1a2f98422b6', '770480571594227714', 'postman', 'Product', '1539763171888', 'waitDelivery', '1180000', '0', '1180000', '0', '0', 'N', '{\"receiptType\":\"普通纸质发票\",\"receiptTitle\":\"公司\",\"receiptContent\":\"中国\"}', '872003869557731328', '13888888888', '刘大神', '西安', 'N', 'A', null, null, null, null);
+INSERT INTO `tb_user_to_role` VALUES ('5', 'user-2eaa08353bc94aeeaa8087f5096f87f3', 'role-f7943542d87a4f028f446b71d9ede25d');

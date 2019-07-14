@@ -24,6 +24,8 @@ public class PublicResultConstant {
 
     public static final String INVALID_USER  = "用户不存在";
 
+    public static final String INVALID_USER_EXIST  = "用户已存在";
+
     public static final String INVALID_ROLE  = "角色不存在";
 
     public static final String ROLE_USER_USED  = "角色使用中，不可删除";
@@ -39,4 +41,6 @@ public class PublicResultConstant {
     public static final String UPDATE_ROLEINFO_ERROR  = "更新角色信息失败";
 
     public static final String UPDATE_SYSADMIN_INFO_ERROR  = "不能修改管理员信息!";
+
+    public static final String EMAIL_ERROR  = "邮箱格式错误";
 }

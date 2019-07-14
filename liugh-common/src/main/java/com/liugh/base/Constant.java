@@ -34,6 +34,13 @@ public class Constant {
 
     public static Boolean isPass = false;
 
+    //用户名登录
+    public static final int LOGIN_USERNAME = 0;
+    //手机登录
+    public static final int LOGIN_MOBILE = 1;
+    //邮箱登录
+    public static final int LOGIN_EMAIL = 2;
+
     //启用
     public static final int ENABLE = 1;
     //禁用

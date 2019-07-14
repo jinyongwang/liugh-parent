@@ -48,7 +48,7 @@ public class User extends Model<User> {
     /**
      * 单位
      */
-    private String unit;
+    private String email;
     /**
      * 创建时间
      */

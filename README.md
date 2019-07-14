@@ -30,7 +30,7 @@
 
     ![](https://oscimg.oschina.net/oscnet/f408e29462912bfdd1a9415a0d74d351d9a.jpg)
 
-8.完成微信/微博/QQ第三方登录功能,WebSocket实时消息推送,短信登录注册等功能.
+8.完成微信/微博/QQ第三方登录功能，完成用户名电话邮箱三种方式登录,WebSocket实时消息推送,短信登录注册等功能.
 
 9.完成方法限流注解,重要防刷方法被访问距离下一次时间可调节
 
@@ -64,7 +64,8 @@
     
 -   访问登录接口：localhost:8081/api/v1/login
     
--   账号密码：13888888888/123456(管理员)
+-   账号密码：{"identity":"13888888888","password":"123456"}或 {"identity":"admin","password":"123456"}
+或 {"identity":"53182347@qq.com","password":"123456"}(管理员)
     
 -   获取token访问其他接口
 

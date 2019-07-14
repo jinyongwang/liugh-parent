@@ -51,4 +51,6 @@ public interface IUserService extends IService<User> {
     void resetMobile(User currentUser, JSONObject requestJson)throws Exception;
 
     void resetPassWord(User currentUser, JSONObject requestJson)throws Exception;
+
+    User insertUserByAdmin(JSONObject requestJson)throws Exception;
 }

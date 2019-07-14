@@ -87,8 +87,8 @@ public class UserController {
         if(!ComUtil.isEmpty(requestJson.getString("avatar"))){
             currentUser.setAvatar(requestJson.getString("avatar"));
         }
-        if(!ComUtil.isEmpty(requestJson.getString("unit"))){
-            currentUser.setUnit(requestJson.getString("unit"));
+        if(!ComUtil.isEmpty(requestJson.getString("email"))){
+            currentUser.setEmail(requestJson.getString("email"));
         }
         if(!ComUtil.isEmpty(requestJson.getString("job"))){
             currentUser.setJob(requestJson.getString("job"));

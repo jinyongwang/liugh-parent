@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grm.mapper.InfoToUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.liugh.entity.InfoToUser">
+        <id column="info_to_user_id" property="infoToUserId" />
+        <result column="identity_info" property="identityInfo" />
+        <result column="user_no" property="userNo" />
+        <result column="identity_type" property="identityType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        info_to_user_id AS infoToUserId, identity_info As identityInfo, user_no AS userNo,identity_type AS identityType
+    </sql>
+
+</mapper>
