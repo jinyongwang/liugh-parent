@@ -38,7 +38,7 @@
         <spring-boot-starter-aop.version>2.0.6.RELEASE</spring-boot-starter-aop.version>
         <jsoup.version>1.8.1</jsoup.version>
         <velocity.version>1.7</velocity.version>
-        <shiro-spring.version>1.4.0</shiro-spring.version>
+        <shiro-spring.version>1.7.0</shiro-spring.version>
         <java-jwt.version>3.2.0</java-jwt.version>
         <dom4j.version>1.6.1</dom4j.version>
         <pinyin4j.version>2.5.0</pinyin4j.version>
