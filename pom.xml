@@ -36,7 +36,7 @@
         <guava.version>17.0</guava.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <spring-boot-starter-aop.version>2.0.6.RELEASE</spring-boot-starter-aop.version>
-        <jsoup.version>1.8.1</jsoup.version>
+        <jsoup.version>1.14.2</jsoup.version>
         <velocity.version>1.7</velocity.version>
         <shiro-spring.version>1.4.0</shiro-spring.version>
         <java-jwt.version>3.2.0</java-jwt.version>
