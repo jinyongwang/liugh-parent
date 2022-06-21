@@ -44,7 +44,7 @@
         <pinyin4j.version>2.5.0</pinyin4j.version>
         <thumbnailator.version>0.4.8</thumbnailator.version>
         <gson.version>2.7</gson.version>
-        <mysql-connector-java.version>5.1.38</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <scala-bcrypt_2.10.version>2.3</scala-bcrypt_2.10.version>
         <rest-assured.version>2.9.0</rest-assured.version>
         <ant.version>1.9.7</ant.version>
